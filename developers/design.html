@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>デザイン言語 — Ulexite 開発者ガイド</title>
+  <meta name="description" content="Ulexite の画面の決まり。色、文字、形、フォーカス、文言の書き方、アバターの端末での決まり。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="デザイン言語 — Ulexite 開発者ガイド">
+  <meta property="og:description" content="Ulexite の画面の決まり。色、文字、形、フォーカス、文言。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/design.html">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/design.html">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="index.html" aria-current="page">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><a href="index.html">開発者ガイド</a><span aria-hidden="true">/</span><span>6. デザイン言語</span>
+      </nav>
+      <h1 class="page-title">デザイン言語</h1>
+      <p class="page-lead">Ulexite のどの画面も、同じ色・文字・形の決まりで作ります。データで書くアプリは OS が自動でこの決まりに合わせます。U# で画面を作る人と、feed の文言を考える人は、この章を読んでください。</p>
+      <p class="page-meta"><span class="eyebrow">Chapter 6</span></p>
+    </div>
+  </div>
+
+  <article class="prose">
+
+    <h2>テレビ（ワールド環境）</h2>
+
+    <h3>画面の大きさ</h3>
+    <ul>
+      <li>デザインは <strong>1600×900</strong> で考えます。この章の数字も 1600×900 の上の px です（テレビを作るときに 1.2倍して 1920×1080 にします）</li>
+      <li>画面の上（y 40〜96）はナビゲーションバー（戻る・ホーム・アプリ名・時計・歯車）です。アプリの中身は y 116 くらいから始めます</li>
+      <li>画面の左右の余白は 64</li>
+    </ul>
+
+    <h3>色</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>役割</th><th>色</th></tr></thead>
+        <tbody>
+          <tr><td>背景</td><td><code>#101214</code></td></tr>
+          <tr><td>面（カード）</td><td><code>#24272b</code></td></tr>
+          <tr><td>一段暗い面</td><td><code>#1b1e22</code></td></tr>
+          <tr><td>ダイアログ</td><td><code>#2a2e34</code></td></tr>
+          <tr><td>文字（主）</td><td><code>#e3e3e6</code></td></tr>
+          <tr><td>文字（副）</td><td><code>#c4c6cc</code></td></tr>
+          <tr><td>文字（補足）</td><td><code>#a0a4ab</code></td></tr>
+          <tr><td>文字（注記）</td><td><code>#8c9097</code></td></tr>
+          <tr><td>区切り線</td><td><code>#3a3e44</code></td></tr>
+          <tr><td>強調</td><td><code>#a8c7fa</code></td></tr>
+          <tr><td>LIVE</td><td><code>#ff6b6b</code></td></tr>
+          <tr><td>トラック（進み具合の地）</td><td><code>#4a4e55</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>U# から使うときは、App Services の <code>_Theme("名前")</code> で受け取ります（background・surface・surface2・dialog・text1〜text4・divider・accent・focus・live・track など）。色をコードに直接書くと、テーマを変えたときに浮いてしまいます</li>
+      <li>データで書くアプリでは、色は意味の名前（<code>danger</code>・<code>warning</code>・<code>caution</code>・<code>info</code>・<code>muted</code>）で書きます。警報・注意報は気象庁のレベルの色 <code>level5</code>〜<code>level2</code>（テーマで変わらない）</li>
+    </ul>
+
+    <h3>文字</h3>
+    <ul>
+      <li>書体は Noto Sans JP（Ulexite が同梱）。太字は擬似太字です</li>
+      <li>大きさの目安：見出し 28、カードの名前 20、本文 15〜18、補足 13〜14、注記 12</li>
+      <li>テレビは数メートル離れて見るので、<strong>12 より小さい文字は使いません</strong></li>
+      <li>日本語のフォントは、よく使う漢字（第1・第2水準、約6,000字）に絞ってあります。それ以外の字は「□」になるので、まれな字（人名・地名の異体字など）は feed の側で別の表記にしてください</li>
+      <li>ロゴは画像です（書体で組みません）</li>
+    </ul>
+
+    <h3>形</h3>
+    <ul>
+      <li>カードの角丸は 16〜24</li>
+      <li>ピル型のボタンは、角丸を高さの半分に</li>
+      <li>影は使いません。重なりは面の明るさの違いで表します</li>
+    </ul>
+
+    <h3>フォーカス（リモコンで選んでいるもの）</h3>
+    <ul>
+      <li><strong>白い枠</strong>：太さ 4、相手から 3 離す、角丸は相手に合わせる</li>
+      <li>選んでいるタブは、白い背景に黒い文字</li>
+      <li>フォーカスは必ずどこか1か所にあり、見失わないようにします。画面を開いたときに、最初にフォーカスする場所を決めてください</li>
+    </ul>
+
+    <h3>書き方（文言）</h3>
+    <ul>
+      <li>やさしい日本語で、短く。専門用語には説明を添えます</li>
+      <li>ボタンは動詞で（「開く」「止める」「消す」）</li>
+      <li>エラーは、何が起きたかと、どうすればいいかを書きます（「読み込めませんでした。しばらくしてからもう一度」）</li>
+      <li>数字と単位の間は詰めます（18℃、10分）。半角英数字の前後には空白を入れます（「METAR を更新」）</li>
+      <li>外部のデータを使う画面には出典を出します（<a href="rules.html">7章</a>）</li>
+    </ul>
+
+    <h2>アバターの端末（コンパニオン環境）</h2>
+    <p>タブレット・スマホ・ウォッチも、色・文字・形はテレビと同じです。違うのは「指で触る」ことと「画像を出せない」ことです。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>タブレット</th><th>スマホ</th><th>ウォッチ</th></tr></thead>
+        <tbody>
+          <tr><td>画面の大きさ（論理）</td><td>1280×800</td><td>720×1280</td><td>400×480</td></tr>
+          <tr><td>格子</td><td>8 px</td><td>8 px</td><td>8 px</td></tr>
+          <tr><td>いちばん小さい文字</td><td>24 px</td><td>28 px</td><td>32 px</td></tr>
+          <tr><td>押せる大きさ</td><td>96 px 以上</td><td>112 px 以上</td><td>画面の 1/3</td></tr>
+          <tr><td>1画面の文字数の目安</td><td>約 240 字</td><td>約 200 字</td><td>約 40 字</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>フォーカスの白い枠は使いません</strong>（指で触るため）。押している間だけ、強調の色にします</li>
+      <li>画面は Ulexite UI シェーダーが描きます。描けるのは、角丸の四角・丸・線、焼き込みの字、焼き込みの記号（64種）、簡単な動き（押したときの色、フェード）です</li>
+      <li><strong>写真・サムネイル・動画は出せません</strong>。アイコンも焼き込みの記号から選びます</li>
+      <li>色は 16 色まで（テレビと同じ 8 色＋文字の濃淡）</li>
+      <li>ウォッチは「1画面に1つのこと」。長い文は出さず、全文はタブレットか PC の管理画面で読んでもらいます</li>
+    </ul>
+    <div class="note">
+      <p>この表の数字は仮で、Companion の試作で決まります。</p>
+    </div>
+
+    <h2>音</h2>
+    <p>既定の操作音は Ulexite が持っています（カーソル移動・決定・お知らせ・エラー・タイマー終了・アラーム）。アプリは App Services の操作音の窓口から鳴らし、自分で別の音を持ち込まないでください。</p>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="declarative.html">← 4章 データで書くアプリ</a>
+      <a href="rules.html">7章 守ること →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="../guide/index.html">導入ガイド</a></li>
+            <li><a href="index.html">開発者ガイド</a></li>
+            <li><a href="../releases/index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>

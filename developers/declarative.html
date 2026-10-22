@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>データで書くアプリ — Ulexite 開発者ガイド</title>
+  <meta name="description" content="プログラムを書かずに JSON の定義だけで作るアプリの書き方。画面の型、部品、値のはめ込み、feed の形、確かめ方。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="データで書くアプリ — Ulexite 開発者ガイド">
+  <meta property="og:description" content="画面の型、部品、値のはめ込み、feed の形、確かめ方。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/declarative.html">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/declarative.html">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="index.html" aria-current="page">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><a href="index.html">開発者ガイド</a><span aria-hidden="true">/</span><span>4. データで書くアプリ</span>
+      </nav>
+      <h1 class="page-title">データで書くアプリ</h1>
+      <p class="page-lead">プログラムを書かずに、JSON の定義だけで作るアプリです。天気アプリの見本を教材にして、書き方を順に説明します。</p>
+      <p class="page-meta"><span class="eyebrow">Chapter 4</span></p>
+    </div>
+  </div>
+
+  <article class="prose">
+
+    <h2>考え方</h2>
+    <ol>
+      <li><strong>計算はサーバーで済ませる</strong>。月齢、日の出、METAR の読み解きなどは、feed を作るサーバー側で計算して値として入れておきます。端末の上では計算しません（式もスクリプトも書けません）</li>
+      <li><strong>画面は「型」を選んで「部品」をはめる</strong>。自由な配置はできません。そのかわり、見た目とリモコンの操作が Ulexite のほかの画面とそろい、フォーカスの順番も OS が決めます</li>
+      <li><strong>画面はエディタで作られる</strong>。ワールドでは、テレビを作るときに Ulexite が定義を読んで画面を組み立て、焼き込みます。実行中に起きるのは「データを読んで、変わった値をはめる」ことだけです。だから重くなりにくいのです</li>
+      <li><strong>URL はすべて焼き込み</strong>。Udon は実行中に URL を作れないので、読むファイル・画像の URL は定義の <code>assets</code> に全部書いておきます。地点ごとにファイルが違う場合も、地点の数だけ URL を書き出します（<code>each</code>）</li>
+    </ol>
+
+    <h2>ファイルの並び</h2>
+    <pre class="code"><code>Packages/vrc.ulexite.app.weather/
+  package.json            VPM のパッケージ情報（バージョンと作者はここが正）
+  ulexite-app.json        マニフェスト。kind: declarative、runtimes.world.screens に定義のファイル
+  app.screens.json        画面の定義（この章の本題）
+  lang.json               翻訳表
+  feed.sample.json        feed の見本（エディタの検査とプレビューに使う）
+  Textures/               アイコンなど
+  NOTICE.txt              データや素材の出典</code></pre>
+    <p>マニフェストでは、<code>kind</code> を <code>declarative</code> にして、<code>runtimes.world.screens</code> に定義のファイルの名前を書きます。</p>
+    <pre class="code"><code>"kind": "declarative",
+"runtimes": { "world": { "os": 1, "appServices": 2, "screens": "app.screens.json" } }</code></pre>
+
+    <h2>定義のファイルの骨組み</h2>
+    <pre class="code"><code>{
+  "format": 1,
+  "lang": "lang.json",
+  "settings": [ ... ],   // アプリの設定項目
+  "assets":   { ... },   // 読むファイル・画像の URL（すべて焼き込み）
+  "data":     [ ... ],   // いつ、どのファイルを読むか
+  "maps":     { ... },   // 値 → 文字・色・アイコンの対応表
+  "tile":     { ... },   // ホームのタイルに出すもの
+  "screen":   { ... }    // 画面
+}</code></pre>
+
+    <h2>画面の型</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>型</th><th>使いどころ</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>tabs</code></td><td>上にタブ、下にそれぞれの画面。中に別の型を入れる</td><td>天気（天気／月／地震／地図）</td></tr>
+          <tr><td><code>list-detail</code></td><td>左に一覧、右に選んだものの詳細</td><td>METAR、地震</td></tr>
+          <tr><td><code>dashboard</code></td><td>カードの並び（数値・短い文・小さな表）</td><td>月の満ち欠け</td></tr>
+          <tr><td><code>map</code></td><td>地図の下地に、画像・点・印を重ねる</td><td>雨雲、震源</td></tr>
+          <tr><td><code>grid</code></td><td>タイルの格子</td><td>ライブカメラ（まだ使えません）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>型は入れ子にできます。天気アプリの「天気」タブは、<code>tabs</code> の中に <code>list-detail</code> があり、その詳細が <code>dashboard</code> です。</p>
+    <pre class="code"><code>"screen": {
+  "type": "tabs",
+  "title": "t:weather.name",
+  "tabs": [
+    { "id": "forecast", "label": "t:weather.tab.forecast",
+      "screen": {
+        "type": "list-detail",
+        "list":   { ... },
+        "detail": { "type": "dashboard", "cards": [ ... ] }
+      } }
+  ]
+}</code></pre>
+
+    <h2>部品</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>部品</th><th>内容</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td><code>text</code></td><td>文字。<code>style</code> で <code>caption</code>（補足）・<code>title</code>・<code>strong</code> など</td><td>使える</td></tr>
+          <tr><td><code>value</code></td><td>大きな数値と単位（と、横のアイコン）</td><td>使える</td></tr>
+          <tr><td><code>icon</code></td><td>同梱のアイコンを名前で</td><td>使える</td></tr>
+          <tr><td><code>badge</code>・<code>badges</code></td><td>色つきの札（警報の種類など）</td><td>使える</td></tr>
+          <tr><td><code>strip</code></td><td>横並びの小さなカード（週間予報など）</td><td>使える</td></tr>
+          <tr><td><code>list</code></td><td>一覧</td><td>使える</td></tr>
+          <tr><td><code>note</code></td><td>出典・注意書き</td><td>使える</td></tr>
+          <tr><td><code>image</code></td><td><code>assets</code> の画像</td><td>まだ</td></tr>
+          <tr><td><code>chart</code></td><td>折れ線・棒（点は12まで）</td><td>まだ</td></tr>
+          <tr><td><code>button</code></td><td>動作を呼ぶボタン</td><td>まだ</td></tr>
+          <tr><td><code>custom</code></td><td>U# で書いた部品をはめる</td><td>まだ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><code>dashboard</code> のカードの例（今の天気）：</p>
+    <pre class="code"><code>{ "size": "wide", "parts": [
+  { "text": "{{ selected.area | choice:jma-areas }}・{{ t:weather.now }}", "style": "caption" },
+  { "value": "{{ area.current.temp | num:0 }}", "unit": "℃", "icon": "{{ area.current.wx | map:wxIcon }}" },
+  { "text": "{{ area.current.wxText }}" }
+] }</code></pre>
+
+    <h2>値のはめ込み</h2>
+    <p><code>{{ }}</code> の中に、値の<strong>道筋</strong>を書きます。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>書き方</th><th>指すもの</th></tr></thead>
+        <tbody>
+          <tr><td><code>{{ area.current.temp }}</code></td><td><code>data</code> の <code>id</code> が <code>area</code> の feed の、<code>current.temp</code></td></tr>
+          <tr><td><code>{{ area.days[0].max }}</code></td><td>配列の0番目</td></tr>
+          <tr><td><code>{{ settings.areas[0] }}</code></td><td>設定の値</td></tr>
+          <tr><td><code>{{ item.name }}</code></td><td>一覧・strip の中で、その1件</td></tr>
+          <tr><td><code>{{ selected.area }}</code></td><td>一覧で選んでいるもの（一覧に <code>"select": "area"</code> と書いたとき）</td></tr>
+          <tr><td><code>{{ common.warnings[selected.area] }}</code></td><td>道筋の中に、別の値を差し込む（式は書けません。差し込みだけ）</td></tr>
+          <tr><td><code>{{ common.quakes }}</code></td><td>共通の feed（地震・津波・警報など）</td></tr>
+          <tr><td><code>t:weather.now</code></td><td>翻訳表のキー</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>整形</h3>
+    <p><code>|</code> でつなぎます。使えるのは OS が用意した関数だけです。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>関数</th><th>例</th><th>結果</th></tr></thead>
+        <tbody>
+          <tr><td><code>num:桁</code></td><td><code>{{ 18.44 | num:1 }}</code></td><td>18.4</td></tr>
+          <tr><td><code>unit:単位</code></td><td><code>{{ 18 | unit:℃ }}</code></td><td>18℃</td></tr>
+          <tr><td><code>time</code></td><td><code>{{ "2026-10-18T21:20:00+09:00" | time }}</code></td><td>21:20</td></tr>
+          <tr><td><code>time:dayAware</code></td><td>昨日の時刻</td><td>昨日 23:51</td></tr>
+          <tr><td><code>date</code>・<code>date:weekday</code>・<code>date:short</code></td><td></td><td>10月19日・月・10/19</td></tr>
+          <tr><td><code>ago</code></td><td></td><td>3分前</td></tr>
+          <tr><td><code>map:表の名前</code></td><td><code>{{ "100" | map:wxIcon }}</code></td><td>sun</td></tr>
+          <tr><td><code>choice:選択肢の表</code></td><td><code>{{ "130000" | choice:jma-areas }}</code></td><td>東京都</td></tr>
+          <tr><td><code>scale:名前</code></td><td><code>{{ 31 | scale:temp }}</code></td><td>温度の色の段階</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>値がないときは「—」、データがまだ1つも読めていないときは「読み込み中…」、読めなかったときは「読み込めませんでした」を OS が出します。アプリで気にする必要はありません（古いときの「〇時〇分の情報」の表示は準備中）。</p>
+
+    <h3>対応表 <code>maps</code></h3>
+    <p>値を、文字・色・アイコンに対応させます。<code>"*"</code> は「それ以外」です。</p>
+    <pre class="code"><code>"maps": {
+  "wxIcon":   { "100": "sun", "200": "cloud", "300": "rain", "400": "snow", "*": "cloud" },
+  "warnColor": { "special": "level5", "danger": "level4", "warning": "level3", "advisory": "level2" }
+}</code></pre>
+    <p>色は<strong>意味の名前</strong>で書きます：<code>danger</code>・<code>warning</code>・<code>caution</code>・<code>info</code>・<code>muted</code>。実際の色はテーマとユーザー補助（色の見分けやすさ）に合わせて OS が決めます。凡例など、色そのものに意味があるところだけ <code>#rrggbb</code> を使えます。</p>
+    <p>警報・注意報には、気象庁のレベルの色に合わせた <code>level5</code>（特別警報・黒）・<code>level4</code>（危険警報・紫）・<code>level3</code>（警報・赤）・<code>level2</code>（注意報・黄）を使います。この4つはテーマで変わりません。色だけに頼らず、気象庁の名前（「レベル4大雨危険警報」など）を必ず一緒に出してください。</p>
+    <p>震度には <code>int1</code>〜<code>int7</code> を使います（<code>int5l</code>・<code>int5u</code>、<code>int6l</code>・<code>int6u</code> は「5弱」「5強」「6弱」「6強」）。</p>
+    <p><strong>札の文字の色は OS が決めます</strong>。アプリから文字の色は指定できません。<code>level5</code>・<code>level4</code>・<code>level3</code> と <code>int1</code>・<code>int2</code>・<code>int3</code>・<code>int5u</code>・<code>int6l</code>・<code>int6u</code>・<code>int7</code> は白、<code>level2</code>・<code>int4</code>・<code>int5l</code> は暗い色になり、<code>level5</code> は明るい線で囲まれます（暗い画面に沈むため）。<code>danger</code>・<code>warning</code>・<code>caution</code>・<code>info</code>・<code>muted</code> は今までどおりです。文字が入りきらないとき（震度の「5弱」など2文字）は OS が自動で小さくする（約 0.75 倍）ので、大きさは指定しません。</p>
+
+    <h3>表示の条件 <code>when</code></h3>
+    <p>道筋を書くと、その値があって、空でも false でもないときだけ表示します。比較（「震度4以上なら」など）は書けません。絞り込みが必要なら、サーバーで別の欄を作ってください。</p>
+    <pre class="code"><code>{ "size": "wide", "when": "common.warnings[selected.area]", "style": "alert", "parts": [ ... ] }</code></pre>
+
+    <h2>設定</h2>
+    <pre class="code"><code>"settings": [
+  { "id": "areas", "type": "order", "scope": "local", "max": 3,
+    "choices": "jma-areas", "default": ["130000"], "label": "t:weather.setting.areas" }
+]</code></pre>
+    <ul>
+      <li><code>type</code>：<code>choice</code>（選択肢）・<code>toggle</code>（オン・オフ）・<code>order</code>（選んで並べる）</li>
+      <li><code>scope</code>：<strong>必ず書きます</strong>。<code>local</code>（各自）・<code>global</code>（全員共通）・<code>creator</code>（ワールドの制作者が Unity で決めて焼き込む）</li>
+      <li>各自の設定は PlayerData に保存されます（保存の予算は <a href="rules.html">7章</a>）</li>
+    </ul>
+
+    <h2>読むファイルとタイミング</h2>
+    <pre class="code"><code>"assets": {
+  "files": {
+    "area": { "each": "jma-areas", "url": "https://thesilver0913.github.io/ulexite-catalog/v1/feed/weather/{{key}}.json" },
+    "map":  { "url": "https://thesilver0913.github.io/ulexite-catalog/v1/feed/weather-map.json" }
+  }
+},
+"data": [
+  { "id": "area", "file": "area[{{selected.area}}]", "every": "10m" },
+  { "id": "map",  "file": "map", "every": "10m", "when": "screen:map" },
+  { "id": "now",  "file": "area[{{settings.areas[0]}}]", "every": "10m", "background": true }
+]</code></pre>
+    <ul>
+      <li><code>assets.files</code>：URL を焼き込みます。<code>each</code> を書くと、選択肢の表の数だけ URL を書き出します（<code>{{key}}</code> に表のキーが入る）</li>
+      <li><code>data</code>：<code>every</code> は読む間隔、<code>when: "screen:map"</code> は「その画面を開いているときだけ」、<code>background: true</code> は「アプリを閉じていても読む」（ホームのタイル・通知用。必要なものだけにする）</li>
+      <li><strong>URL は信頼済みのドメインだけ</strong>（<code>*.github.io</code> など。<a href="rules.html">7章</a>）。エディタが検査します</li>
+      <li>読み込みはワールド全体で5秒に1回の枠を分け合います。間隔は短くしすぎないでください（目安10分）</li>
+    </ul>
+
+    <h2>feed の形</h2>
+    <p>feed はサーバーが作る JSON です。決まりは3つです。</p>
+    <ol>
+      <li><code>version</code> を入れる。項目は<strong>足すだけ</strong>にして、意味を変えない</li>
+      <li>計算済みの値を入れる（端末は計算しない）</li>
+      <li>小さく保つ（目安 1ファイル 50KB 以内）</li>
+    </ol>
+    <pre class="code"><code>{
+  "version": 1,
+  "updatedAt": "2026-10-18T21:20:00+09:00",
+  "current": { "temp": 18.4, "wx": "200", "wxText": "くもり" },
+  "days": [ { "date": "2026-10-18", "wx": "200", "max": 21, "min": 14, "pop": 30 } ],
+  "sun":  { "rise": "05:49", "set": "17:08" }
+}</code></pre>
+
+    <h2>ホームのタイル</h2>
+    <pre class="code"><code>"tile": {
+  "icon": "{{ now.current.wx | map:wxIcon }}",
+  "text": "{{ now.current.temp | num:0 | unit:℃ }}"
+}</code></pre>
+
+    <h2>確かめ方</h2>
+    <ol>
+      <li>定義と同じフォルダに feed の見本を置きます：<code>feed.sample.json</code>（全部の data）、<code>feed.&lt;data の id&gt;.sample.json</code>（その data だけ）、<code>common.sample.json</code>（共通の feed）</li>
+      <li><strong>Tools → Ulexite → データで書くアプリのプレビュー</strong> で、Play せずに見本の値をはめた画面が見られます。タブや選んでいる行も切り替えられます</li>
+      <li>同じ窓に検査の結果が出ます：道筋が見本に実在するか、URL のドメイン、文字のはみ出し</li>
+      <li><strong>Tools → Ulexite → テレビを作り直す</strong> でテレビに組み込み、ClientSim や Build &amp; Test で確かめます</li>
+    </ol>
+
+    <h2>地図（<code>map</code> 型）</h2>
+    <ul>
+      <li>下地は OS が持っています：<code>"base": "world"</code>（世界）・<code>"japan"</code>（日本）。図法の計算も OS がするので、アプリは緯度・経度を書くだけです</li>
+      <li>重ねるもの：<code>image</code>（透明な画像。<code>frames</code> でコマ送り）、<code>points</code>（緯度・経度と値の点）、<code>marker</code>（震源などの印）</li>
+      <li>右の切り替えと凡例は OS が並べます</li>
+    </ul>
+
+    <h2>画面の状態の同期</h2>
+    <p>開いているタブ、一覧で選んでいるもの、地図に重ねているものは、シェルが全員に同期します（全員が同じテレビを見ているため）。アプリで同期を書く必要はありません。</p>
+
+    <h2>よくある質問</h2>
+    <p><strong>Q. 「震度4以上だけ」のように絞り込みたい</strong><br>A. 書式では絞り込めません。サーバーで <code>quakes4plus</code> のような欄を作ってください。</p>
+    <p><strong>Q. 画像を feed から出したい</strong><br>A. URL は焼き込みなので、feed からは <code>assets</code> の画像の ID を指します。feed の中に URL を書いても読めません。</p>
+    <p><strong>Q. ボタンを押して何かしたい</strong><br>A. 動作は OS が用意したものだけです：<code>open</code>（同じアプリの別の画面）、<code>openApp</code>（ほかのアプリを開く）、<code>play</code>（再生）、<code>set</code>（設定を変える）、<code>pick</code>（選択肢を選ぶ画面）。今使えるのは、一覧の下のボタン（<code>footer</code>）の <code>pick</code> だけです。<code>button</code> 部品と、ほかの動作は準備中です。</p>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="index.html">← 開発者ガイド</a>
+      <a href="design.html">6章 デザイン言語 →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="../guide/index.html">導入ガイド</a></li>
+            <li><a href="index.html">開発者ガイド</a></li>
+            <li><a href="../releases/index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>

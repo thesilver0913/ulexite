@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>開発者ガイド — Ulexite</title>
+  <meta name="description" content="Ulexite のアプリを作る人のためのガイド。Ulexite OS の全体像、アプリの種類、層の分け方、マニフェスト、開発に必要なもの。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="開発者ガイド — Ulexite">
+  <meta property="og:description" content="Ulexite のアプリを作る人のためのガイド。アプリの種類、層の分け方、マニフェスト。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="index.html" aria-current="page">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><span>開発者ガイド</span>
+      </nav>
+      <h1 class="page-title">開発者ガイド</h1>
+      <p class="page-lead">Ulexite のアプリを作る人のためのガイドです。Ulexite OS の仕組み、アプリの作り方、守ること、公開のしかたをまとめています。</p>
+      <p class="page-meta"><span>日本語のみ</span><span>書き途中の章があります</span></p>
+    </div>
+  </div>
+
+  <article class="prose">
+
+    <div class="note">
+      <p><strong>このガイドは書き途中です。</strong>仕組みが固まっていない章は「準備中」と書いています。ワールドに Ulexite TV を置くだけの人は<a href="../guide/index.html">導入ガイド</a>を読んでください。</p>
+    </div>
+
+    <h2>章の一覧</h2>
+    <div class="table-wrap">
+      <table class="table--chapters">
+        <thead><tr><th>章</th><th>内容</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td>1. はじめに</td><td>Ulexite の全体像、アプリの種類、どれを選ぶか</td><td>このページ</td></tr>
+          <tr><td>2. 最初のアプリを作る</td><td>データで書くアプリを1つ作り、エミュレーターで確かめるまで</td><td>準備中</td></tr>
+          <tr><td>3. ワールドのアプリ（U#）</td><td>パッケージの形、Builder、App Services、フォーカス、同期</td><td>準備中</td></tr>
+          <tr><td><a href="declarative.html">4. データで書くアプリ</a></td><td>画面の型、部品、値のはめ込み、feed の形</td><td>読めます</td></tr>
+          <tr><td>5. Companion のアプリ</td><td>タブレット・スマホ・ウォッチのアプリ</td><td>準備中</td></tr>
+          <tr><td><a href="design.html">6. デザイン言語</a></td><td>色、文字、形、端末ごとの決まり</td><td>読めます</td></tr>
+          <tr><td><a href="rules.html">7. 守ること</a></td><td>重くしない決まり、保存の予算、外部サービスの決まり、権限</td><td>読めます</td></tr>
+          <tr><td>8. 公開する</td><td>マニフェスト、ストアへの申請と審査、提携アプリ、有料アプリ</td><td>準備中</td></tr>
+          <tr><td>9. リファレンス</td><td>マニフェストの全項目、App Services の窓口、部品の一覧</td><td>準備中</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="what">Ulexite とは</h2>
+    <p>Ulexite は、VRChat の中で使う家電と端末のシリーズです。最初の製品は Android TV 風のテレビ（セットトップボックス）<strong>Ulexite TV</strong> で、ワールドに置いて、リモコンで操作します。動画の再生と同期は VizVid が受け持ち、Ulexite は「テレビを見る体験」（ホーム画面、リモコン、アプリ）を受け持ちます。</p>
+    <p>これらの製品で動く共通の仕組みを <strong>Ulexite OS</strong> と呼びます。アプリは Ulexite OS の上で動くので、1つのアプリが複数の製品・端末で動くことを目指しています。</p>
+
+    <h2 id="environments">2つの実行環境</h2>
+    <p>Ulexite OS は、性質のまったく違う2つの場所で動きます。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>ワールド環境</th><th>コンパニオン環境</th></tr></thead>
+        <tbody>
+          <tr><td>どこで動くか</td><td>VRChat のワールドの中（Udon）</td><td>利用者の PC（外部プログラム「Ulexite Companion」）</td></tr>
+          <tr><td>端末</td><td>Ulexite TV、Ulexite Player（レコーダー）など</td><td>アバター用のタブレット・スマホ・ウォッチ</td></tr>
+          <tr><td>誰の画面か</td><td>ワールドの全員が同じ画面を見る</td><td>端末を持っている本人だけが見る</td></tr>
+          <tr><td>インターネット</td><td>決まったサイトのファイルを読むだけ（5秒に1回）</td><td>自由に通信できる（許可した相手だけ）</td></tr>
+          <tr><td>書く言語</td><td>UdonSharp（U#）</td><td>C#（.NET）</td></tr>
+          <tr><td>状態</td><td>動いています</td><td>設計中</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>2つの環境は直接つながりません。</strong>Udon は外の世界と通信できず、外部プログラムはワールドに触れられないためです。たとえば「タブレットで選んだ動画をワールドのテレビで流す」ことはできません。両方に同じ情報を出したいときは、共通のサーバーにデータを置いて、それぞれが読みます（ワールド側は10分ほど遅れます）。</p>
+
+    <h2 id="kinds">アプリの種類</h2>
+    <p>アプリの作り方は2つあります。両方を組み合わせることもできます。</p>
+
+    <h3>データで書くアプリ（declarative）</h3>
+    <p>画面を「決まった型と部品の組み合わせ」で JSON に書き、表示する値は feed（データの JSON ファイル）から読みます。<strong>プログラムは書きません。</strong></p>
+    <ul>
+      <li>向いているもの：天気、航空気象（METAR）、運行情報、ニュース、ランキングなど「データを見る」アプリ</li>
+      <li>良いところ：同じ定義が、テレビでもタブレットでも動く（予定）。安全で、審査も通りやすい。重くなりにくい</li>
+      <li>できないこと：ゲーム、凝った動き、自由な配置、端末の上での計算（計算はサーバーで済ませておく）</li>
+    </ul>
+    <p><a href="declarative.html">4章 データで書くアプリ</a></p>
+
+    <h3>プログラムを書くアプリ（native）</h3>
+    <p>画面とふるまいを、環境ごとにプログラムで書きます。</p>
+    <ul>
+      <li>ワールド環境：UdonSharp（U#）で書きます。画面はエディタ上で作って焼き込みます</li>
+      <li>コンパニオン環境：C# で書きます。最初は公式アプリだけです（ほかの作者には段階を追って開きます）</li>
+      <li>向いているもの：ゲーム、メディア再生、時計・タイマーのような手元で動くもの</li>
+      <li>例：時計アプリ</li>
+    </ul>
+
+    <h3>どれを選ぶか</h3>
+    <pre class="code"><code>データを見せるだけ？ ──はい──→ データで書くアプリ
+   │いいえ
+   ↓
+一部だけ動きのある部品が要る？ ──はい──→ データで書くアプリ ＋ custom 部品（U#）
+   │いいえ
+   ↓
+プログラムを書くアプリ（native）</code></pre>
+    <p>迷ったら、まずデータで書くアプリで作れないか考えてください。Ulexite が一番勧める形です。</p>
+
+    <h2 id="layers">層の分け方</h2>
+    <pre class="code"><code>┌───────────────────────────────┐
+│ アプリ（あなたが作るもの）          │
+├───────────────────────────────┤
+│ シェル（ホーム画面・通知など。端末ごと）│
+├───────────────────────────────┤
+│ システムアプリ                      │
+│  ・Ulexite App Services（アプリの窓口）│
+│  ・Ulexite Media Services（再生）    │
+│  ・設定・アプリストア など           │
+├───────────────────────────────┤
+│ Ulexite System（OS の土台）         │
+└───────────────────────────────┘</code></pre>
+    <p><strong>アプリが使ってよいのは Ulexite App Services だけです。</strong>シェルや土台を直接呼んではいけません（ストアの審査で確かめます）。App Services には、データの読み込み、画像、通知、保存、再生、アプリ間の呼び出し、テーマの色などの窓口があります。</p>
+
+    <h2 id="manifest">アプリのマニフェスト</h2>
+    <p>どのアプリも、パッケージの直下に <code>ulexite-app.json</code>（マニフェスト）を置きます。アプリの ID・名前・バージョン・作者・種類・対応する端末・使うデータ・保存の予算などを書くファイルで、アプリ情報の画面やストアのページもここから作られます。</p>
+    <pre class="code"><code>{
+  "manifestVersion": 1,
+  "id": "weather",
+  "name": { "ja": "天気", "en": "Weather" },
+  "version": "0.1.0",
+  "publisher": { "name": "Ulexite Technologies" },
+  "kind": "declarative",
+  "runtimes": { "world": { "os": 1, "appServices": 2, "screens": "app.screens.json" } },
+  "profiles": ["tv"],
+  "data": [ { "feed": "weather", "every": "10m" } ],
+  "budget": { "saveKB": 1, "imagesPerOpen": 1, "syncBytes": 4 }
+}</code></pre>
+    <p>全項目はリファレンス（9章）にまとめる予定です。</p>
+
+    <h2 id="distribute">配り方</h2>
+    <ul>
+      <li><strong>ワールド環境</strong>：アプリは VPM パッケージ（<code>vrc.ulexite.app.&lt;アプリID&gt;</code>）です。ワールドの制作者が Unity のアプリストア（エディタ拡張）から入れて、ワールドを上げ直すと訪問者に届きます。公開後のワールドの中で、アプリを入れ替えることはできません</li>
+      <li><strong>コンパニオン環境</strong>：アプリは <code>.ulxapp</code> というファイルです。利用者が PC の管理画面のストアから入れます。更新はその場で届きます</li>
+      <li>最初は公式アプリと、Ulexite が審査した<strong>提携アプリ</strong>だけを受け付けます（8章。準備中）</li>
+    </ul>
+
+    <h2 id="tools">開発に必要なもの（ワールド環境）</h2>
+    <ul>
+      <li>Unity 2022.3.22f1</li>
+      <li>VRChat Worlds SDK 3.10.5 以上（UdonSharp は SDK に入っています）</li>
+      <li>VizVid（<code>idv.jlchntoz.vvmw</code>）1.8.2</li>
+      <li>Ulexite TV（<code>vrc.ulexite.tv</code>）</li>
+    </ul>
+    <p>これらをまとめて入れられる <strong>Ulexite 開発キット</strong>（<code>vrc.ulexite.devkit</code>）があります。VCC で1つ入れると、上の全部と、Ulexite Emulator、「新しいアプリ」ウィザード、見本のアプリ（ハローワールド・天気）、テスト用のシーン、申請の前の検査がそろいます。入れると最初に「足りないもの」の確認窓が開きます。</p>
+    <p>開発キットの VCC への配布は、Ulexite TV の公開に合わせて始めます。</p>
+
+    <h2 id="terms">用語</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>用語</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td>端末</td><td>Ulexite OS が動く1台。テレビ、レコーダー、アバターのタブレットなど</td></tr>
+          <tr><td>シェル</td><td>端末ごとのホーム画面と画面の枠</td></tr>
+          <tr><td>feed</td><td>アプリが読むデータの JSON。共通サーバーに置く</td></tr>
+          <tr><td>共通の feed</td><td>どのアプリからも読める feed（地震・津波・警報など）。OS が1分おきに読んでいる</td></tr>
+          <tr><td>操作する人</td><td>その端末のリモコンを持っている人。画面の状態のオーナー</td></tr>
+          <tr><td>焼き込み</td><td>エディタで作ったもの（画面・URL）をワールドに固定して入れること。Udon は実行中に URL を作れないため、URL はすべて焼き込む</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>このガイドと他の文書</h2>
+    <ul>
+      <li><a href="../guide/index.html">導入ガイド</a> — ワールドにテレビを置く人のための説明</li>
+      <li><a href="../releases/index.html">リリースノート</a> — バージョンごとの変更</li>
+      <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html" rel="noopener">プライバシーポリシー</a>・<a href="https://thesilver0913.github.io/ulexite-catalog/license.html" rel="noopener">利用規約（VN3 ライセンス）</a></li>
+    </ul>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="../guide/index.html">← 導入ガイド</a>
+      <a href="declarative.html">4章 データで書くアプリ →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="../guide/index.html">導入ガイド</a></li>
+            <li><a href="index.html">開発者ガイド</a></li>
+            <li><a href="../releases/index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>

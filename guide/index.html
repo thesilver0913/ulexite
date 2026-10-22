@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>導入ガイド — Ulexite TV</title>
+  <meta name="description" content="Ulexite TV をワールドに置くまでの手順。必要なもの、入れ方、画面の映し方、リモコンの使い方、わかっている制限をまとめています。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="導入ガイド — Ulexite TV">
+  <meta property="og:description" content="Ulexite TV をワールドに置くまでの手順。必要なもの、入れ方、画面の映し方、リモコンの使い方。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/guide/">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/guide/">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="../developers/index.html">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><span>導入ガイド</span>
+      </nav>
+      <h1 class="page-title">導入ガイド</h1>
+      <p class="page-lead">Ulexite TV は、VRChat のワールドに置くテレビです。ワールドにある動画プレイヤーの画面に、本体の電源を入れているあいだだけ Ulexite の画面を映します。</p>
+      <p class="page-meta"><span class="badge">テスト版 0.3.0</span><span>最終更新：2026年10月20日</span></p>
+    </div>
+  </div>
+
+  <article class="prose">
+
+    <nav class="toc" aria-label="目次">
+      <p class="toc__title">目次</p>
+      <ol>
+        <li><a href="#before">はじめに</a></li>
+        <li><a href="#needs">必要なもの</a></li>
+        <li><a href="#install">入れ方（テスト版）</a></li>
+        <li><a href="#public">公開後の入れ方（準備中）</a></li>
+        <li><a href="#screen">画面の映し方</a></li>
+        <li><a href="#howto">使い方</a></li>
+        <li><a href="#video">動画アプリを使うとき</a></li>
+        <li><a href="#limits">わかっている制限</a></li>
+        <li><a href="#trouble">うまくいかないとき</a></li>
+        <li><a href="#license">ライセンスと応援</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="before">はじめに</h2>
+    <p>Ulexite TV は、VRChat のワールドに置く、Android TV 風のテレビ（セットトップボックス）です。ホームにアプリが並び、リモコンの十字キーと決定だけで操作できます。動画の再生と同期は <a href="https://xtlcdn.github.io/VizVid/" rel="noopener">VizVid</a>（MIT ライセンス）が受け持ち、Ulexite は「テレビを見る体験」を受け持ちます。</p>
+    <p>いまは<strong>テスト版</strong>を、試してくださる方に個別にお渡ししている段階です。VCC と BOOTH からの配布は、公開の準備ができてから始めます。<strong>Ulexite Store</strong>（デモワールド）は、VRChat の Community Labs で公開しています。</p>
+
+    <div class="note">
+      <p>Ulexite は<strong>架空のブランド</strong>です。実在の企業とは関係ありません。制作は葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）です。</p>
+    </div>
+
+    <h2 id="needs">必要なもの</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>もの</th><th>バージョン・用意のしかた</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Unity</td><td>2022.3.22f1</td></tr>
+          <tr><td>VRChat Worlds SDK</td><td>3.10.5 以上（UdonSharp は SDK に含まれます）</td></tr>
+          <tr><td>VizVid（<code>idv.jlchntoz.vvmw</code>）</td><td>1.8.2 以上 1.9 未満。<a href="https://xtlcdn.github.io/VizVid/docs/" rel="noopener">公式の説明</a>に沿って VCC から追加します</td></tr>
+          <tr><td>VCC（VRChat Creator Companion）</td><td>ワールドのプロジェクトを作るのに使います</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>VizVid は、Ulexite TV を入れるときの依存として一緒に入ります。</p>
+
+    <h2 id="install">入れ方（テスト版）</h2>
+    <ol class="steps steps--wide">
+      <li>
+        <h3>VCC でプロジェクトを用意する</h3>
+        <p>VCC でワールドのプロジェクトを作り、「Manage Project」から VizVid を追加します（必要なパッケージも一緒に入ります）。</p>
+      </li>
+      <li>
+        <h3>Unity でプロジェクトを開く</h3>
+        <p>Unity 2022.3.22f1 でプロジェクトを開きます。</p>
+      </li>
+      <li>
+        <h3>.unitypackage を入れる</h3>
+        <p><code>UlexiteTV-0.3.0.unitypackage</code> を Project ウィンドウにドラッグし、「Import」を押します。<code>Packages/Ulexite TV</code> に入ります。</p>
+      </li>
+      <li>
+        <h3>VizVid のプレイヤーを置く</h3>
+        <p>VizVid の説明に沿って、プレイヤーをシーンに1つ置きます。VizVid の画面や操作パネルは使わないので、見えないところに置いても大丈夫です。<strong>音は VizVid のスピーカーから出るので、スピーカーは映す画面の近くに置いてください。</strong></p>
+      </li>
+      <li>
+        <h3>本体を作る</h3>
+        <p>上のメニューの「Tools → Ulexite → セットトップボックスを作成」を押し、できた白い本体をテーブルなど置きたい場所へ動かします。</p>
+      </li>
+      <li>
+        <h3>映す画面を選ぶ</h3>
+        <p>「Tools → Ulexite → 設定」を開き、左の「はじめに」を選びます。「セットトップボックス版」の欄で、Hierarchy から既存のプレイヤーのスクリーン（画面のオブジェクト）を選び、「選んでいる物を足す」を押します。マテリアルが複数ある画面は、映像が出ているマテリアルを選んでください。</p>
+      </li>
+      <li>
+        <h3>テレビに反映する</h3>
+        <p>「テレビに反映（作り直す）」を押します。リモコンがなければ本体の右隣に自動で作られます。</p>
+        <p>「U# をコンパイルし直しています」と出たら、Console に「Compile of … scripts finished」が出てから、もう一度押してください。</p>
+      </li>
+      <li>
+        <h3>確かめる</h3>
+        <p>シーンを保存し（<span class="kbd">Ctrl</span>＋<span class="kbd">S</span>）、VRChat SDK の「Build &amp; Test」で確かめます。</p>
+      </li>
+    </ol>
+    <p>左右・上下が逆に映るときは、<code>Assets/Ulexite/Generated/SetTopBox/UlexiteScreen.mat</code> の Tiling を -1 にしてください。</p>
+
+    <h2 id="public">公開後の入れ方（準備中）</h2>
+    <div class="note note--soon">
+      <p>公開後は、VCC の「Add to VCC」ボタンと BOOTH のページから入れられるようにする予定です。URL と手順は、公開の準備ができてからここに載せます。</p>
+    </div>
+
+    <h2 id="screen">画面の映し方</h2>
+    <p>今は<strong>ワールドにある画面に映す</strong>形です。カメラで描いた映像を、その画面のマテリアルに差し替えます。</p>
+    <ul>
+      <li>テレビを置くだけで、ワールドの見た目は変わりません（電源を入れるまで、元のプレイヤーの画面が見えています）</li>
+      <li>映した先の画面では、レーザーで押す操作はできません。操作はリモコンで行います</li>
+      <li>本体と画面は、いくつでも置けます。本体ごとに別のテレビとして動きます</li>
+    </ul>
+    <p>画面つきの形（同梱の画面に UI を置く形）は準備中です。</p>
+
+    <h2 id="howto">使い方</h2>
+    <h3>電源</h3>
+    <p>本体の手前左の電源マークを押します（オンでランプが青、オフで灰色）。ワールドに入ったときはオフで、元のプレイヤーの画面が見えています。</p>
+
+    <h3>リモコン</h3>
+    <p>リモコンを持ってから<strong>操作モード</strong>に入ります（VR は A ボタン、デスクトップはスペースか Tab）。持っただけでは歩けます。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>したいこと</th><th>VR</th><th>デスクトップ</th></tr></thead>
+        <tbody>
+          <tr><td>選ぶ場所を動かす</td><td>左スティック</td><td>矢印キー</td></tr>
+          <tr><td>決める</td><td>持っている手のトリガー</td><td>Enter</td></tr>
+          <tr><td>操作モードに入る</td><td>A ボタン</td><td>スペースか Tab</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>決定の長押し</strong>：アプリのタイル（ホーム・アプリタブ）のメニュー（起動・アプリ情報・ホームから外す・並べ替え）</li>
+      <li><strong>通知ウィンドウ</strong>：画面右上の時計を選んで決定</li>
+      <li><strong>戻る・ホーム・設定</strong>：画面の上のナビゲーションバー</li>
+      <li><strong>呼び戻し</strong>：本体の手前右のアイコンを押すと、リモコンが本体の右隣に戻ります</li>
+    </ul>
+    <p>操作するとき、リモコンを持っている人がテレビと再生の操作権を持ちます。ほかの人がレーザーで押したときは、その人が画面の操作権を持ちます（リモコンの持ち主は変わりません）。</p>
+
+    <h2 id="video">動画アプリを使うとき</h2>
+    <p>動画アプリでは、YouTube の公式ロゴを同梱していません。「Tools → Ulexite → 設定」の「はじめに」にある「YouTube のロゴ」の欄で、次の順に入れてください。</p>
+    <ol>
+      <li>「ブランドリソースのページを開く」でガイドラインを確認し、暗い背景用のロゴ（PNG、または zip）をダウンロードする</li>
+      <li>「ダウンロードしたファイルから入れる…」でそのファイルを選ぶ（<code>Assets/Ulexite/Brand/</code> に入り、テレビを作り直します）</li>
+    </ol>
+    <p>ロゴは改変しないでください。動画アプリを初めて使うときは、YouTube API Services を使うことの案内が出ます。</p>
+
+    <h2 id="limits">わかっている制限</h2>
+    <ul>
+      <li>映した先の画面では、レーザーで押す操作はできません（操作はリモコンで行います）</li>
+      <li>Ulexite の電源を入れても、元のプレイヤーの音は止まりません。両方を流すと音が重なります</li>
+      <li>映す画面が曲面だったり、プレイヤーがマテリアルそのものを入れ替える作りだったりすると、うまく映らないことがあります</li>
+      <li>Quest での動作は、これから確認します</li>
+    </ul>
+
+    <h2 id="trouble">うまくいかないとき</h2>
+    <ul>
+      <li>まず「Tools → Ulexite → テレビを作り直す」を押し、シーンを保存してから Build &amp; Test で確かめてください</li>
+      <li>画面が上下・左右に逆に映るときは、<code>UlexiteScreen.mat</code> の Tiling を -1 にします</li>
+      <li>U# をコンパイルし直している間は、Console の「Compile of … scripts finished」を待ってからもう一度押します</li>
+    </ul>
+    <p>不具合を見つけたら、次のものを添えて教えてください。</p>
+    <ul>
+      <li>Ulexite TV のバージョン（「Tools → Ulexite → 設定」の右上）</li>
+      <li>起きたこと、やった操作</li>
+      <li>Unity の Console の赤い行（エディタで起きたとき）、または VRChat のログ（<code>%USERPROFILE%\AppData\LocalLow\VRChat\VRChat\output_log_*.txt</code>）</li>
+    </ul>
+
+    <h2 id="license">ライセンスと応援</h2>
+    <p>Ulexite TV は<strong>無料</strong>です。ライセンスは VN3 ライセンスで、次のことができます。</p>
+    <ul>
+      <li>改変と、無償での再配布</li>
+      <li>ワールドでの利用（商用のワールド・有料イベントでも使えます）</li>
+      <li>クレジットの表記は任意</li>
+    </ul>
+    <p>販売はできません。改変したものに Ulexite の名前とロゴは使えません。くわしくは<a href="https://thesilver0913.github.io/ulexite-catalog/license.html" rel="noopener">利用規約（VN3 ライセンス）</a>を見てください。</p>
+    <p>気に入ったら、BOOTH のお布施で開発を支えていただけるとうれしいです（準備中）。</p>
+
+    <h2>次に読む</h2>
+    <ul>
+      <li><a href="../developers/index.html">開発者ガイド</a> — アプリの作り方</li>
+      <li><a href="../releases/index.html">リリースノート</a> — バージョンごとの変更</li>
+      <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html" rel="noopener">プライバシーポリシー</a></li>
+    </ul>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="../index.html">← Ulexite トップ</a>
+      <a href="../developers/index.html">開発者ガイド →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="index.html">導入ガイド</a></li>
+            <li><a href="../developers/index.html">開発者ガイド</a></li>
+            <li><a href="../releases/index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>リリースノート — Ulexite</title>
+  <meta name="description" content="Ulexite TV と関連パッケージの更新の記録。0.3.0（確認ダイアログ・共有データ・デモモード）、0.2.0（最初のテスト版）、開発キット、時計アプリ。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="リリースノート — Ulexite">
+  <meta property="og:description" content="Ulexite TV と関連パッケージの更新の記録。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/releases/">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/releases/">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="../developers/index.html">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><span>リリースノート</span>
+      </nav>
+      <h1 class="page-title">リリースノート</h1>
+      <p class="page-lead">Ulexite TV と、関連するパッケージの更新の記録です。番号は VPM パッケージのバージョンです。</p>
+      <p class="page-meta"><span class="badge">テスト版の段階です</span><span>最終更新：2026年10月20日</span></p>
+    </div>
+  </div>
+
+  <article>
+
+    <section class="release">
+      <p class="release__meta"><span class="release__version">Ulexite TV 0.3.0</span><span>2026年10月20日</span><span class="badge">テスト版</span></p>
+      <h2>確かめてから消す。展示でも使える。</h2>
+      <p>動画アプリの操作に確認を足し、展示用のデモモードと、操作を案内する体験ガイドを入れました。本体とリモコンの見た目も、製品の 3D モデルに変わっています。</p>
+
+      <h3>新しいもの</h3>
+      <ul class="checks">
+        <li><strong>確認ダイアログ</strong>：動画アプリの「履歴を消す」の前に、確認が出るようになりました。答えるのはリモコンを持っている人です。危ない操作では、最初のフォーカスが「いいえ」に置かれます</li>
+        <li><strong>共有データ</strong>：アプリの設定を、その場の全員で分け合えるようになりました（Ulexite App Services の第2段階）。書けるのは操作している人で、ほかの人は依頼します</li>
+        <li><strong>デモモード（展示用）</strong>：本体の Inspector でオンにすると、誰も触っていないあいだは体験ガイドの紹介が待ち受けに出ます。リモコンを手に取ると「やってみよう」が始まり、ホーム・設定・ストアには出られません</li>
+        <li><strong>本体とリモコンの見た目</strong>：製品の 3D モデルになりました。押せる場所・ランプ・持ち方は同じです</li>
+        <li><strong>メニューの整理</strong>：「Tools → Ulexite」は、制作者が使うもの（設定・テレビを作り直す・セットトップボックスを作成）だけになりました</li>
+      </ul>
+
+      <h3>入れ替えるとき</h3>
+      <p>0.2.0 から入れ替えたときは、「テレビに反映（作り直す）」のあと、「Tools → Ulexite → セットトップボックスを作成」で「作り直す」を押してください。</p>
+
+      <div class="note">
+        <p>テスト版のため、設定や画面の作りは次の版で変わることがあります。気づいたことは、バージョンと一緒に X の <a href="https://x.com/UlexiteOfficial" rel="noopener">@UlexiteOfficial</a> までお知らせください。</p>
+      </div>
+    </section>
+
+    <section class="release">
+      <p class="release__meta"><span class="release__version">Ulexite TV 0.2.0</span><span>2026年10月16日</span><span class="badge">最初のテスト版</span></p>
+      <h2>はじめて、友人に配った版。</h2>
+      <p>セットトップボックス版として、ひととおりの機能がそろった版です。ここから、実際にワールドで使ってもらいながら直しています。</p>
+      <ul class="checks">
+        <li>ホーム、アプリタブ、通知ウィンドウ</li>
+        <li>動画アプリ、URL プレイヤー、VRC 放送局、ライブラリ</li>
+        <li>リモコンと画面の操作の同期、10秒送り・戻し</li>
+        <li>設定、スクリーンセーバー、おやすみタイマー、ポータブルディスプレイ</li>
+        <li>お知らせとエラー画面、日本語と英語の表示</li>
+      </ul>
+    </section>
+
+    <section class="release">
+      <p class="release__meta"><span class="release__version">Ulexite 開発キット 0.1.0</span><span>2026年10月20日</span></p>
+      <h2>アプリを作るための道具を、ひとつに。</h2>
+      <p>VCC で1つ入れると、Ulexite TV と VizVid、アプリを作るための道具がそろいます。</p>
+      <ul class="checks">
+        <li>足りないものの確認（Unity・SDK・VizVid・TextMeshPro）</li>
+        <li>VCC にリポジトリを足すリンク（Ulexite と VizVid を一度に）</li>
+        <li>「新しいアプリ」ウィザード（データで書くアプリ／U# のアプリ）</li>
+        <li>見本のアプリ（ハローワールド・天気）と、テスト用のシーン</li>
+        <li>申請の前の検査と、Ulexite Emulator</li>
+      </ul>
+      <p>VCC への配布は、Ulexite TV の公開に合わせて始めます。</p>
+    </section>
+
+    <section class="release">
+      <p class="release__meta"><span class="release__version">時計アプリ 0.1.3</span><span>2026年10月18日</span></p>
+      <h2>世界時計・アラーム・タイマー・ストップウォッチ。</h2>
+      <p>世界時計（昼夜の地図つき）、アラーム、タイマー（ポモドーロ）、ストップウォッチのアプリです。アプリ情報の画面で使うマニフェストを備えています。ストアでの配布はまだです。</p>
+    </section>
+
+    <section class="release">
+      <h2>これから</h2>
+      <p>次に予定していることを<a href="../index.html#roadmap">ロードマップ</a>に書いています。順番は変わることがあります。</p>
+      <p><a class="link-arrow" href="../developers/index.html">開発者ガイドを読む</a></p>
+    </section>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="../guide/index.html">← 導入ガイド</a>
+      <a href="../index.html">Ulexite トップ →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="../guide/index.html">導入ガイド</a></li>
+            <li><a href="../developers/index.html">開発者ガイド</a></li>
+            <li><a href="index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>

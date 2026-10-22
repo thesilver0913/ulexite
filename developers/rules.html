@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>守ること — Ulexite 開発者ガイド</title>
+  <meta name="description" content="Ulexite のアプリが守る決まり。重くしない、読み込みの枠、保存の予算、同期、例外、外部サービス、アプリの行儀、権限。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="守ること — Ulexite 開発者ガイド">
+  <meta property="og:description" content="重くしない決まり、読み込みの枠、保存の予算、外部サービスの決まり。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/rules.html">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/rules.html">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="index.html" aria-current="page">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><a href="index.html">開発者ガイド</a><span aria-hidden="true">/</span><span>7. 守ること</span>
+      </nav>
+      <h1 class="page-title">守ること</h1>
+      <p class="page-lead">Ulexite のアプリは、ほかのアプリやワールド全体と、限られた資源（処理の時間、読み込みの枠、保存の容量）を分け合っています。ここに書いたことは、ストアの審査で確かめます。</p>
+      <p class="page-meta"><span class="eyebrow">Chapter 7</span></p>
+    </div>
+  </div>
+
+  <article class="prose">
+
+    <h2>1. 重くしない（ワールド環境）</h2>
+
+    <h3>毎フレーム動く処理を作らない</h3>
+    <ul>
+      <li><code>Update</code> は使わないのが基本です。時計などは、<strong>見えているときだけ</strong>、必要な間隔（秒の表示なら1秒、分なら1分）で <code>SendCustomEventDelayedSeconds</code> を回します</li>
+      <li>分や日付の変わり目は、App Services の合図（<code>_OnServicesMinute</code>・<code>_OnServicesDayChanged</code>）を使います。アプリごとにタイマーを回さないでください</li>
+      <li>どうしても <code>Update</code> が要るときは、中身を別のメソッドにして <code>PerfBegin(); 中身(); PerfEnd();</code> で囲みます（開発者向けの表示で、そのアプリの時間が測れます）</li>
+    </ul>
+
+    <h3>閉じているときは何もしない</h3>
+    <ul>
+      <li>アプリを閉じると、画面は OS が非表示にします。そのあいだ処理を走らせないでください</li>
+      <li>重い準備は、ワールドに入ったときではなく、<strong>初めて開いたとき</strong>にします</li>
+    </ul>
+
+    <h3>画面の作り直しを小さく</h3>
+    <ul>
+      <li>よく変わる部分（時計・再生位置・ローディング）は小さい Canvas に分けます</li>
+      <li>Layout Group・Content Size Fitter は、エディタで並べ終えたら実行中は使いません</li>
+      <li>届いたデータは、<strong>変わったところだけ</strong>画面にはめます</li>
+    </ul>
+
+    <h3>feed は小さく</h3>
+    <ul>
+      <li>目安は 1ファイル 50KB 以内。端末で使わない項目は入れません</li>
+    </ul>
+
+    <h2>2. 読み込みの枠を分け合う</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>種類</th><th>決まり</th></tr></thead>
+        <tbody>
+          <tr><td>文字列（feed）</td><td>VRChat の決まりで 5秒に1回。共通の feed が最優先で、残りを全アプリで分け合う。読む間隔はマニフェストの <code>data</code> に書き、OS が順番を組む</td></tr>
+          <tr><td>画像</td><td><strong>ワールド全体で5秒に1枚</strong>、最大 2048×2048。App Services の <code>_RequestImage</code> で頼む（自分で読まない）</td></tr>
+          <tr><td>読めるドメイン</td><td>文字列は <code>*.github.io</code>・Gist・Pastebin・<code>*.vrcdn.cloud</code>・<code>*.disbridge.com</code> だけ。画像は VRChat の信頼済みドメイン（<code>i.ytimg.com</code> など）だけ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>画像の扱い：</p>
+    <ul>
+      <li>小さい画像（サムネイル・アイコン）は OS が置き場に残し、同じ URL は1回しか読みません。置き場の上限（PC 64MB・Quest 24MB）を超えると、長く使っていないものから捨てられます。画面の側は「置き場になければ頼む」作りにしてください（一度頼んだら二度と頼まない作りは、捨てられたときに困ります）</li>
+      <li>大きい画像（地図に重ねる画像など）は、画面を離れたら使わないでください</li>
+      <li>サムネイルは用が足りるいちばん小さい種類を使います（YouTube なら <code>mqdefault</code>）</li>
+    </ul>
+
+    <h2>3. 保存の予算</h2>
+    <p>VRChat の PlayerData は、1ワールド・1人あたり 100KB を、そのワールドのすべてのギミックで分け合います。Ulexite はそのうち <strong>60KB まで</strong>しか使わない約束で、内訳は次のとおりです。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>使う人</th><th>量</th></tr></thead>
+        <tbody>
+          <tr><td>システム（OS・設定・同意・ストア）</td><td>16KB</td></tr>
+          <tr><td>アプリ1つ</td><td>標準 4KB。マニフェストの <code>budget.saveKB</code> で申告すれば最大 16KB</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>保存は App Services の保存の窓口を使います。キーは OS がアプリごとに分けます（<code>ulexite_&lt;アプリID&gt;_...</code>）</li>
+      <li>何かが1つ変わると全部の PlayerData が送られるので、<strong>頻繁に変わる値は保存しない</strong>でください</li>
+      <li><code>OnPlayerRestored</code> の前に読み書きしないでください</li>
+    </ul>
+
+    <h2>4. 同期</h2>
+    <ul>
+      <li>画面の状態（開いているアプリ・フォーカス・タブ）は OS が同期します。アプリで書く必要はありません</li>
+      <li>アプリの小さな状態は 1バイトの <code>AppState</code> で同期できます。それ以上は App Services の共有データを使い、量は <code>budget.syncBytes</code> で申告します</li>
+      <li>ネットワークイベントで呼ぶメソッドには <code>[NetworkCallable]</code> を付け、届いた値は必ず範囲を確かめます。呼ばれたくないメソッドは名前を <code>_</code> で始めます</li>
+    </ul>
+
+    <h2>5. 例外で止まらない</h2>
+    <p>Udon では、例外が出た UdonBehaviour はそのセッションのあいだ止まります。</p>
+    <ul>
+      <li>配列の範囲、null、外から届いた値は、使う前に確かめます</li>
+      <li>止まったアプリは OS が閉じて「応答がありません」と出します。ほかのアプリと OS は動き続けます</li>
+    </ul>
+
+    <h2>6. 外部のサービスとデータの決まり</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>相手</th><th>決まり</th></tr></thead>
+        <tbody>
+          <tr><td>YouTube</td><td>名前とロゴの扱いに注意。アセット名・パッケージ名に「YouTube」「YT」を入れない。ロゴは公式素材をそのまま使う。ページをスクレイピングしない（データは公式 API だけ。API のデータは30日以内に更新か削除）。サムネイルをテクスチャとして焼き込まない</td></tr>
+          <tr><td>気象庁</td><td>ロゴ・キャラクターを使わない。警報・注意報は発表をそのままの形で伝え、独自の判定・予測・要約をしない（気象業務法）</td></tr>
+          <tr><td>VRChat のイベントカレンダー</td><td>許可なく取得・表示しない</td></tr>
+          <tr><td>効果音・素材</td><td>再配布が許されていないもの（効果音ラボの音源など）を同梱しない。差し替えの枠だけ用意する</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>外部のデータや素材を使うときは、<strong>アプリの画面に出典を表示</strong>し、<code>NOTICE.txt</code> にも書きます（例：「出典：気象庁ホームページ」）</li>
+      <li>外部から来た文字列（タイトルなど）を TextMeshPro に出すときは、リッチテキストを無効にするか <code>&lt;</code> をエスケープします</li>
+    </ul>
+
+    <h2>7. アプリの行儀</h2>
+    <ul>
+      <li><strong>App Services だけを使う</strong>。シェルや OS の土台、ほかのアプリを直接呼ばない</li>
+      <li>ほかのアプリを開くときは、アプリ間の呼び出しの窓口を使う</li>
+      <li>本体（<code>vrc.ulexite.tv</code>）のファイルを書き換えない。足りない機能は Ulexite に要望を出してください</li>
+      <li>アプリ ID は公開後に変えない（保存のキーに使われているため）</li>
+    </ul>
+
+    <h2>8. Companion のアプリの権限</h2>
+    <p>コンパニオン環境では、アプリは使う権限をマニフェストに書き、利用者が許可したものだけが使えます。</p>
+    <ul>
+      <li>通信は、書いたドメインにだけできます</li>
+      <li>保存は、アプリごとの専用の場所だけです（PC のほかのファイルには触れません）</li>
+      <li>チャットボックスへの書き込み（周りの人に見える）は、別の権限です</li>
+      <li>VRChat への入力（移動・ジャンプ）の権限はありません</li>
+      <li>アプリごとに CPU・メモリの上限があり、超えると止められます</li>
+      <li>アバターに何かを足さないと動かないアプリは作れません</li>
+    </ul>
+    <p>くわしくは 5章（準備中）に書きます。</p>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="design.html">← 6章 デザイン言語</a>
+      <a href="index.html">開発者ガイドの目次 →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="../guide/index.html">導入ガイド</a></li>
+            <li><a href="index.html">開発者ガイド</a></li>
+            <li><a href="../releases/index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>
