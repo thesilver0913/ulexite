@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ワールドのアプリ（U#） — Ulexite 開発者ガイド</title>
+  <meta name="description" content="U# で書くワールドのアプリの作り方。パッケージの形、Builder、文字と翻訳、フォーカス、ダイアログ、App Services、はまりどころ。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="ワールドのアプリ（U#） — Ulexite 開発者ガイド">
+  <meta property="og:description" content="U# で書くワールドのアプリの作り方。パッケージの形、Builder、App Services、フォーカス、ダイアログ。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/world-native.html">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/world-native.html">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="index.html" aria-current="page">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><a href="index.html">開発者ガイド</a><span aria-hidden="true">/</span><span>3. ワールドのアプリ（U#）</span>
+      </nav>
+      <h1 class="page-title">ワールドのアプリ（U#）</h1>
+      <p class="page-lead">U# で書くアプリ（native）の作り方です。見本は時計アプリ（<code>Packages/vrc.ulexite.app.clock</code>）。データで書くアプリは4章を見てください。</p>
+      <p class="page-meta"><span class="eyebrow">Chapter 3</span></p>
+    </div>
+  </div>
+
+  <article class="prose">
+
+    <div class="note">
+      <p>2026-10-21 に書きました。時計アプリを作ったときに分からずに詰まったところ（実行中に変えるラベルの扱い、アプリ内のダイアログ、feed の読み方、<code>K.Set</code> のフィールド名）を先に入れてあります。</p>
+    </div>
+
+    <h2>パッケージの形</h2>
+    <pre class="code"><code>Packages/vrc.ulexite.app.&lt;id&gt;/
+  package.json                  VPM の情報（vpmDependencies に vrc.ulexite.tv）
+  ulexite-app.json              マニフェスト（kind: "native"、profiles: ["tv"]）
+  Runtime/
+    Ulexite.App.&lt;Id&gt;.asmdef     参照：Ulexite（本体）
+    UlexiteApp&lt;Id&gt;.cs           UlexiteApp を継承（アプリの本体）
+    Ulexite.App.&lt;Id&gt;.asset      U# のプログラムアセット（エディタが作ります）
+  Editor/
+    Ulexite.App.&lt;Id&gt;.Editor.asmdef
+    Ulexite&lt;Id&gt;Builder.cs       UlexiteAppBuilder を継承（画面のビルダー）
+  Localization/&lt;アプリ&gt;-lang.json  アプリの翻訳表（任意）</code></pre>
+    <ul>
+      <li>パッケージは <code>Packages/</code> に置きます。アプリ ID は英小文字（例 <code>clock</code>）</li>
+      <li>画面は<strong>エディタで作り、実行時には組み立てません</strong>。ビルダーは「Tools → Ulexite → テレビを作り直す」から呼ばれます</li>
+    </ul>
+
+    <h2>画面は Builder で作る</h2>
+    <ul>
+      <li><code>UlexiteAppBuilder</code> を継承し、<code>Build(app, screen, launcher)</code> で画面を作ります</li>
+      <li>部品は <code>UlexiteBuildKit</code>（<code>using K = Ulexite.EditorTools.UlexiteBuildKit;</code>）から：<code>K.Rect</code>・<code>K.Fill</code>・<code>K.Img</code>・<code>K.Tmp</code>・<code>K.Button</code>・<code>K.Icon</code>・<code>K.Rounded</code> など。寸法はデザインキャンバス（1600×900）の数値で書き、<code>K.Scale</code>（1.2 倍）で 1920×1080 にします</li>
+      <li><strong><code>K.Set(app, "フィールド名", 値)</code>・<code>K.SetArray(app, "フィールド名", 配列)</code> のフィールド名は文字列です。C# の型チェックでは分かりません。</strong>
+        <ul>
+          <li>名前を間違えると <code>SerializedObject.FindProperty</code> が null になり、<strong>「テレビを作り直す」の途中で例外</strong>になって止まります（Console に NullReferenceException）</li>
+          <li><strong><code>K.Set</code> を書き足したら、一度「テレビを作り直す」を実行して Console を見てください</strong>（アプリを開く前でかまいません）。エラーが出なければそのまま進めます</li>
+          <li>フィールドを足したときは、<strong>U# をコンパイルしてプログラムアセットを作り直してから</strong>、テレビを作り直します</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>文字と翻訳（実行中に変えるラベルは空文字で作る）</h2>
+    <ul>
+      <li><code>K.Tmp(rt, "オン", …)</code> のように<strong>日本語の固定文字</strong>を渡すと、ビルダーが翻訳表からキーを引いて <strong>LanguageReceiver</strong> を付けます（言語が変わると表の文言に入れ替わります）。表にない文言は Console に警告が出ます</li>
+      <li><strong>状態で変わるボタン（「オン」「オフ」「削除」など）は <code>""</code> で作り、コードで入れます</strong>。固定文字で作ると、言語を切り替えたときに表の文言で上書きされます（時計アプリで実際に起きたところです）</li>
+    </ul>
+    <pre class="code"><code>// ビルダー：空文字で作る（あとでコードが入れる）
+K.Set(app, "toggleLabel", K.Tmp(K.Rect(rt, "Label", 20, 0, 200, 40), "", 18, K.Text1, false, TextAlignmentOptions.MidlineLeft));
+
+// アプリ：状態に合わせて入れ直す（言語が変わったら _OnLanguageChanged でもう一度）
+toggleLabel.text = running ? L("Ulexite.Clock.On") : L("Ulexite.Clock.Off");</code></pre>
+    <ul>
+      <li>文言は <code>L("Ulexite.&lt;アプリ&gt;.&lt;キー&gt;")</code> で引きます。翻訳表は <code>Localization/&lt;アプリ&gt;-lang.json</code> に置くと、テレビを作り直すときにまとめられます</li>
+      <li><code>_OnLanguageChanged</code> で、コードで入れた文言を入れ直してください</li>
+      <li>外から来た文字（動画のタイトルなど）はリッチテキストを切るか <code>&lt;</code> をエスケープします</li>
+    </ul>
+
+    <h2>フォーカスと操作</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>返す・受ける</th><th>何を</th></tr></thead>
+        <tbody>
+          <tr><td><code>GetRowCount()</code></td><td>行数（行 0 はナビゲーションバー。アプリの行は 1 から）</td></tr>
+          <tr><td><code>GetColCount(row)</code></td><td>その行の列数</td></tr>
+          <tr><td><code>GetFocusTarget(row, col)</code></td><td>フォーカス枠を重ねる相手（ないときは null）</td></tr>
+          <tr><td><code>_OnSubmit(row, col)</code></td><td>決定</td></tr>
+          <tr><td><code>_OnDirection(row, col, dir)</code></td><td>方向。<strong>自分で処理したら true</strong>。false ならランチャーが行・列を動かす</td></tr>
+          <tr><td><code>_OnBack()</code></td><td>戻る。アプリ内で戻れたら true（ダイアログを閉じるなど）、false ならホームへ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>フォーカスを移すのは <code>launcher._SetFocus(row, col)</code>。アプリの小さな状態は <code>launcher._SetAppState(byte)</code>／<code>launcher.AppState</code> で全員に同期できます</li>
+      <li>方向の定数は <code>UlexiteLauncher.Up</code>／<code>Down</code>／<code>Left</code>／<code>Right</code></li>
+      <li><strong>空の行・列には入らないようにします</strong>。<code>_OnDirection</code> で true を返して握るか、<code>GetFocusTarget</code> が null の行へ動かないようにします</li>
+    </ul>
+
+    <h2>アプリ内のダイアログ（時計の例）</h2>
+    <ul>
+      <li><strong>行数は固定</strong>にします。ダイアログを閉じていても、ダイアログの行まで <code>GetRowCount</code> に含めておきます（時計は <code>RowCityPage</code> まで返しています）</li>
+      <li><strong>入る・出るは <code>_OnDirection</code> で決めます</strong>。「メニューの行で下 → 一覧を開いて一覧の先頭へ」「一覧の先頭で上 → 閉じてメニューへ」のように、<code>true</code> を返して自分で動かします。閉じているときに下を押したら開く（<code>true</code>）ので、ランチャーの既定の移動でダイアログの行に迷い込むことはありません</li>
+      <li><strong><code>_OnBack()</code> で閉じます</strong>（ダイアログの行にいるときは閉じて true）</li>
+      <li>ダイアログは <code>GameObject.SetActive</code> で出し入れします（実行時に作りません）</li>
+    </ul>
+    <p>骨組みの例：</p>
+    <pre class="code"><code>const int RowMain = 1, RowMenu = 10, RowList = 11, RowListRows = 8, RowPage = 19;
+
+public override int GetRowCount() =&gt; RowPage;          // 閉じていても固定
+public override int GetColCount(int row) =&gt; row == RowMain ? cards.Length : 1;
+
+public override RectTransform GetFocusTarget(int row, int col)
+{
+    if (row == RowMain) return Pick(cards, col);
+    if (row == RowMenu) return Pick(menuButtons, col);
+    if (row &gt;= RowList &amp;&amp; row &lt; RowList + RowListRows) return Pick(listButtons, row - RowList);
+    if (row == RowPage) return Pick(pageButtons, col);
+    return null;
+}
+
+public override bool _OnDirection(int row, int col, int dir)
+{
+    if (row == RowMain &amp;&amp; dir == UlexiteLauncher.Down) { OpenMenu(col); return true; }       // 下で開く
+    if (row == RowMenu &amp;&amp; dir == UlexiteLauncher.Up)
+    {
+        launcher._SetFocus(RowMain, Mathf.Clamp(edit, 0, cards.Length - 1)); return true;   // 上で戻る
+    }
+    if (row == RowMenu &amp;&amp; dir == UlexiteLauncher.Down)
+    {
+        if (listOpen) launcher._SetFocus(RowList, 0); return true;                          // 開いていれば一覧へ
+    }
+    if (row == RowList &amp;&amp; dir == UlexiteLauncher.Up)
+    {
+        CloseList(); launcher._SetFocus(RowMenu, 0); return true;                           // 先頭で上は閉じる
+    }
+    return false;
+}
+
+public override bool _OnBack()
+{
+    if (launcher.Row &gt;= RowMenu) { CloseAll(); return true; }                               // ダイアログを閉じる
+    return false;
+}</code></pre>
+    <ul>
+      <li>実例：<code>Packages/vrc.ulexite.app.clock/Runtime/UlexiteClockApp.cs</code> の <code>GetRowCount</code>・<code>GetColCount</code>・<code>GetFocusTarget</code>・<code>_OnDirection</code>・<code>_OnBack</code>（都市の一覧と、アラームの編集が同じ形です）</li>
+    </ul>
+
+    <h2>App Services</h2>
+    <p>アプリは <code>services</code>（<code>UlexiteApp.services</code>）だけを使います。本体の内部は直接触りません。</p>
+
+    <h3>データ（feed）</h3>
+    <ul>
+      <li><code>_RegisterFeed(appId, mode, interval)</code>・<code>_FeedJson(appId)</code>・<code>_FeedText(appId)</code>・<code>_FeedStatus(appId)</code>・<code>_FeedLoadedAt(appId)</code>・<code>_ReloadFeed(appId)</code></li>
+      <li><code>mode</code> は 0 常に／1 裏でも／2 開いているときだけ。<code>every</code> は目安で、実際の登録はアプリが <code>_RegisterFeed</code> で行います</li>
+      <li><strong><code>_FeedJson</code>・<code>_FeedText</code> はアプリ ID の feed（<code>v1/feed/&lt;アプリID&gt;.json</code>）だけ</strong>です。<strong>アプリ ID 以外の feed は読めません</strong>（ここで詰まりやすいところです）
+        <ul>
+          <li>ほかの URL（例：時差の表 <code>v1/timezones.json</code>）は、マニフェストの <code>data</code> に <code>id</code>（データの名前）と <code>url</code> を書いて、<code>_RegisterDataFeed(appId, id, mode, interval)</code>・<code>_DataFeedJson(appId, id)</code>・<code>_DataFeedText</code>・<code>_DataFeedStatus</code>・<code>_DataFeedLoadedAt</code>・<code>_ReloadDataFeed</code> で読みます（2026-10-21 追加。本体に入るまではアプリ ID の feed だけです）。焼き込む名前は <code>&lt;アプリID&gt;-&lt;id&gt;</code> です</li>
+        </ul>
+      </li>
+      <li>読み込みの表示は <code>_LoadingBegin(this, hasData)</code>／<code>_LoadingEnd(this)</code>。15秒で「読み込めませんでした」になり、決定か「再試行」で <code>_OnServicesLoadRetry</code> が届きます</li>
+    </ul>
+    <pre class="code"><code>// ulexite-app.json（時計の例）
+"data": [
+  { "id": "timezones", "url": "https://thesilver0913.github.io/ulexite-catalog/v1/timezones.json", "every": "24h" }
+]</code></pre>
+
+    <h3>保存・設定・音・通知</h3>
+    <ul>
+      <li><strong>保存</strong>：<code>_SaveInt</code>／<code>_LoadInt</code>／<code>_SaveString</code>／<code>_LoadString</code>。<code>_OnServicesStorageReady</code> を待ってから読み書きします。予算は7章</li>
+      <li><strong>設定</strong>：マニフェストに <code>settings</code> を書くと、OS の共通パネルで編集できます（<code>_OpenSettings(this)</code>）。読みは <code>_SettingInt</code>／<code>_SettingString</code>／<code>_SettingBool</code>、書きは <code>_SetSettingString</code>。<strong><code>order</code> の値はカンマ区切り</strong>（先頭が左側）で、選択ダイアログでは<strong>入っていない項目は末尾に足され、✓ の項目は決定で外れます</strong>（最後の1つは消せない。並べ替えはアプリ側で <code>_SetSettingString</code>）。変えたら <code>_OnServicesSettingsChanged</code> が届きます。設定の種類は <code>choice</code>・<code>toggle</code>・<code>order</code>（<code>time</code> ＝時刻は 2026-10-21 に決めた追加）</li>
+      <li><strong>音</strong>：<code>_PlayCursor</code>／<code>_PlayDecide</code>／<code>_PlayNotify</code>／<code>_PlayError</code>、<code>_PlaySound(clip)</code>。<strong>鳴り続ける音</strong>は、アラームのように<strong>その人にだけ</strong>鳴らすなら <code>_PlayLoopLocal(clip, seconds)</code>／<code>_StopLoopLocal()</code>（テレビの位置・その人の操作音の音量。<code>seconds</code> は自動停止で 0 は止めるまで）、全員に鳴らすなら <code>_PlayLoop(clip)</code>／<code>_StopLoop()</code>（操作する人だけ。2026-10-21 追加、昼3でローカルと全体に分けた）。アプリ自身の AudioSource で鳴らすと、操作音の音量・音量補正に従いません</li>
+      <li><strong>通知・トースト</strong>：<code>_Notify(...)</code>／<code>_Toast(...)</code>。アイコンは <code>UlexiteAlerts.Icon*</code>（<code>IconAlarm</code>・<code>IconCity</code> は 2026-10-21 追加）</li>
+      <li><strong>確認ダイアログ・文字入力</strong>：<code>_Confirm(...)</code>／<code>_RequestText(...)</code>。答えは渡したイベント名で届き、<code>DialogAccepted</code>／<code>TextResult</code> を読みます</li>
+      <li><strong>共有データ</strong>：<code>_SharedSetInt</code> など（インスタンスの間だけ。書けるのは操作する人）</li>
+    </ul>
+
+    <h2>同期</h2>
+    <ul>
+      <li>画面の状態（開いているアプリ・フォーカス・アプリの状態）はシェルが同期します。アプリが自分でフォーカスを同期しないでください</li>
+      <li>アプリの小さな状態は <code>AppState</code>（1バイト）か共有データ。<code>[UdonSynced]</code> の配列は初期化が必要です</li>
+      <li>遅れて来た人にはネットワークイベントが再送されません。状態は同期変数で持ちます</li>
+    </ul>
+
+    <h2>はまりどころ</h2>
+    <ul>
+      <li><strong>例外が出た UdonBehaviour はそのセッション止まります</strong>（例外は呼び出し元にも伝わります）。アプリは自分のフィールドに書き写し、呼ぶ側（ランチャー）は戻り値を信用しません</li>
+      <li><code>List</code> は使えません（配列）。<code>DataDictionary</code> は <code>Start</code> で作ります（フィールドの初期化子はコンパイル時に評価されるため）</li>
+      <li>構造体の変更メソッドは効きません（<code>Vector3</code> などは代入し直す）</li>
+      <li>再帰は <code>[RecursiveMethod]</code> を付けます</li>
+      <li><strong>U# をコンパイル → プログラムアセットを作り直す → テレビを作り直す</strong>、の順です。作り直したら <strong>Console を必ず見てください</strong>（<code>K.Set</code> のフィールド名の間違いはここで初めて分かります）</li>
+    </ul>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="index.html">← 1章 はじめに</a>
+      <a href="declarative.html">4章 データで書くアプリ →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#store">Ulexite Store</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="../guide/index.html">導入ガイド</a></li>
+            <li><a href="index.html">開発者ガイド</a></li>
+            <li><a href="../releases/index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>

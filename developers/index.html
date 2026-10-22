@@ -69,7 +69,7 @@
         <tbody>
           <tr><td>1. はじめに</td><td>Ulexite の全体像、アプリの種類、どれを選ぶか</td><td>このページ</td></tr>
           <tr><td>2. 最初のアプリを作る</td><td>データで書くアプリを1つ作り、エミュレーターで確かめるまで</td><td>準備中</td></tr>
-          <tr><td>3. ワールドのアプリ（U#）</td><td>パッケージの形、Builder、App Services、フォーカス、同期</td><td>準備中</td></tr>
+          <tr><td><a href="world-native.html">3. ワールドのアプリ（U#）</a></td><td>パッケージの形、Builder、App Services、フォーカス、ダイアログ、はまりどころ</td><td>読めます</td></tr>
           <tr><td><a href="declarative.html">4. データで書くアプリ</a></td><td>画面の型、部品、値のはめ込み、feed の形</td><td>読めます</td></tr>
           <tr><td>5. Companion のアプリ</td><td>タブレット・スマホ・ウォッチのアプリ</td><td>準備中</td></tr>
           <tr><td><a href="design.html">6. デザイン言語</a></td><td>色、文字、形、端末ごとの決まり</td><td>読めます</td></tr>
@@ -121,6 +121,7 @@
       <li>向いているもの：ゲーム、メディア再生、時計・タイマーのような手元で動くもの</li>
       <li>例：時計アプリ</li>
     </ul>
+    <p><a href="world-native.html">3章 ワールドのアプリ（U#）</a></p>
 
     <h3>どれを選ぶか</h3>
     <pre class="code"><code>データを見せるだけ？ ──はい──→ データで書くアプリ
@@ -158,7 +159,7 @@
   "kind": "declarative",
   "runtimes": { "world": { "os": 1, "appServices": 2, "screens": "app.screens.json" } },
   "profiles": ["tv"],
-  "data": [ { "feed": "weather", "every": "10m" } ],
+  "data": [ { "id": "weather", "every": "10m" } ],
   "budget": { "saveKB": 1, "imagesPerOpen": 1, "syncBytes": 4 }
 }</code></pre>
     <p>全項目はリファレンス（9章）にまとめる予定です。</p>
@@ -204,7 +205,7 @@
 
     <nav class="pager" aria-label="ページの移動">
       <a href="../guide/index.html">← 導入ガイド</a>
-      <a href="declarative.html">4章 データで書くアプリ →</a>
+      <a href="world-native.html">3章 ワールドのアプリ（U#） →</a>
     </nav>
 
   </article>

@@ -16,6 +16,7 @@ GitHub Pages で公開している静的なサイト。**公開 URL は `https:/
 | `index.html`（トップ） | 公開中。Community Labs の Ulexite Store を案内 |
 | `guide/index.html`（導入ガイド） | 公開中。テスト版の手順。公開後に VCC の手順を足す |
 | `developers/index.html`（開発者ガイドの目次と1章） | 公開中 |
+| `developers/world-native.html`（3章 ワールドのアプリ・U#） | 公開中 |
 | `developers/declarative.html`（4章 データで書くアプリ） | 公開中 |
 | `developers/design.html`（6章 デザイン言語） | 公開中 |
 | `developers/rules.html`（7章 守ること） | 公開中 |
