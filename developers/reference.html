@@ -164,7 +164,7 @@
     </tbody></table></div>
     <hr>
     <h2>9.2 App Services（<code>services</code>）</h2>
-    <p>アプリは <code>launcher</code> ではなく <strong><code>services</code>（App Services）</strong> を通して本体の仕組みを使います。<code>UlexiteApp</code> の <code>services</code> フィールドに、ランチャーが <code>Start</code> で入れます（アプリ側で探す必要はありません）。</p>
+    <p>アプリは <code>launcher</code> ではなく <strong><code>services</code>（App Services）</strong> を通して Ulexite TV の仕組みを使います。<code>UlexiteApp</code> の <code>services</code> フィールドに、ランチャーが <code>Start</code> で入れます（アプリ側で探す必要はありません）。</p>
     <ul>
     <li><strong>戻り値のある窓口</strong>は、その場で値が返ります</li>
     <li><strong>結果を待つもの</strong>（データ・画像・確認・文字入力）は、アプリの<strong>イベント</strong>に届きます（9.2.14）</li>
@@ -241,7 +241,7 @@
     <table>
     <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
     <tbody>
-    <tr><td><code>_RequestImage(VRCUrl url, UdonSharpBehaviour receiver, bool reload)</code></td><td>—</td><td>順番待ちで読む（ワールド全体で5秒に1枚を本体がまとめます）。届いたら <code>receiver</code> の <code>_OnImageLoaded</code>／<code>_OnImageError</code></td></tr>
+    <tr><td><code>_RequestImage(VRCUrl url, UdonSharpBehaviour receiver, bool reload)</code></td><td>—</td><td>順番待ちで読む（ワールド全体で5秒に1枚を Ulexite TV がまとめます）。届いたら <code>receiver</code> の <code>_OnImageLoaded</code>／<code>_OnImageError</code></td></tr>
     <tr><td><code>_GetImage(VRCUrl url)</code></td><td>Texture2D</td><td>置き場にあれば返す（無ければ <code>null</code>。<strong>一度頼んだら二度と頼まない作りにしない</strong>：無ければ <code>_RequestImage</code>）</td></tr>
     <tr><td><code>_ReleaseImage(VRCUrl url)</code></td><td>—</td><td>使い終わった大きい画像（地図に重ねる画像など）を捨てる</td></tr>
     </tbody></table></div>
@@ -499,12 +499,12 @@
     <tr><td>画面の組み立て（<code>UlexiteAppBuilder</code>・<code>K.*</code>）</td><td><code>Packages/vrc.ulexite.app.clock/Editor/UlexiteClockBuilder.cs</code></td></tr>
     <tr><td>マニフェストと翻訳表</td><td><code>Packages/vrc.ulexite.app.clock/ulexite-app.json</code>・<code>Localization/ulexite-clock-lang.json</code></td></tr>
     <tr><td>ホームのタイル（ライブタイル）</td><td><code>Packages/vrc.ulexite.app.clock/tile.json</code>・<code>UlexiteClockApp.GetTileWidget</code></td></tr>
-    <tr><td>データで書くアプリの見本</td><td><code>docs/examples/weather/</code>（<code>app.screens.json</code>・<code>lang.json</code>・<code>*.sample.json</code>）</td></tr>
+    <tr><td>データで書くアプリの見本</td><td>天気アプリ（<code>app.screens.json</code>・<code>lang.json</code>・<code>*.sample.json</code>）</td></tr>
     <tr><td>開発キットの「新しいアプリ」のひな形</td><td><code>Packages/vrc.ulexite.devkit/Editor/UlexiteNewApp.cs</code></td></tr>
     </tbody></table></div>
     <p>時計アプリで分かること：<code>_Init</code> での feed 登録、<code>_SettingString</code>／<code>_SettingOrderKey</code> での設定の読み方、<code>_SaveString</code> での保存、<code>_PlayLoopLocal</code> でのアラーム、<code>GetTileWidget</code> でのライブタイル、<code>UlexiteBuildKit</code>（<code>K.CreateApp</code>・<code>K.Rect</code>・<code>K.Tmp</code>・<code>K.Focus</code>）での画面の組み立て。</p>
     <hr>
-    <h2>9.7 版と、この章の直し方</h2>
+    <h2>9.7 版</h2>
     <div class="table-wrap">
     <table>
     <thead><tr><th>もの</th><th>値</th></tr></thead>
@@ -514,8 +514,8 @@
     <tr><td>App Services</td><td><code>4</code>（<code>UlexiteAppServices.Version</code>）・<code>1.1.0</code>（<code>Release</code>）</td></tr>
     </tbody></table></div>
     <ul>
-    <li><strong>この章はコードから書き出したもの</strong>です。仕組みを変えたら、同じ変更でこの章も直してください（<code>UlexiteAppManifest</code>・<code>UlexiteAppServices</code>・<code>UlexiteDataAppBuilder</code> の公開している項目が増えたら、ここにも足す）</li>
-    <li>説明の章（1〜8）と食い違ったときは、この章（＝コード）が正です。食い違いを見つけたら、説明の章を直してください</li>
+    <li><strong>この章はコードから書き出したもの</strong>です。版が変わったら、この章も更新します。</li>
+    <li>説明の章（1〜8）と食い違ったときは、この章（＝コード）が正です。</li>
     </ul>
     <p><a href="index.html">目次に戻る</a></p>
 

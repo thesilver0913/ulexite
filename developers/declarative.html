@@ -206,7 +206,7 @@
       <li><code>type</code>：<code>choice</code>（選択肢）・<code>toggle</code>（オン・オフ）・<code>order</code>（選んで並べる）</li>
       <li><code>scope</code>：<strong>必ず書きます</strong>。<code>local</code>（各自）・<code>global</code>（全員共通）・<code>creator</code>（ワールドの制作者が Unity で決めて焼き込む）</li>
       <li><strong>テレビは全員で見るので、画面に出る一覧は <code>global</code> にする</strong>のが基本です（選んでいる項目はもともと全員で同期するため、各自の一覧だと人によって別のものを指して壊れます）。<code>local</code> は音量のように、画面の見え方が人によって変わらないものに使います</li>
-      <li><code>order</code> は <code>pick</code> の選択ダイアログで、<strong>入っていない項目は末尾に足され、入っている項目（✓）は決定で消えます</strong>（2026-10-21 変更）。<strong>最後の1つは消せません</strong>（1件以上）。<code>max</code> を超えて足そうとすると「これ以上入りません」とトーストが出ます。並び順は入れた順で、並べ替えは共通のダイアログではできません（アプリの画面側で <code>set</code> するか、消して入れ直します）</li>
+      <li><code>order</code> は <code>pick</code> の選択ダイアログで、<strong>入っていない項目は末尾に足され、入っている項目（✓）は決定で消えます</strong>。<strong>最後の1つは消せません</strong>（1件以上）。<code>max</code> を超えて足そうとすると「これ以上入りません」とトーストが出ます。並び順は入れた順で、並べ替えは共通のダイアログではできません（アプリの画面側で <code>set</code> するか、消して入れ直します）</li>
       <li>各自の設定は PlayerData に保存されます（保存の予算は <a href="rules.html">7章</a>）</li>
     </ul>
 

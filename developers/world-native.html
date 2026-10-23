@@ -59,7 +59,7 @@
   <article class="prose">
 
     <div class="note">
-      <p>2026-10-21 に書きました。時計アプリを作ったときに分からずに詰まったところ（実行中に変えるラベルの扱い、アプリ内のダイアログ、feed の読み方、<code>K.Set</code> のフィールド名）を先に入れてあります。</p>
+      <p>時計アプリで詰まりやすいところ（実行中に変えるラベルの扱い、アプリ内のダイアログ、feed の読み方、<code>K.Set</code> のフィールド名）を先に説明します。</p>
     </div>
 
     <h2>パッケージの形</h2>
@@ -95,7 +95,7 @@
     <h2>文字と翻訳（実行中に変えるラベルは空文字で作る）</h2>
     <ul>
       <li><code>K.Tmp(rt, "オン", …)</code> のように<strong>日本語の固定文字</strong>を渡すと、ビルダーが翻訳表からキーを引いて <strong>LanguageReceiver</strong> を付けます（言語が変わると表の文言に入れ替わります）。表にない文言は Console に警告が出ます</li>
-      <li><strong>状態で変わるボタン（「オン」「オフ」「削除」など）は <code>""</code> で作り、コードで入れます</strong>。固定文字で作ると、言語を切り替えたときに表の文言で上書きされます（時計アプリで実際に起きたところです）</li>
+      <li><strong>状態で変わるボタン（「オン」「オフ」「削除」など）は <code>""</code> で作り、コードで入れます</strong>。固定文字で作ると、言語を切り替えたときに表の文言で上書きされます（時計アプリでは、この形にしています）</li>
     </ul>
     <pre class="code"><code>// ビルダー：空文字で作る（あとでコードが入れる）
 K.Set(app, "toggleLabel", K.Tmp(K.Rect(rt, "Label", 20, 0, 200, 40), "", 18, K.Text1, false, TextAlignmentOptions.MidlineLeft));
@@ -178,7 +178,7 @@ public override bool _OnBack()
     </ul>
 
     <h2>App Services</h2>
-    <p>アプリは <code>services</code>（<code>UlexiteApp.services</code>）だけを使います。本体の内部は直接触りません。</p>
+    <p>アプリは <code>services</code>（<code>UlexiteApp.services</code>）だけを使います。Ulexite TV の内部は直接触りません。</p>
 
     <h3>データ（feed）</h3>
     <ul>
@@ -186,7 +186,7 @@ public override bool _OnBack()
       <li><code>mode</code> は 0 常に／1 裏でも／2 開いているときだけ。<code>every</code> は目安で、実際の登録はアプリが <code>_RegisterFeed</code> で行います</li>
       <li><strong><code>_FeedJson</code>・<code>_FeedText</code> はアプリ ID の feed（<code>v1/feed/&lt;アプリID&gt;.json</code>）だけ</strong>です。<strong>アプリ ID 以外の feed は読めません</strong>（ここで詰まりやすいところです）
         <ul>
-          <li>ほかの URL（例：時差の表 <code>v1/timezones.json</code>）は、マニフェストの <code>data</code> に <code>id</code>（データの名前）と <code>url</code> を書いて、<code>_RegisterDataFeed(appId, id, mode, interval)</code>・<code>_DataFeedJson(appId, id)</code>・<code>_DataFeedText</code>・<code>_DataFeedStatus</code>・<code>_DataFeedLoadedAt</code>・<code>_ReloadDataFeed</code> で読みます（2026-10-21 追加。本体に入るまではアプリ ID の feed だけです）。焼き込む名前は <code>&lt;アプリID&gt;-&lt;id&gt;</code> です</li>
+          <li>ほかの URL（例：時差の表 <code>v1/timezones.json</code>）は、マニフェストの <code>data</code> に <code>id</code>（データの名前）と <code>url</code> を書いて、<code>_RegisterDataFeed(appId, id, mode, interval)</code>・<code>_DataFeedJson(appId, id)</code>・<code>_DataFeedText</code>・<code>_DataFeedStatus</code>・<code>_DataFeedLoadedAt</code>・<code>_ReloadDataFeed</code> で読みます（Ulexite TV の次の版に入るまでは、アプリ ID の feed だけです）。焼き込む名前は <code>&lt;アプリID&gt;-&lt;id&gt;</code> です</li>
         </ul>
       </li>
       <li>読み込みの表示は <code>_LoadingBegin(this, hasData)</code>／<code>_LoadingEnd(this)</code>。15秒で「読み込めませんでした」になり、決定か「再試行」で <code>_OnServicesLoadRetry</code> が届きます</li>
@@ -199,9 +199,9 @@ public override bool _OnBack()
     <h3>保存・設定・音・通知</h3>
     <ul>
       <li><strong>保存</strong>：<code>_SaveInt</code>／<code>_LoadInt</code>／<code>_SaveString</code>／<code>_LoadString</code>。<code>_OnServicesStorageReady</code> を待ってから読み書きします。予算は7章</li>
-      <li><strong>設定</strong>：マニフェストに <code>settings</code> を書くと、OS の共通パネルで編集できます（<code>_OpenSettings(this)</code>）。読みは <code>_SettingInt</code>／<code>_SettingString</code>／<code>_SettingBool</code>、書きは <code>_SetSettingString</code>。<strong><code>order</code> の値はカンマ区切り</strong>（先頭が左側）で、選択ダイアログでは<strong>入っていない項目は末尾に足され、✓ の項目は決定で外れます</strong>（最後の1つは消せない。並べ替えはアプリ側で <code>_SetSettingString</code>）。変えたら <code>_OnServicesSettingsChanged</code> が届きます。設定の種類は <code>choice</code>・<code>toggle</code>・<code>order</code>（<code>time</code> ＝時刻は 2026-10-21 に決めた追加）</li>
-      <li><strong>音</strong>：<code>_PlayCursor</code>／<code>_PlayDecide</code>／<code>_PlayNotify</code>／<code>_PlayError</code>、<code>_PlaySound(clip)</code>。<strong>鳴り続ける音</strong>は、アラームのように<strong>その人にだけ</strong>鳴らすなら <code>_PlayLoopLocal(clip, seconds)</code>／<code>_StopLoopLocal()</code>（テレビの位置・その人の操作音の音量。<code>seconds</code> は自動停止で 0 は止めるまで）、全員に鳴らすなら <code>_PlayLoop(clip)</code>／<code>_StopLoop()</code>（操作する人だけ。2026-10-21 追加、昼3でローカルと全体に分けた）。アプリ自身の AudioSource で鳴らすと、操作音の音量・音量補正に従いません</li>
-      <li><strong>通知・トースト</strong>：<code>_Notify(...)</code>／<code>_Toast(...)</code>。アイコンは <code>UlexiteAlerts.Icon*</code>（<code>IconAlarm</code>・<code>IconCity</code> は 2026-10-21 追加）</li>
+      <li><strong>設定</strong>：マニフェストに <code>settings</code> を書くと、OS の共通パネルで編集できます（<code>_OpenSettings(this)</code>）。読みは <code>_SettingInt</code>／<code>_SettingString</code>／<code>_SettingBool</code>、書きは <code>_SetSettingString</code>。<strong><code>order</code> の値はカンマ区切り</strong>（先頭が左側）で、選択ダイアログでは<strong>入っていない項目は末尾に足され、✓ の項目は決定で外れます</strong>（最後の1つは消せない。並べ替えはアプリ側で <code>_SetSettingString</code>）。変えたら <code>_OnServicesSettingsChanged</code> が届きます。設定の種類は <code>choice</code>・<code>toggle</code>・<code>order</code>・<code>time</code>（時刻）です</li>
+      <li><strong>音</strong>：<code>_PlayCursor</code>／<code>_PlayDecide</code>／<code>_PlayNotify</code>／<code>_PlayError</code>、<code>_PlaySound(clip)</code>。<strong>鳴り続ける音</strong>は、アラームのように<strong>その人にだけ</strong>鳴らすなら <code>_PlayLoopLocal(clip, seconds)</code>／<code>_StopLoopLocal()</code>（テレビの位置・その人の操作音の音量。<code>seconds</code> は自動停止で 0 は止めるまで）、全員に鳴らすなら <code>_PlayLoop(clip)</code>／<code>_StopLoop()</code>（操作する人だけ）。アプリ自身の AudioSource で鳴らすと、操作音の音量・音量補正に従いません</li>
+      <li><strong>通知・トースト</strong>：<code>_Notify(...)</code>／<code>_Toast(...)</code>。アイコンは <code>UlexiteAlerts.Icon*</code>（<code>IconAlarm</code>・<code>IconCity</code> など）</li>
       <li><strong>確認ダイアログ・文字入力</strong>：<code>_Confirm(...)</code>／<code>_RequestText(...)</code>。答えは渡したイベント名で届き、<code>DialogAccepted</code>／<code>TextResult</code> を読みます</li>
       <li><strong>共有データ</strong>：<code>_SharedSetInt</code> など（インスタンスの間だけ。書けるのは操作する人）</li>
     </ul>
