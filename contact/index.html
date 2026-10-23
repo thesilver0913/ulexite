@@ -6,7 +6,6 @@
   <title>不具合の報告 — Ulexite</title>
   <meta name="description" content="Ulexite TV の不具合と、今後に活かせるご要望の報告フォームです。個別の返信はしません。">
   <meta name="theme-color" content="#f5f3ef">
-  <meta name="robots" content="noindex">
   <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
   <meta property="og:title" content="不具合の報告 — Ulexite">
   <meta property="og:description" content="Ulexite TV の不具合と、今後に活かせるご要望の報告フォームです。個別の返信はしません。">
@@ -193,7 +192,7 @@
   })();
 
   (function () {
-    // Worker が /v1/contact を実装したら、この URL を確かめる
+    // Worker の /v1/contact（実装済み）。URL が変わったら、ここを直す
     var ENDPOINT = 'https://ulexite-catalog.yobi4011.workers.dev/v1/contact';
     var form = document.getElementById('contact-form');
     var status = document.getElementById('status');
