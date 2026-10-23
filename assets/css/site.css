@@ -515,7 +515,7 @@ a.badge:hover { background: rgba(22,24,27,.10); }
 .as-hero .hero__actions { margin-top: 34px; }
 .as-hero__note { margin-top: 24px; font-size: 13px; color: var(--ink-3); }
 
-.as-band { padding: clamp(64px, 9vw, 108px) 0; }
+.as-band { padding: clamp(64px, 9vw, 108px) 0; scroll-margin-top: 72px; }
 .as-band--white { background: #fff; }
 .as-band--dark { background: var(--night); color: var(--on-night); }
 .as-band--dark .eyebrow { color: var(--accent); }
@@ -562,6 +562,74 @@ a.badge:hover { background: rgba(22,24,27,.10); }
 @media (max-width: 560px) {
   .as-grid { grid-template-columns: 1fr; }
   .as-card { min-height: 0; }
+}
+
+/* ---------- アプリストア（カタログ） ---------- */
+.store-hero { padding: clamp(56px, 7vw, 88px) 0 0; }
+.store-hero__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.store-hero__title { margin: 10px 0 0; font-size: clamp(40px, 5.4vw, 64px); line-height: 1.08; letter-spacing: -.03em; }
+.store-hero__lead { max-width: 640px; margin: 16px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.8; color: var(--ink-2); }
+.store-badge { display: inline-flex; align-items: center; margin-top: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(22,24,27,.06); color: var(--ink-2); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.store-tabs { display: flex; gap: 30px; margin-top: 34px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.store-tabs a { flex: none; padding: 14px 0; font-size: 15px; font-weight: 600; color: var(--ink-3); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; }
+.store-tabs a.is-current { color: var(--ink); border-color: var(--ink); }
+.store-section { padding: clamp(48px, 6vw, 76px) 0; scroll-margin-top: 72px; }
+.store-section--soft { background: #fff; }
+.store-section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.store-section__head h2 { margin: 0; font-size: clamp(24px, 3vw, 36px); line-height: 1.2; letter-spacing: -.02em; }
+.store-section__head p { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
+.store-section__head a { font-size: 14px; font-weight: 600; color: var(--accent-ink); text-decoration: none; white-space: nowrap; }
+.store-section__head a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.store-feature { display: grid; grid-template-columns: 1.1fr .9fr; min-height: 360px; border-radius: 32px; overflow: hidden; background: linear-gradient(135deg, #1b2a41, #0c1a2e); color: #fff; }
+.store-feature__copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(32px, 5vw, 56px); }
+.store-feature__eyebrow { margin: 0 0 14px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: #a8c7fa; }
+.store-feature h3 { margin: 0; font-size: clamp(40px, 5vw, 64px); line-height: 1.05; letter-spacing: -.03em; }
+.store-feature p { margin: 14px 0 0; max-width: 40ch; font-size: 15px; line-height: 1.8; color: rgba(255,255,255,.78); }
+.store-feature .store-pill { margin-top: 22px; }
+.store-feature__art { display: grid; place-items: center; padding: 32px; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.16), transparent 55%); }
+.store-feature__icon { width: clamp(110px, 14vw, 160px); height: clamp(110px, 14vw, 160px); border-radius: 36px; background: #d33a2c; display: grid; place-items: center; color: #fff; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+.store-feature__icon svg { width: 54%; height: 54%; }
+
+.store-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.store-card { display: flex; flex-direction: column; min-height: 210px; padding: 22px; border-radius: 24px; background: #f5f5f7; }
+.store-card__icon { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; color: #fff; margin-bottom: 18px; }
+.store-card__icon svg { width: 28px; height: 28px; }
+.store-card h3 { margin: 0; font-size: 18px; line-height: 1.35; }
+.store-card p { margin: 6px 0 0; font-size: 13px; line-height: 1.7; color: var(--ink-2); }
+.store-card__meta { margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.store-card__cat { font-size: 12px; color: var(--ink-3); }
+.store-pill { display: inline-flex; align-items: center; padding: 5px 11px; border-radius: 999px; background: rgba(22,24,27,.08); color: var(--ink-2); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.store-pill--soon { background: rgba(154,106,23,.12); color: #8a5d12; }
+.store-pill--dark { background: rgba(255,255,255,.16); color: #fff; }
+
+.store-chart { list-style: none; margin: 0; padding: 0; }
+.store-chart li { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.store-chart__rank { width: 22px; flex: none; font-size: 17px; font-weight: 700; color: var(--ink-3); }
+.store-chart__icon { width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; color: #fff; flex: none; }
+.store-chart__icon svg { width: 24px; height: 24px; }
+.store-chart__body { min-width: 0; }
+.store-chart__body h3 { margin: 0; font-size: 16px; line-height: 1.4; }
+.store-chart__body p { margin: 2px 0 0; font-size: 12px; color: var(--ink-3); }
+.store-chart .store-pill { margin-left: auto; }
+
+.store-cats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.store-cat { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 18px; background: #f5f5f7; text-decoration: none; color: var(--ink); }
+.store-cat__icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: #fff; flex: none; }
+.store-cat__icon svg { width: 21px; height: 21px; }
+.store-cat strong { font-size: 15px; }
+.store-cat small { margin-left: auto; font-size: 12px; color: var(--ink-3); }
+
+@media (max-width: 1000px) {
+  .store-feature { grid-template-columns: 1fr; }
+  .store-feature__art { padding: 0 32px 40px; }
+  .store-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .store-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .store-grid { grid-template-columns: 1fr; }
+  .store-cats { grid-template-columns: 1fr; }
+  .store-section__head { align-items: flex-start; flex-direction: column; }
 }
 
 /* ---------- 出てくるときの動き ---------- */
