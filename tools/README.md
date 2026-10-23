@@ -31,3 +31,13 @@ python3 check.py
 ```
 
 問題があればページ名と内容が出て、終了コードが 1 になる。文章を足したりリンクを張ったりしたら、コミットの前に1回動かす。
+
+# アプリ個別ページの作り方
+
+`build-app-pages.py` は、アプリストアのカタログ JSON（`ulexite-store/v1/store.json`）から `apps/<id>/index.html` を作る。本文は `assets/js/app-detail.js` が同じ JSON から描く。
+
+```
+python tools/build-app-pages.py https://thesilver0913.github.io/ulexite-store/v1/store.json
+```
+
+カタログにアプリを足したら、このコマンドを実行して個別ページも足す（一覧は `assets/js/store.js` が実行時に読むので自動で増える）。

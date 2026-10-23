@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://thesilver0913.github.io/ulexite/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://thesilver0913.github.io/ulexite/apps/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://thesilver0913.github.io/ulexite/apps/clock/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://thesilver0913.github.io/ulexite/apps/weather/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://thesilver0913.github.io/ulexite/apps/metar/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://thesilver0913.github.io/ulexite/guide/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://thesilver0913.github.io/ulexite/developers/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://thesilver0913.github.io/ulexite/developers/world-native.html</loc><lastmod>2026-10-23</lastmod></url>
