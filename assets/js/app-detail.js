@@ -16,6 +16,9 @@
   function ja(obj) { return obj && (obj.ja || obj.en) || ''; }
   function color(c) { return /^#[0-9a-fA-F]{3,8}$/.test(c || '') ? c : '#16181b'; }
   function catName(c) { return CAT[c] || c || 'アプリ'; }
+  function rich(s) {
+    return esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+  }
 
   function render(app) {
     var title = ja(app.name);
@@ -46,16 +49,16 @@
 
     var html = '';
     if (app.description && ja(app.description)) {
-      html += '<p>' + esc(ja(app.description)) + '</p>';
+      html += '<p>' + rich(ja(app.description)) + '</p>';
     }
 
     if (app.releaseNotes && ja(app.releaseNotes)) {
       html += '<h2>バージョン ' + esc(version) + ' の変更</h2>';
-      html += '<p class="app-detail-text">' + esc(ja(app.releaseNotes)) + '</p>';
+      html += '<p class="app-detail-text">' + rich(ja(app.releaseNotes)) + '</p>';
     }
 
     if (app.credits && ja(app.credits)) {
-      html += '<h2>クレジット</h2><p>' + esc(ja(app.credits)) + '</p>';
+      html += '<h2>クレジット</h2><p>' + rich(ja(app.credits)) + '</p>';
     }
 
     html += '<h2>仕様</h2><div class="table-wrap"><table><tbody>';
