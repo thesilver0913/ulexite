@@ -77,10 +77,14 @@
 
     if (app.url) {
       html += '<h2>ダウンロード</h2>';
-      html += '<p><a class="btn btn--primary" href="' + esc(app.url) + '" target="_blank" rel="noopener">zip をダウンロード</a></p>';
+      html += '<p><a class="btn btn--primary app-detail-download" href="' + esc(app.url) + '" target="_blank" rel="noopener">zip をダウンロード</a></p>';
       html += '<p class="muted">審査した版（v' + esc(version) + '）です。アプリストアの公開後は、ストアから入れられます。</p>';
       if (app.sha256) {
-        html += '<p class="app-detail-hash">SHA-256: <code>' + esc(app.sha256) + '</code></p>';
+        html += '<details class="app-detail-hash">' +
+          '<summary>SHA-256（zip の確認用）</summary>' +
+          '<p><code>' + esc(app.sha256) + '</code></p>' +
+          '<p class="muted">配布物が一致するかを確かめるための公開ハッシュです。秘密情報ではありません。</p>' +
+        '</details>';
       }
     }
 
