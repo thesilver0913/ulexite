@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>リファレンス — Ulexite 開発者ガイド</title>
+  <meta name="description" content="Ulexite のアプリを作るための一覧。マニフェストの全項目、App Services の窓口、データで書くアプリの型と部品、テーマの色、アイコン。">
+  <meta name="theme-color" content="#f5f3ef">
+  <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
+  <meta property="og:title" content="リファレンス — Ulexite 開発者ガイド">
+  <meta property="og:description" content="Ulexite のアプリを作るための一覧。マニフェスト、App Services、データで書くアプリ、色、アイコン。">
+  <meta property="og:type" content="article">
+  <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/reference.html">
+  <meta property="og:site_name" content="Ulexite">
+  <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/reference.html">
+  <meta property="og:image" content="https://thesilver0913.github.io/ulexite/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="../index.html" aria-label="Ulexite ホーム">
+      <img src="../assets/img/logo/ulexite-icon-light.svg" alt="">
+      <span>Ulexite</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="../index.html#tv">Ulexite TV</a></li>
+      <li><a href="../index.html#apps">アプリ</a></li>
+      <li><a href="index.html" aria-current="page">開発者</a></li>
+      <li><a href="../index.html#roadmap">ロードマップ</a></li>
+      <li><a href="../index.html#get">入手</a></li>
+    </ul>
+    <a class="btn btn--primary btn--small nav__cta" href="../index.html#get">入手する</a>
+    <button class="nav__menu" id="nav-menu" aria-label="メニュー" aria-expanded="false" aria-controls="nav-links">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="パンくず">
+        <a href="../index.html">Ulexite</a><span aria-hidden="true">/</span><a href="index.html">開発者ガイド</a><span aria-hidden="true">/</span><span>9. リファレンス</span>
+      </nav>
+      <h1 class="page-title">リファレンス</h1>
+      <p class="page-lead">アプリを作るための一覧です。コードから書き出したもので、説明の章（1〜8章）と食い違ったときは、こちらが正です。</p>
+      <p class="page-meta"><span class="eyebrow">Chapter 9</span></p>
+    </div>
+  </div>
+
+  <article class="prose">
+
+    <p>この章は、<strong>コードから書き出した</strong>一覧です。手で書いた説明（1〜8章）と食い違ったときは、こちらが正です（コードと食い違ったときは、コードが正）。</p>
+    <ul>
+    <li><strong>書き出した元</strong>：Ulexite TV <code>0.3.0</code> / Ulexite OS（ワールド）<code>1</code> / App Services <code>4</code>（<code>1.1.0</code>）・2026-10-23</li>
+    <li><strong>元のコード</strong>：<code>Packages/vrc.ulexite.tv/Editor/UlexiteAppManifest.cs</code>（マニフェスト）、<code>Runtime/UlexiteAppServices.cs</code>（窓口）、<code>Editor/UlexiteDataAppBuilder.cs</code> と <code>Runtime/UlexiteDataApp.cs</code>（データで書くアプリ）、<code>Runtime/UlexiteAlerts.cs</code> と <code>Editor/UlexiteTestTvBuilder.cs</code>（アイコンと色）、<code>Editor/UlexiteAppBuilder.cs</code>（<code>UlexiteBuildKit</code>）</li>
+    <li><strong>仮の値</strong>は <code>[...]</code> で囲みます。<code>t:</code> で始まる文字列は翻訳表のキーです</li>
+    </ul>
+    <hr>
+    <h2>9.1 マニフェスト（<code>ulexite-app.json</code>）</h2>
+    <p>アプリのパッケージの直下（<code>package.json</code> の隣）に置きます。<code>version</code> と作者は <strong><code>package.json</code> が正</strong>です（VCC が読むのは <code>package.json</code> だけ）。テレビを作り直すときに読み、決まりに合わないところは Console にエラーで出ます（<code>UlexiteAppManifest.Check</code>）。</p>
+    <pre class="code"><code>{
+  "manifestVersion": 1,
+  "id": "weather",
+  "name": { "ja": "天気", "en": "Weather" },
+  "version": "0.2.0",
+  "publisher": { "name": "Ulexite Technologies", "url": "https://example.com" },
+  "kind": "declarative",
+  "runtimes": { "world": { "os": 1, "appServices": 4, "screens": "app.screens.json" } },
+  "profiles": ["tv"],
+  "permissions": [],
+  "data": [],
+  "settings": [],
+  "budget": { "saveKB": 4, "imagesPerOpen": 1, "syncBytes": 256 },
+  "releaseNotes": { "ja": "最初のバージョン", "en": "First version" },
+  "icon": "Textures/icon.png",
+  "category": "info"
+}</code></pre>
+    <h3>トップレベル</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>項目</th><th>型</th><th>必須</th><th>既定</th><th>決まり・例</th></tr></thead>
+    <tbody>
+    <tr><td><code>manifestVersion</code></td><td>int</td><td><strong>必須</strong></td><td>—</td><td><code>1</code> だけ</td></tr>
+    <tr><td><code>id</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td>英小文字・数字・<code>-</code> で32文字まで（<code>^[a-z0-9][a-z0-9-]{0,31}$</code>）。<strong>アプリの <code>appId</code> と同じ</strong>にします（例：<code>weather</code>）</td></tr>
+    <tr><td><code>name</code></td><td>object</td><td><strong>必須</strong></td><td>—</td><td><code>{ "ja": "...", "en": "..." }</code>。<strong>両方</strong>書きます（片方でも欠けるとエラー）</td></tr>
+    <tr><td><code>version</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td><code>1.2.3</code> の形。<strong><code>package.json</code> の <code>version</code> と同じ</strong>にします</td></tr>
+    <tr><td><code>publisher</code></td><td>object</td><td><strong>必須</strong></td><td>—</td><td><code>{ "name": "...", "url": "..." }</code>。<code>name</code> は <code>package.json</code> の <code>author.name</code>（または <code>Ulexite Technologies</code>）と同じ</td></tr>
+    <tr><td><code>kind</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td><code>native</code>（U# で書く）か <code>declarative</code>（データで書く）</td></tr>
+    <tr><td><code>runtimes.world</code></td><td>object</td><td><strong>必須</strong></td><td>—</td><td>下の表。無いとワールドでは使えません</td></tr>
+    <tr><td><code>profiles</code></td><td>string[]</td><td><strong>必須</strong></td><td>—</td><td>出す端末。<code>tv</code>・<code>player</code>・<code>world-tablet</code>・<code>avatar-tablet</code>・<code>phone</code>・<code>watch</code>。<strong><code>tv</code> が無いとテレビに出ません</strong></td></tr>
+    <tr><td><code>permissions</code></td><td>string[]</td><td>任意</td><td><code>[]</code></td><td><strong>ワールドでは空</strong>にします（入れるとエラー）</td></tr>
+    <tr><td><code>preinstalled</code></td><td>bool</td><td>任意</td><td><code>false</code></td><td>同梱（プリインストール）のアプリか。アプリ情報のラベルが「プリインストール」になります</td></tr>
+    <tr><td><code>icon</code></td><td>string</td><td>任意</td><td><code>""</code></td><td>パッケージからの相対パス（例：<code>Textures/icon.png</code>）</td></tr>
+    <tr><td><code>category</code></td><td>string</td><td>任意</td><td><code>""</code></td><td>アプリストアの分類（例：<code>media</code>・<code>info</code>・<code>tools</code>）</td></tr>
+    <tr><td><code>background</code></td><td>bool</td><td>任意</td><td><code>false</code></td><td>Companion で常駐を許すか（<strong>ワールドでは使いません</strong>）</td></tr>
+    </tbody></table></div>
+    <h3><code>runtimes.world</code></h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>項目</th><th>型</th><th>必須</th><th>既定</th><th>決まり・例</th></tr></thead>
+    <tbody>
+    <tr><td><code>os</code></td><td>int</td><td><strong>必須</strong></td><td>—</td><td>必要な Ulexite OS（ワールド）の版。<code>1</code> 以上。今は <code>1</code></td></tr>
+    <tr><td><code>appServices</code></td><td>int</td><td>任意</td><td><code>0</code></td><td>必要な App Services の版。今は <code>4</code> まで。足りないとアプリストアが「本体の更新が必要です」と出します</td></tr>
+    <tr><td><code>entry</code></td><td>string</td><td>native は<strong>必須</strong></td><td>—</td><td>画面を作る <code>UlexiteAppBuilder</code> の<strong>クラス名</strong>（例：<code>UlexiteClockBuilder</code>）</td></tr>
+    <tr><td><code>screens</code></td><td>string</td><td>declarative は<strong>必須</strong></td><td>—</td><td>画面の定義のファイル名（例：<code>app.screens.json</code>）</td></tr>
+    </tbody></table></div>
+    <h3><code>data</code>（読むファイル）</h3>
+    <p>マニフェストの <code>data</code> は、<strong>URL を直接指定するデータ</strong>（時差の表など）に使います。データで書くアプリの画面のデータは、定義のファイル（9.3）の <code>assets</code>・<code>data</code> に書きます。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>項目</th><th>型</th><th>必須</th><th>既定</th><th>決まり・例</th></tr></thead>
+    <tbody>
+    <tr><td><code>id</code></td><td>string</td><td><code>url</code> を書くとき<strong>必須</strong></td><td>—</td><td>英小文字・数字・<code>-</code> で32文字まで。焼き込みの名前は「アプリID-データの id」</td></tr>
+    <tr><td><code>feed</code></td><td>string</td><td>任意</td><td>—</td><td>共通の feed の名前を読むとき（古い形。新しいアプリは <code>url</code> を使います）</td></tr>
+    <tr><td><code>url</code></td><td>string</td><td>任意</td><td>—</td><td><strong>https の信頼済みドメインだけ</strong>：<code>*.github.io</code>・<code>gist.githubusercontent.com</code>・<code>pastebin.com</code>・<code>*.vrcdn.cloud</code>・<code>*.disbridge.com</code></td></tr>
+    <tr><td><code>every</code></td><td>string</td><td>任意</td><td>—</td><td>読む間隔（例：<code>10m</code>・<code>6h</code>・<code>24h</code>）</td></tr>
+    </tbody></table></div>
+    <h3><code>settings</code>（アプリの設定項目）</h3>
+    <p>アプリの画面から開く共通のパネルに出ます。<strong>最大 8 件</strong>。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>項目</th><th>型</th><th>必須</th><th>既定</th><th>決まり・例</th></tr></thead>
+    <tbody>
+    <tr><td><code>id</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td>英小文字・数字・<code>-</code>・<code>_</code> で32文字まで。重複不可</td></tr>
+    <tr><td><code>type</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td><code>choice</code>（選択）・<code>toggle</code>（オン/オフ）・<code>order</code>（選んで並べる）・<code>time</code>（時刻）</td></tr>
+    <tr><td><code>scope</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td><code>local</code>（各自。PlayerData）・<code>global</code>（全員共通。共有データ）・<code>creator</code>（制作者が焼き込む。変更不可）</td></tr>
+    <tr><td><code>choices</code></td><td>string</td><td><code>choice</code>・<code>order</code> は<strong>必須</strong></td><td>—</td><td>選択肢の表の名前（<code>Packages/vrc.ulexite.tv/Data/choices/&lt;名前&gt;.json</code>。例：<code>jma-areas</code>）</td></tr>
+    <tr><td><code>default</code></td><td>string[]</td><td>任意</td><td><code>null</code></td><td><code>choice</code> は1つ、<code>order</code> は <code>max</code> 以下、<code>toggle</code> は <code>true</code>/<code>false</code>。<code>@region</code> で OS の地域になる</td></tr>
+    <tr><td><code>max</code></td><td>int</td><td>任意</td><td><code>3</code></td><td><code>order</code> の上限。1〜10</td></tr>
+    <tr><td><code>step</code></td><td>int</td><td>任意</td><td><code>5</code></td><td><code>time</code> の刻み（分）。1〜60</td></tr>
+    <tr><td><code>label</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td>翻訳キー（例：<code>Ulexite.Clock.Setting.Alarm</code>）</td></tr>
+    <tr><td><code>note</code></td><td>string</td><td>任意</td><td>—</td><td>補足の翻訳キー</td></tr>
+    </tbody></table></div>
+    <p><strong>翻訳キーの書き方</strong>：マニフェストに書く <code>label</code>・<code>note</code> は<strong>キーそのもの</strong>（<code>t:</code> を付けない）です。データで書くアプリの定義（9.3）では <code>t:</code> を付けます。</p>
+    <h3><code>budget</code>（予算）</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>項目</th><th>型</th><th>既定</th><th>上限</th><th>決まり</th></tr></thead>
+    <tbody>
+    <tr><td><code>saveKB</code></td><td>int</td><td><code>4</code></td><td><code>16</code></td><td>自分の保存データ（PlayerData）の割り当て。<strong>Ulexite 全体で 60KB</strong>（うちシステムが 16KB）</td></tr>
+    <tr><td><code>imagesPerOpen</code></td><td>int</td><td><code>0</code></td><td>—</td><td>1回開く間に読む画像の枚数の目安（ワールド全体で5秒に1枚の枠を分け合います）</td></tr>
+    <tr><td><code>syncBytes</code></td><td>int</td><td><code>256</code></td><td><code>1024</code></td><td>共有データ（全員に同期する小さな値）の量。標準より小さく書いても標準（256）になります</td></tr>
+    </tbody></table></div>
+    <h3><code>releaseNotes</code></h3>
+    <p><code>{ "ja": "...", "en": "..." }</code>。アプリ情報に出ます。</p>
+    <h3>足すだけの欄（今は読みません）</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>項目</th><th>型</th><th>決まり</th></tr></thead>
+    <tbody>
+    <tr><td><code>pricing</code></td><td>object</td><td>有料アプリ。<code>type</code> は <code>free</code>・<code>paid</code>・<code>freemium</code>。有料なら <code>seller</code>（販売元）と <code>url</code>（購入ページ）が必須。Ulexite はお金を扱いません</td></tr>
+    <tr><td><code>license</code></td><td>object</td><td>有料アプリの確かめ方。<code>type</code> は <code>key</code>（ライセンスキー）・<code>account</code>（販売元のアカウント）、<code>verify</code> は確かめる先</td></tr>
+    <tr><td><code>symbol</code></td><td>object</td><td>Companion のアイコン。<code>index</code>（記号の番号。既定 <code>-1</code>）・<code>color</code>（テーマの色の番号）</td></tr>
+    <tr><td><code>crossMenu</code></td><td>object</td><td>Ulexite Player の Cross Menu。<code>categories</code>（string[]）・<code>items</code></td></tr>
+    </tbody></table></div>
+    <hr>
+    <h2>9.2 App Services（<code>services</code>）</h2>
+    <p>アプリは <code>launcher</code> ではなく <strong><code>services</code>（App Services）</strong> を通して本体の仕組みを使います。<code>UlexiteApp</code> の <code>services</code> フィールドに、ランチャーが <code>Start</code> で入れます（アプリ側で探す必要はありません）。</p>
+    <ul>
+    <li><strong>戻り値のある窓口</strong>は、その場で値が返ります</li>
+    <li><strong>結果を待つもの</strong>（データ・画像・確認・文字入力）は、アプリの<strong>イベント</strong>に届きます（9.2.14）</li>
+    <li>アプリへの知らせは <strong>1フレーム遅れて</strong>届きます（アプリで例外が出ても窓口とランチャーが止まらないように）</li>
+    </ul>
+    <h3>9.2.1 版と自分</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>型</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>UlexiteAppServices.Version</code></td><td>const int = <code>4</code></td><td>窓口の版。マニフェストの <code>runtimes.world.appServices</code> と比べます</td></tr>
+    <tr><td><code>servicesVersion</code></td><td>int</td><td>実行中の窓口の版（<code>Version</code> と同じ）</td></tr>
+    <tr><td><code>LocalName</code></td><td>string</td><td>自分の表示名</td></tr>
+    <tr><td><code>IsCreator</code></td><td>bool</td><td>自分がワールドの制作者か（設定ウィンドウの「制作者の表示名」と比べます）</td></tr>
+    <tr><td><code>IsOperator</code></td><td>bool</td><td>自分が操作する人か（リモコンを持っている人。誰も持っていなければ UI のオーナー）</td></tr>
+    <tr><td><code>IsJapanese</code></td><td>bool</td><td>表示が日本語か</td></tr>
+    <tr><td><code>JstNow</code></td><td>DateTime</td><td>日本時間の現在時刻</td></tr>
+    <tr><td><code>TerminalNumber</code></td><td>int</td><td>端末の番号（1から。2台目は別の保存・別の feed になります）</td></tr>
+    </tbody></table></div>
+    <h3>9.2.2 翻訳と操作音</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>L(string key)</code></td><td>string</td><td>翻訳表から引く（無ければキーをそのまま返す）</td></tr>
+    <tr><td><code>_PlayCursor()</code> / <code>_PlayDecide()</code> / <code>_PlayNotify()</code> / <code>_PlayError()</code></td><td>—</td><td>操作音（テレビの位置から全員に聞こえます）</td></tr>
+    <tr><td><code>_PlaySound(AudioClip clip)</code></td><td>—</td><td>好きな音をテレビの位置から鳴らす</td></tr>
+    </tbody></table></div>
+    <h3>9.2.3 ループ再生</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_PlayLoopLocal(UlexiteApp app, AudioClip clip, float seconds)</code></td><td>—</td><td><strong>自分の手元だけ</strong>のループ（時計のアラーム）。<code>seconds</code> で自動停止（<code>0</code> は止めるまで）。アプリを閉じると止まります</td></tr>
+    <tr><td><code>_StopLoopLocal()</code></td><td>—</td><td>ローカルのループを止める</td></tr>
+    <tr><td><code>_PlayLoop(UlexiteApp app, AudioClip clip)</code></td><td>bool</td><td><strong>全員向け</strong>のループ。<strong>操作する人だけ</strong>が使えます（false なら断られています）</td></tr>
+    <tr><td><code>_StopLoop()</code></td><td>—</td><td>全員向けのループを止める</td></tr>
+    </tbody></table></div>
+    <h3>9.2.4 テーマ</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_Theme(string name)</code></td><td>Color</td><td>色の名前（9.4）で引く。知らない名前は白</td></tr>
+    </tbody></table></div>
+    <h3>9.2.5 通知とトースト</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_Notify(string appId, string id, int kind, int icon, string title, string body, float progress, int priority, bool canDismiss)</code></td><td>—</td><td>通知ウィンドウに出す。同じ <code>id</code> は書き換え。<code>kind</code>＝<code>UlexiteNotifications.KindSimple</code>・<code>KindProgress</code>・<code>KindAlert</code>、<code>icon</code>＝9.5、<code>progress</code>＝<code>0</code>〜<code>1</code>（使わないなら負）、<code>priority</code> は <code>0</code>〜<code>89</code>。通知を選ぶと <code>appId</code> のアプリが開きます</td></tr>
+    <tr><td><code>_NotifyButton(string appId, string id, int slot, string label, UdonSharpBehaviour target, string eventName)</code></td><td>—</td><td>通知にボタンを付ける（<code>slot</code> は <code>0</code>〜<code>1</code>）。押した人の手元で <code>target</code> の <code>eventName</code> が呼ばれます</td></tr>
+    <tr><td><code>_RemoveNotify(string appId, string id)</code></td><td>—</td><td>通知を消す</td></tr>
+    <tr><td><code>_Toast(string title, string body, int icon, bool warn)</code></td><td>—</td><td>右上のお知らせ（ローカル）。同じ見出しは通知ウィンドウに1件だけ残ります</td></tr>
+    </tbody></table></div>
+    <h3>9.2.6 メディア（再生）</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>PlaybackAvailable</code></td><td>bool</td><td>再生できる状態か（再生アダプターが生きているか）</td></tr>
+    <tr><td><code>MediaState</code></td><td>int</td><td><code>0</code> 停止・<code>1</code> 読み込み中・<code>2</code> エラー・<code>3</code> 準備完了・<code>4</code> 再生中・<code>5</code> 一時停止</td></tr>
+    <tr><td><code>MediaTime</code> / <code>MediaDuration</code></td><td>float</td><td>秒。ライブでは <code>MediaDuration</code> が無限</td></tr>
+    <tr><td><code>MediaIsLive</code></td><td>bool</td><td>ライブ配信か</td></tr>
+    <tr><td><code>MediaTitle</code></td><td>string</td><td>再生中のタイトル</td></tr>
+    <tr><td><code>_Play(VRCUrl url, string title)</code></td><td>—</td><td>今すぐ再生（再生中なら割り込む）</td></tr>
+    <tr><td><code>_Queue(VRCUrl url, string title)</code></td><td>—</td><td>キューの末尾に足す</td></tr>
+    <tr><td><code>_TogglePlay()</code> / <code>_Stop()</code> / <code>_Next()</code> / <code>_Previous()</code></td><td>—</td><td>再生・一時停止／停止／次／前</td></tr>
+    <tr><td><code>_Seek(float seconds)</code></td><td>—</td><td>秒へ移動（ライブでは効きません）</td></tr>
+    </tbody></table></div>
+    <p><strong>注意</strong>：<code>VRCUrl</code> は<strong>焼き込んだものだけ</strong>渡せます（Udon は文字列から URL を作れません）。URL はマニフェストか定義の <code>assets</code> に書いてください。</p>
+    <h3>9.2.7 画像</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_RequestImage(VRCUrl url, UdonSharpBehaviour receiver, bool reload)</code></td><td>—</td><td>順番待ちで読む（ワールド全体で5秒に1枚を本体がまとめます）。届いたら <code>receiver</code> の <code>_OnImageLoaded</code>／<code>_OnImageError</code></td></tr>
+    <tr><td><code>_GetImage(VRCUrl url)</code></td><td>Texture2D</td><td>置き場にあれば返す（無ければ <code>null</code>。<strong>一度頼んだら二度と頼まない作りにしない</strong>：無ければ <code>_RequestImage</code>）</td></tr>
+    <tr><td><code>_ReleaseImage(VRCUrl url)</code></td><td>—</td><td>使い終わった大きい画像（地図に重ねる画像など）を捨てる</td></tr>
+    </tbody></table></div>
+    <h3>9.2.8 データ（feed）</h3>
+    <p><strong>アプリ ID の feed</strong>（マニフェスト／定義の <code>data</code> で <code>id</code> を書いたもの）</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_RegisterFeed(string appId, int mode, float interval)</code></td><td>bool</td><td>取り方を登録（<code>_Init</code> で）。<code>mode</code>＝<code>UlexiteFeedLoader.ModeOnOpen</code>・<code>ModeBackground</code>・<code>ModeAlways</code>、<code>interval</code> は秒</td></tr>
+    <tr><td><code>_ReloadFeed(string appId)</code></td><td>—</td><td>今すぐ読み直す</td></tr>
+    <tr><td><code>_FeedKey(string appId)</code></td><td>string</td><td>feed のキー（<code>&lt;端末の番号&gt;/&lt;アプリID&gt;</code>）</td></tr>
+    <tr><td><code>_FeedText(string appId)</code></td><td>string</td><td>届いた文字列（無ければ <code>null</code>）</td></tr>
+    <tr><td><code>_FeedJson(string appId)</code></td><td>DataDictionary</td><td>JSON として読んだもの（読めなければ <code>null</code>）</td></tr>
+    <tr><td><code>_FeedStatus(string appId)</code></td><td>int</td><td><code>StatusNone</code>(0)・<code>StatusLoading</code>(1)・<code>StatusFresh</code>(2)・<code>StatusStale</code>(3)・<code>StatusFailed</code>(4)</td></tr>
+    <tr><td><code>_FeedLoadedAt(string appId)</code></td><td>int</td><td>読めた時刻（サーバー時刻のミリ秒）</td></tr>
+    <tr><td><code>_CommonFeed()</code></td><td>DataDictionary</td><td>共通の feed（地震・津波・警報・注意報・お知らせ・最新バージョン）</td></tr>
+    </tbody></table></div>
+    <p><strong>URL を直接指定するデータ</strong>（マニフェストの <code>data.url</code>。時差の表など。名前は「アプリID-データの id」）</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th></tr></thead>
+    <tbody>
+    <tr><td><code>_RegisterDataFeed(string appId, string dataId, int mode, float interval)</code></td><td>bool</td></tr>
+    <tr><td><code>_ReloadDataFeed(string appId, string dataId)</code></td><td>—</td></tr>
+    <tr><td><code>_DataFeedText(string appId, string dataId)</code></td><td>string</td></tr>
+    <tr><td><code>_DataFeedJson(string appId, string dataId)</code></td><td>DataDictionary</td></tr>
+    <tr><td><code>_DataFeedStatus(string appId, string dataId)</code></td><td>int</td></tr>
+    <tr><td><code>_DataFeedLoadedAt(string appId, string dataId)</code></td><td>int</td></tr>
+    </tbody></table></div>
+    <h3>9.2.9 保存（PlayerData）</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>StorageReady</code></td><td>bool</td><td>保存が読めるようになったか。<strong><code>OnPlayerRestored</code> の前は読み書きしない</strong>（書いても false）</td></tr>
+    <tr><td><code>_SaveString(string appId, string key, string value)</code></td><td>bool</td><td>自分の保存に書く（キーは自動で <code>ulexite_t&lt;端末&gt;_&lt;アプリID&gt;_&lt;key&gt;</code>）</td></tr>
+    <tr><td><code>_SaveInt(string appId, string key, int value)</code></td><td>bool</td><td>同上（整数）</td></tr>
+    <tr><td><code>_LoadString(string appId, string key, string fallback)</code></td><td>string</td><td>読む（無ければ <code>fallback</code>）</td></tr>
+    <tr><td><code>_LoadInt(string appId, string key, int fallback)</code></td><td>int</td><td>同上（整数）</td></tr>
+    <tr><td><code>_LoadPlayerString(VRCPlayerApi player, UlexiteApp app, string key, string fallback)</code></td><td>string</td><td><strong>ほかの人</strong>の保存を読む（書けるのは本人だけ）</td></tr>
+    <tr><td><code>_LoadPlayerInt(VRCPlayerApi player, UlexiteApp app, string key, int fallback)</code></td><td>int</td><td>同上</td></tr>
+    <tr><td><code>_LoadPlayerStringId(VRCPlayerApi player, string appId, string key, string fallback)</code></td><td>string</td><td><code>appId</code> を文字列で渡す版</td></tr>
+    </tbody></table></div>
+    <p><strong>注意</strong>：他人の PlayerData は読めますが、書けるのは本人だけです。1つのキーが変わると<strong>全員の PlayerData が送られる</strong>ので、キーは少数にまとめ、よく変わるものは共有データへ。</p>
+    <h3>9.2.10 共有データ（全員に同期・インスタンスの間だけ）</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_SharedSetInt</code> / <code>_SharedSetFloat</code> / <code>_SharedSetBool</code> / <code>_SharedSetString</code> <code>(string appId, string key, T value)</code></td><td>bool</td><td>書く。書けるのは<strong>操作する人</strong>（ほかの人はオーナーへの依頼。0.5秒に1回まで）</td></tr>
+    <tr><td><code>_SharedInt</code> / <code>_SharedFloat</code> / <code>_SharedBool</code> / <code>_SharedString</code> <code>(string appId, string key, T fallback)</code></td><td>T</td><td>読む（無ければ <code>fallback</code>）</td></tr>
+    </tbody></table></div>
+    <p><strong>注意</strong>：文字は <strong>128 字まで</strong>（長いものは切られます）。<code>&lt;</code> は全角になります（外部の文字でリッチテキストを使わせないため）。保存はされません（インスタンスの間だけ）。</p>
+    <h3>9.2.11 確認ダイアログ</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_Confirm(UlexiteApp app, string eventName, string title, string body, string yes, string no, bool danger)</code></td><td>bool</td><td>開けたら true。<strong>操作する人でなければ開かずに false</strong>。答えは<strong>答えた人の手元</strong>で <code>app</code> の <code>eventName</code> に届き、<code>DialogAccepted</code> を読みます</td></tr>
+    <tr><td><code>DialogAccepted</code></td><td>bool</td><td>答え（イベントの中で読む）。「いいえ」・閉じた・操作する人がいなくなった・ほかのアプリに移った、は false</td></tr>
+    </tbody></table></div>
+    <h3>9.2.12 文字入力</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_RequestText(UlexiteApp app, string eventName, int kind, string title, string example, string hint, int maxLength)</code></td><td>bool</td><td>開けたら true。<code>kind</code>＝<code>UlexiteTextInput.KindText</code>・<code>KindNumber</code>、<code>maxLength</code> は 64 まで</td></tr>
+    <tr><td><code>TextAccepted</code> / <code>TextResult</code></td><td>bool / string</td><td>答え（イベントの中で読む）</td></tr>
+    </tbody></table></div>
+    <p><strong>注意</strong>：<strong>URL はここでは受け付けません</strong>（Udon は文字から URL を作れないため）。URL は <code>VRCUrlInputField</code> を自分で置いてください。</p>
+    <h3>9.2.13 地域・設定・そのほか</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>窓口</th><th>戻り値</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>_Region()</code></td><td>string</td><td>OS の地域（<code>jma-areas</code> の6桁コード）。<strong>テレビの全員で同じ</strong>・無ければ <code>130000</code>（東京都）</td></tr>
+    <tr><td><code>_SetRegion(string code)</code></td><td>bool</td><td>地域を変える（6桁の数字だけ・操作する人だけ）</td></tr>
+    <tr><td><code>_SettingString(UlexiteApp app, string id, string fallback)</code> / <code>_SettingInt</code> / <code>_SettingBool</code></td><td>string / int / bool</td><td>設定の値（宣言が無ければ <code>fallback</code>）。<code>@region</code> は地域に置き換わります</td></tr>
+    <tr><td><code>_SettingOrderCount(UlexiteApp app, string id)</code> / <code>_SettingOrderKey(UlexiteApp app, string id, int index)</code></td><td>int / string</td><td><code>order</code> の件数・i 番目（空の項目は数えません）</td></tr>
+    <tr><td><code>_SetSettingInt(UlexiteApp app, string id, int value)</code> / <code>_SetSettingString(UlexiteApp app, string id, string value)</code></td><td>bool</td><td>設定を書く（<strong>操作する人だけ</strong>。<code>creator</code> は書けません）</td></tr>
+    <tr><td><code>_ClearAppData(UlexiteApp app)</code></td><td>—</td><td>アプリの保存を空にする（アプリ固有のキーは <code>_OnServicesClearData</code> で消す）</td></tr>
+    <tr><td><code>_OpenSettings(UlexiteApp app)</code></td><td>bool</td><td>アプリの設定パネルを開く</td></tr>
+    <tr><td><code>_ProvideScreensaver(UlexiteApp app, VRCUrl image, string caption)</code></td><td>bool</td><td>スクリーンセーバーに出す画像とひとことを登録（<strong>「裏でも取る」アプリだけ</strong>）</td></tr>
+    <tr><td><code>_LoadingBegin(UlexiteApp app, bool hasData)</code> / <code>_LoadingEnd(UlexiteApp app)</code></td><td>—</td><td>読み込みの表示（<code>hasData</code> が true なら右上に小さく「更新中…」、false なら中央に「読み込み中…」）</td></tr>
+    <tr><td><code>_OpenApp(string appId, string action, string arg)</code></td><td>bool</td><td>別のアプリを開く（<code>action</code>・<code>arg</code> は開いたアプリの <code>_OnServicesAction</code> に届く。<strong>呼んだ人の手元だけ</strong>）</td></tr>
+    </tbody></table></div>
+    <h3>9.2.14 アプリに届くイベント</h3>
+    <p>必要なものだけ書けばよいです（書かなければ何も起きません）。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>イベント</th><th>いつ</th></tr></thead>
+    <tbody>
+    <tr><td><code>_Init()</code></td><td>作られたとき（1回）。feed の登録はここで</td></tr>
+    <tr><td><code>_OnOpen()</code> / <code>_OnClose()</code></td><td>開いた／閉じた</td></tr>
+    <tr><td><code>_OnRender()</code></td><td>フォーカスやタブが変わった</td></tr>
+    <tr><td><code>_OnServicesFeed()</code></td><td>自分のデータが届いた／状態が変わった</td></tr>
+    <tr><td><code>_OnServicesCommonFeed()</code></td><td>共通の feed が届いた</td></tr>
+    <tr><td><code>_OnServicesStorageReady()</code></td><td>保存データが読めるようになった</td></tr>
+    <tr><td><code>_OnServicesStorageChanged()</code></td><td>保存データが変わった（ほかのテレビで書いたときも）</td></tr>
+    <tr><td><code>_OnServicesSharedChanged()</code></td><td>共有データが変わった</td></tr>
+    <tr><td><code>_OnServicesSettingsChanged()</code></td><td>設定が変わった</td></tr>
+    <tr><td><code>_OnServicesMinute()</code> / <code>_OnServicesDayChanged()</code></td><td>毎分／日本時間で日付が変わった</td></tr>
+    <tr><td><code>_OnServicesRegionChanged()</code></td><td>OS の地域が変わった</td></tr>
+    <tr><td><code>_OnServicesAction()</code></td><td>ほかのアプリから動作を指定して開かれた（<code>ActionName</code>・<code>ActionArg</code>）</td></tr>
+    <tr><td><code>_OnServicesLoadRetry()</code></td><td>読み込みに失敗して「再試行」が押された</td></tr>
+    <tr><td><code>_OnImageLoaded()</code> / <code>_OnImageError()</code></td><td><code>_RequestImage</code> の答え</td></tr>
+    <tr><td><code>_OnServicesClearData()</code></td><td><code>_ClearAppData</code> でアプリ固有のキーを消す</td></tr>
+    </tbody></table></div>
+    <h3>9.2.15 呼ぶ順と気をつけること</h3>
+    <ol>
+    <li><strong><code>_Init</code> で feed を登録</strong>（<code>_RegisterFeed</code>／<code>_RegisterDataFeed</code>）。開いたときに読み直すのは <code>_OnOpen</code> で <code>_ReloadFeed</code></li>
+    <li><strong>保存は <code>StorageReady</code> が true になってから</strong>。<code>_Save*</code> が false を返すときは、まだ読めていないか、ID の形が違います</li>
+    <li><strong>確認と文字入力は「操作する人」だけ</strong>。<code>false</code> が返ったら開けていません（操作していない人から呼ばれた）</li>
+    <li><strong>答えはイベントで受ける</strong>。<code>_Confirm</code> の戻り値は「開けたか」だけで、はい／いいえは <code>DialogAccepted</code></li>
+    <li><strong>通知の <code>id</code> はアプリの中で一意に</strong>。同じ id で書き換えます。消すときは <code>_RemoveNotify</code></li>
+    <li><strong><code>_OpenApp</code> の動作と引数は同期しません</strong>（開くことだけ全員にそろう）。開いたアプリが結果を自分で同期してください</li>
+    <li><strong>Udon の制約</strong>：<code>List</code> は使えません（配列か DataList）。例外が出た UdonBehaviour はそのセッション止まるので、重い処理は分けます（<a href="world-native.html">3章</a>）</li>
+    </ol>
+    <hr>
+    <h2>9.3 データで書くアプリ（定義のファイル）</h2>
+    <p><code>runtimes.world.screens</code> に書いたファイル（<code>app.screens.json</code>）の中身です。書き方は <a href="declarative.html">4章</a>。</p>
+    <h3>9.3.1 トップレベル</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>項目</th><th>型</th><th>必須</th><th>説明</th></tr></thead>
+    <tbody>
+    <tr><td><code>format</code></td><td>int</td><td><strong>必須</strong></td><td><code>1</code></td></tr>
+    <tr><td><code>lang</code></td><td>string</td><td>任意</td><td>翻訳表のファイル名（例：<code>lang.json</code>）</td></tr>
+    <tr><td><code>settings</code></td><td>array</td><td>任意</td><td>アプリの設定項目（9.1 の <code>settings</code> と同じ形。<code>label</code> は <code>t:</code> 付き）</td></tr>
+    <tr><td><code>assets</code></td><td>object</td><td>任意</td><td><code>{ "files": { "&lt;名前&gt;": { "url": "...", "each": "&lt;選択肢の表&gt;" } }, "images": { ... } }</code>。URL を焼き込みます</td></tr>
+    <tr><td><code>data</code></td><td>array</td><td>任意</td><td><code>{ "id": "...", "file": "...", "every": "10m", "when": "screen:map", "background": true }</code></td></tr>
+    <tr><td><code>maps</code></td><td>object</td><td>任意</td><td>値 → 文字・色・アイコンの対応表</td></tr>
+    <tr><td><code>tile</code></td><td>object</td><td>任意</td><td>ホームのタイル（<code>{ "icon": "...", "text": "..." }</code>）</td></tr>
+    <tr><td><code>screensaver</code></td><td>object</td><td>任意</td><td>スクリーンセーバーに出すもの</td></tr>
+    <tr><td><code>screen</code></td><td>object</td><td><strong>必須</strong></td><td>画面（下）</td></tr>
+    </tbody></table></div>
+    <h3>9.3.2 画面の型</h3>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>型</th><th>状態</th><th>中の項目</th></tr></thead>
+    <tbody>
+    <tr><td><code>tabs</code></td><td><strong>使える</strong></td><td><code>tabs[]</code>（<code>id</code>・<code>label</code>・<code>width</code>・<code>screen</code>）</td></tr>
+    <tr><td><code>dashboard</code></td><td><strong>使える</strong></td><td><code>cards[]</code>（<code>size</code>＝<code>wide</code>・<code>when</code>・<code>style</code>・<code>parts[]</code>）</td></tr>
+    <tr><td><code>list-detail</code></td><td><strong>使える</strong></td><td><code>list</code>（<code>items</code>・<code>row</code>・<code>columns</code>・<code>title</code>・<code>max</code>・<code>select</code>・<code>footer</code>）・<code>detail</code>・<code>banner</code>・<code>note</code></td></tr>
+    <tr><td><code>map</code></td><td><strong>使える</strong></td><td><code>base</code>（<code>world</code>・<code>japan</code>）・<code>layers[]</code>（<code>image</code>・<code>frames</code>・<code>points</code>・<code>marker</code>）</td></tr>
+    <tr><td><code>grid</code></td><td><strong>まだ</strong></td><td>タイルの格子（ライブカメラ用）</td></tr>
+    </tbody></table></div>
+    <h3>9.3.3 部品</h3>
+    <p><code>cards[].parts[]</code> に書きます。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>部品</th><th>状態</th><th>主な項目</th></tr></thead>
+    <tbody>
+    <tr><td><code>text</code></td><td><strong>使える</strong></td><td><code>text</code>・<code>style</code>（<code>caption</code>・<code>title</code>・<code>strong</code>・<code>mono</code>）・<code>lines</code>・<code>when</code></td></tr>
+    <tr><td><code>value</code></td><td><strong>使える</strong></td><td><code>value</code>・<code>label</code>・<code>unit</code>・<code>icon</code>（大きな数値の横にアイコン）・<code>when</code></td></tr>
+    <tr><td><code>note</code></td><td><strong>使える</strong></td><td><code>note</code>（出典・注意書き）</td></tr>
+    <tr><td><code>icon</code></td><td><strong>使える</strong></td><td><code>icon</code>（名前は 9.5）・<code>size</code>（<code>hero</code>）・<code>when</code></td></tr>
+    <tr><td><code>badge</code></td><td><strong>使える</strong></td><td><code>badge</code>（<code>text</code>・<code>color</code>）・<code>size</code>（<code>hero</code>）・<code>when</code></td></tr>
+    <tr><td><code>badges</code></td><td><strong>使える</strong></td><td><code>badges</code>（値の道筋）・<code>badge</code>（1件の形）・<code>max</code>（既定 6）</td></tr>
+    <tr><td><code>strip</code></td><td><strong>使える</strong></td><td><code>strip</code>（値の道筋）・<code>heading</code>・<code>card</code>（<code>parts[]</code>）・<code>max</code></td></tr>
+    <tr><td><code>list</code></td><td><strong>使える</strong></td><td><code>list</code>（値の道筋）・<code>max</code>・<code>row</code>（<code>parts[]</code>）</td></tr>
+    <tr><td><code>image</code></td><td><strong>まだ</strong></td><td><code>assets</code> の画像（写真・QR）</td></tr>
+    <tr><td><code>chart</code></td><td><strong>まだ</strong></td><td>折れ線・棒（点は12まで）</td></tr>
+    <tr><td><code>button</code></td><td><strong>まだ</strong></td><td>動作を呼ぶボタン</td></tr>
+    <tr><td><code>custom</code></td><td><strong>まだ</strong></td><td>U# で書いた部品をはめる</td></tr>
+    </tbody></table></div>
+    <h3>9.3.4 値のはめ込みと整形</h3>
+    <p><code>{{ 道筋 }}</code> で値をはめ、<code>|</code> でつないで整形します。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>関数</th><th>例</th><th>結果</th></tr></thead>
+    <tbody>
+    <tr><td><code>num:&lt;桁&gt;</code></td><td><code>{{ 18.44 | num:1 }}</code></td><td>18.4</td></tr>
+    <tr><td><code>unit:&lt;単位&gt;</code></td><td><code>{{ 18 | unit:℃ }}</code></td><td>18℃</td></tr>
+    <tr><td><code>time</code> / <code>time:dayAware</code></td><td><code>{{ "2026-10-18T21:20:00+09:00" | time }}</code></td><td>21:20</td></tr>
+    <tr><td><code>date</code> / <code>date:weekday</code> / <code>date:short</code></td><td></td><td>10月19日／月／10/19</td></tr>
+    <tr><td><code>ago</code></td><td></td><td>3分前</td></tr>
+    <tr><td><code>map:&lt;表&gt;</code></td><td><code>{{ "100" | map:wxIcon }}</code></td><td>表の値</td></tr>
+    <tr><td><code>choice:&lt;選択肢の表&gt;</code></td><td><code>{{ "130000" | choice:jma-areas }}</code></td><td>東京都</td></tr>
+    <tr><td><code>scale:&lt;名前&gt;</code></td><td><code>{{ 31 | scale:temp }}</code></td><td><code>temp</code> は色の名前（下記）。それ以外は <code>muted</code></td></tr>
+    <tr><td><code>localized:&lt;欄&gt;</code></td><td><code>{{ area.current.wxText | localized:wxTextEn }}</code></td><td>英語の欄（欄に <code>.</code> が無ければ値と同じ道筋の欄）</td></tr>
+    <tr><td><code>t:&lt;キー&gt;</code></td><td><code>{{ "weather.now" | t }}</code></td><td>翻訳</td></tr>
+    <tr><td><code>fallback:&lt;値&gt;</code></td><td><code>{{ x.wx.code | fallback:t:metar.noWx }}</code></td><td>値が無いときに使う</td></tr>
+    </tbody></table></div>
+    <p><code>scale:temp</code> は <code>0</code> 未満が <code>#7fb0e8</code>、<code>10</code> 未満が <code>#a8c7fa</code>、<code>20</code> 未満が <code>#e3e3e6</code>、<code>30</code> 未満が <code>#f2d16b</code>、それ以上が <code>#ff8a65</code> です。</p>
+    <hr>
+    <h2>9.4 テーマの色</h2>
+    <p>アプリは色を直接書かず、<strong>名前</strong>で引きます（native は <code>services._Theme("surface")</code>、データで書くアプリは <code>maps</code> の色の名前）。値はテレビの既定のテーマです。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>名前</th><th>既定の色</th><th>使いどころ</th></tr></thead>
+    <tbody>
+    <tr><td><code>background</code></td><td><code>#101214</code></td><td>画面の地</td></tr>
+    <tr><td><code>surface</code></td><td><code>#24272b</code></td><td>カード・ボタンの地</td></tr>
+    <tr><td><code>surface2</code></td><td><code>#1b1e22</code></td><td>一段暗い地（帯・入れ子）</td></tr>
+    <tr><td><code>dialog</code></td><td><code>#2a2e34</code></td><td>ダイアログの地</td></tr>
+    <tr><td><code>dialogItem</code></td><td><code>#33373d</code></td><td>ダイアログの項目</td></tr>
+    <tr><td><code>text1</code></td><td><code>#e3e3e6</code></td><td>本文</td></tr>
+    <tr><td><code>text2</code></td><td><code>#c4c6cc</code></td><td>一段弱い文字</td></tr>
+    <tr><td><code>text3</code></td><td><code>#a0a4ab</code></td><td>補足</td></tr>
+    <tr><td><code>text4</code></td><td><code>#8c9097</code></td><td>いちばん弱い文字（出典など）</td></tr>
+    <tr><td><code>divider</code></td><td><code>#3a3e44</code></td><td>区切り線</td></tr>
+    <tr><td><code>accent</code></td><td><code>#a8c7fa</code></td><td>強調（リンク・選択）</td></tr>
+    <tr><td><code>focus</code></td><td><code>#ffffff</code></td><td>フォーカスの枠</td></tr>
+    <tr><td><code>live</code></td><td><code>#ff6b6b</code></td><td>LIVE・録画の印</td></tr>
+    <tr><td><code>track</code></td><td><code>#4a4e55</code></td><td>スライダーの溝</td></tr>
+    </tbody></table></div>
+    <h3>札（badge）の色</h3>
+    <p>札の色は<strong>意味の名前</strong>で書きます（<code>maps</code> や <code>badge.color</code>）。文字の色と、<code>level5</code> の囲み線は OS が決めます。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>名前</th><th>地の色</th><th>文字</th><th>用途</th></tr></thead>
+    <tbody>
+    <tr><td><code>danger</code></td><td><code>#ff6b6b</code></td><td>暗い</td><td>危険</td></tr>
+    <tr><td><code>warning</code></td><td><code>#f7a35c</code></td><td>暗い</td><td>注意</td></tr>
+    <tr><td><code>caution</code></td><td><code>#f2d16b</code></td><td>暗い</td><td>注意報</td></tr>
+    <tr><td><code>info</code></td><td><code>#a8c7fa</code></td><td>暗い</td><td>情報</td></tr>
+    <tr><td><code>muted</code></td><td><code>#8c9097</code></td><td>暗い</td><td>弱い</td></tr>
+    <tr><td><code>level5</code></td><td><code>#0b0b0c</code></td><td>白＋<strong>囲み線</strong></td><td>特別警報</td></tr>
+    <tr><td><code>level4</code></td><td><code>#7a3fc2</code></td><td>白</td><td>危険警報</td></tr>
+    <tr><td><code>level3</code></td><td><code>#d8383a</code></td><td>白</td><td>警報</td></tr>
+    <tr><td><code>level2</code></td><td><code>#f2c230</code></td><td>暗い</td><td>注意報</td></tr>
+    <tr><td><code>int1</code>〜<code>int7</code></td><td><code>int1</code> <code>#4a5260</code>・<code>int2</code> <code>#2f6fd0</code>・<code>int3</code> <code>#24865a</code>・<code>int4</code> <code>#f2c230</code>・<code>int5l</code> <code>#f59a3c</code>・<code>int5u</code> <code>#bf4e1c</code>・<code>int6l</code> <code>#d8383a</code>・<code>int6u</code> <code>#9e1f2c</code>・<code>int7</code> <code>#7a3fc2</code></td><td>震度ごとに白／暗い</td><td>震度（<code>int5l</code>・<code>int5u</code>・<code>int6l</code>・<code>int6u</code> は「5弱」など）</td></tr>
+    <tr><td><code>vfr</code>・<code>mvfr</code>・<code>ifr</code>・<code>lifr</code></td><td><code>#5fd18b</code>・<code>#6fa8ff</code>・<code>#ff7a7a</code>・<code>#d68cff</code></td><td>暗い</td><td>METAR の飛行区分</td></tr>
+    </tbody></table></div>
+    <p>防災のレベルと震度、飛行区分は<strong>テーマで変わりません</strong>（気象庁の色に合わせています）。</p>
+    <hr>
+    <h2>9.5 アイコン</h2>
+    <h3>通知・トーストのアイコン（<code>_Notify</code>・<code>_Toast</code> の <code>icon</code>）</h3>
+    <p><code>UlexiteAlerts</code> の定数です。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>値</th><th>定数</th><th>絵</th></tr></thead>
+    <tbody>
+    <tr><td><code>0</code></td><td><code>UlexiteAlerts.IconInfo</code></td><td>info</td></tr>
+    <tr><td><code>1</code></td><td><code>UlexiteAlerts.IconWarn</code></td><td>warn</td></tr>
+    <tr><td><code>2</code></td><td><code>UlexiteAlerts.IconRetry</code></td><td>retry</td></tr>
+    <tr><td><code>3</code></td><td><code>UlexiteAlerts.IconAdd</code></td><td>add</td></tr>
+    <tr><td><code>4</code></td><td><code>UlexiteAlerts.IconSleep</code></td><td>sleep</td></tr>
+    <tr><td><code>5</code></td><td><code>UlexiteAlerts.IconClock</code></td><td>clock</td></tr>
+    <tr><td><code>6</code></td><td><code>UlexiteAlerts.IconAlarm</code></td><td>alarm</td></tr>
+    <tr><td><code>7</code></td><td><code>UlexiteAlerts.IconCity</code></td><td>city</td></tr>
+    </tbody></table></div>
+    <h3>部品のアイコン（<code>icon</code> 部品・<code>value</code> の <code>icon</code>・<code>K.Icon</code> の名前）</h3>
+    <p><code>add</code>・<code>alarm</code>・<code>alert</code>・<code>back</code>・<code>city</code>・<code>clock</code>・<code>cloud</code>・<code>dot</code>・<code>epicenter</code>・<code>gear</code>・<code>home</code>・<code>info</code>・<code>info-circle</code>・<code>link</code>・<code>media</code>・<code>moon-0</code>〜<code>moon-7</code>・<code>next</code>・<code>pause</code>・<code>play</code>・<code>power</code>・<code>previous</code>・<code>rain</code>・<code>recall</code>・<code>remote</code>・<code>retry</code>・<code>services</code>・<code>sleep</code>・<code>snow</code>・<code>spinner</code>・<code>stop</code>・<code>store</code>・<code>sun</code>・<code>tv</code>・<code>warn</code></p>
+    <hr>
+    <h2>9.6 画面のコード例</h2>
+    <p>実際に動いているアプリから読むのがいちばん確かです。</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>見たいこと</th><th>ファイル</th></tr></thead>
+    <tbody>
+    <tr><td><strong>U# のアプリの全体</strong>（時計）</td><td><code>Packages/vrc.ulexite.app.clock/Runtime/UlexiteClockApp.cs</code></td></tr>
+    <tr><td>画面の組み立て（<code>UlexiteAppBuilder</code>・<code>K.*</code>）</td><td><code>Packages/vrc.ulexite.app.clock/Editor/UlexiteClockBuilder.cs</code></td></tr>
+    <tr><td>マニフェストと翻訳表</td><td><code>Packages/vrc.ulexite.app.clock/ulexite-app.json</code>・<code>Localization/ulexite-clock-lang.json</code></td></tr>
+    <tr><td>ホームのタイル（ライブタイル）</td><td><code>Packages/vrc.ulexite.app.clock/tile.json</code>・<code>UlexiteClockApp.GetTileWidget</code></td></tr>
+    <tr><td>データで書くアプリの見本</td><td><code>docs/examples/weather/</code>（<code>app.screens.json</code>・<code>lang.json</code>・<code>*.sample.json</code>）</td></tr>
+    <tr><td>開発キットの「新しいアプリ」のひな形</td><td><code>Packages/vrc.ulexite.devkit/Editor/UlexiteNewApp.cs</code></td></tr>
+    </tbody></table></div>
+    <p>時計アプリで分かること：<code>_Init</code> での feed 登録、<code>_SettingString</code>／<code>_SettingOrderKey</code> での設定の読み方、<code>_SaveString</code> での保存、<code>_PlayLoopLocal</code> でのアラーム、<code>GetTileWidget</code> でのライブタイル、<code>UlexiteBuildKit</code>（<code>K.CreateApp</code>・<code>K.Rect</code>・<code>K.Tmp</code>・<code>K.Focus</code>）での画面の組み立て。</p>
+    <hr>
+    <h2>9.7 版と、この章の直し方</h2>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>もの</th><th>値</th></tr></thead>
+    <tbody>
+    <tr><td>Ulexite TV</td><td><code>0.3.0</code>（<code>Packages/vrc.ulexite.tv/package.json</code>）</td></tr>
+    <tr><td>Ulexite OS（ワールド）</td><td><code>1</code>（<code>UlexiteSystem.OsVersion</code>）</td></tr>
+    <tr><td>App Services</td><td><code>4</code>（<code>UlexiteAppServices.Version</code>）・<code>1.1.0</code>（<code>Release</code>）</td></tr>
+    </tbody></table></div>
+    <ul>
+    <li><strong>この章はコードから書き出したもの</strong>です。仕組みを変えたら、同じ変更でこの章も直してください（<code>UlexiteAppManifest</code>・<code>UlexiteAppServices</code>・<code>UlexiteDataAppBuilder</code> の公開している項目が増えたら、ここにも足す）</li>
+    <li>説明の章（1〜8）と食い違ったときは、この章（＝コード）が正です。食い違いを見つけたら、説明の章を直してください</li>
+    </ul>
+    <p><a href="index.html">目次に戻る</a></p>
+
+    <nav class="pager" aria-label="ページの移動">
+      <a href="rules.html">← 7章 守ること</a>
+      <a href="index.html">開発者ガイドの目次 →</a>
+    </nav>
+
+  </article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand"><img src="../assets/img/logo/ulexite-os-lockup-light.svg" alt="Ulexite OS"></div>
+      <div class="footer__cols">
+        <div>
+          <h4>製品</h4>
+          <ul>
+            <li><a href="../index.html#tv">Ulexite TV</a></li>
+            <li><a href="../index.html#store">Ulexite Store</a></li>
+            <li><a href="../index.html#apps">アプリ</a></li>
+            <li><a href="../index.html#roadmap">ロードマップ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>サポート</h4>
+          <ul>
+            <li><a href="../guide/index.html">導入ガイド</a></li>
+            <li><a href="index.html">開発者ガイド</a></li>
+            <li><a href="../releases/index.html">リリースノート</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ulexite について</h4>
+          <ul>
+            <li><a href="https://x.com/UlexiteOfficial" rel="noopener">X @UlexiteOfficial</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/privacy.html">プライバシーポリシー</a></li>
+            <li><a href="https://thesilver0913.github.io/ulexite-catalog/license.html">利用規約（VN3 ライセンス）</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p class="footer__fiction">※Ulexite・Ulexite Technologies は架空のブランドです。実在の企業とは関係ありません。</p>
+      <p>制作：葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）</p>
+      <p>VRChat は VRChat Inc. の商標です。YouTube は Google LLC の商標です。Ulexite TV はこれらの企業とは関係がなく、承認も受けていません。</p>
+      <p>© 2026 葛城ひなた</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    var btn = document.getElementById('nav-menu');
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -20,6 +20,7 @@ GitHub Pages で公開している静的なサイト。**公開 URL は `https:/
 | `developers/declarative.html`（4章 データで書くアプリ） | 公開中 |
 | `developers/design.html`（6章 デザイン言語） | 公開中 |
 | `developers/rules.html`（7章 守ること） | 公開中 |
+| `developers/reference.html`（9章 リファレンス） | 公開中 |
 | `releases/index.html`（リリースノート） | 公開中。0.3.0・0.2.0・開発キット・時計 |
 | プライバシーポリシー・利用規約・お布施 | 未着手（今は ulexite-catalog の Pages にリンクしている） |
 
