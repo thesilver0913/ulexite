@@ -75,7 +75,7 @@
           { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
         ] },
         { title: '困ったとき', links: [
-          { label: '不具合の報告', note: '返信はしません', href: 'contact/index.html' },
+          { label: 'お問い合わせフォーム', note: '不具合の報告のみ', href: 'contact/index.html' },
           { label: 'Ulexite Store', note: '触って確かめる', href: 'index.html#store' },
           { label: 'X @UlexiteOfficial', note: '最新のお知らせ', href: 'https://x.com/UlexiteOfficial', external: true }
         ] }
