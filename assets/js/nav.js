@@ -133,7 +133,7 @@
     }).join('');
   }
 
-  var map = { '製品': 'products', '入手': 'get', 'アプリストア': 'apps', 'サポート': 'support' };
+  var map = { '製品': 'products', '入手': 'get', 'サポート': 'support' };
   var triggers = [];
   var timer = null;
   var current = null;
