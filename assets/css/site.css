@@ -603,16 +603,6 @@ a.badge:hover { background: rgba(22,24,27,.10); }
 .store-pill--soon { background: rgba(154,106,23,.12); color: #8a5d12; }
 .store-pill--dark { background: rgba(255,255,255,.16); color: #fff; }
 
-.store-chart { list-style: none; margin: 0; padding: 0; }
-.store-chart li { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
-.store-chart__rank { width: 22px; flex: none; font-size: 17px; font-weight: 700; color: var(--ink-3); }
-.store-chart__icon { width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; color: #fff; flex: none; }
-.store-chart__icon svg { width: 24px; height: 24px; }
-.store-chart__body { min-width: 0; }
-.store-chart__body h3 { margin: 0; font-size: 16px; line-height: 1.4; }
-.store-chart__body p { margin: 2px 0 0; font-size: 12px; color: var(--ink-3); }
-.store-chart .store-pill { margin-left: auto; }
-
 .store-cats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .store-cat { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 18px; background: #f5f5f7; text-decoration: none; color: var(--ink); }
 .store-cat__icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: #fff; flex: none; }
