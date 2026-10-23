@@ -22,6 +22,7 @@ GitHub Pages で公開している静的なサイト。**公開 URL は `https:/
 | `developers/rules.html`（7章 守ること） | 公開中 |
 | `developers/reference.html`（9章 リファレンス） | 公開中 |
 | `releases/index.html`（リリースノート） | 公開中。0.3.0・0.2.0・開発キット・時計 |
+| `contact/index.html`（お問い合わせ） | 下書き。`noindex`・リンクなし（Worker の `/v1/contact` 待ち） |
 | プライバシーポリシー・利用規約・お布施 | 未着手（今は ulexite-catalog の Pages にリンクしている） |
 
 ## 公開のしかた

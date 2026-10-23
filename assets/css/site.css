@@ -37,6 +37,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -424,6 +425,31 @@ h1, h2, h3 { word-break: auto-phrase; text-wrap: balance; font-feature-settings:
   .prose th { white-space: normal; }
   .toc { padding: 20px; }
 }
+
+/* ---------- お問い合わせフォーム ---------- */
+.form { max-width: 720px; margin: 0 auto; display: grid; gap: 26px; }
+.field { display: grid; gap: 8px; border: 0; padding: 0; margin: 0; }
+.field > label, .field > legend, .field__label { font-weight: 700; font-size: 15px; padding: 0; }
+.field__hint { font-size: 13px; color: var(--ink-3); line-height: 1.7; }
+.field input[type="text"], .field input[type="email"], .field textarea {
+  width: 100%; border: 1px solid rgba(22, 24, 27, .18); border-radius: 10px;
+  background: #fff; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--ink);
+}
+.field textarea { min-height: 150px; resize: vertical; line-height: 1.7; }
+.field input:focus, .field textarea:focus { outline: 3px solid var(--accent-ink); outline-offset: 2px; border-color: transparent; }
+.choices { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+.choice { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink-2); }
+.choice input { width: 18px; height: 18px; accent-color: var(--accent-ink); flex: none; }
+.required { color: #a03a2a; font-size: 12px; font-weight: 600; margin-left: 6px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form__actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.form__status { font-size: 15px; line-height: 1.7; color: var(--ink-2); }
+.form__status--error { color: #a03a2a; }
+.form__status--ok { color: #1f6b45; }
+.form__note { font-size: 13px; color: var(--ink-3); line-height: 1.8; }
+.form__done { border: 1px solid var(--line); border-radius: var(--radius-m); padding: 28px; background: var(--paper-2); }
+.form__done h2 { margin-top: 0; }
+.btn[disabled] { opacity: .55; cursor: default; }
 
 /* ---------- 出てくるときの動き ---------- */
 @media (prefers-reduced-motion: no-preference) {
