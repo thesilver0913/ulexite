@@ -2,10 +2,11 @@
 
 GitHub Pages で公開している静的なサイト。**公開 URL は `https://thesilver0913.github.io/ulexite/`**（リポジトリ `thesilver0913/ulexite`、`main` の root）。書くのは claude.ai の広報のセッション。ロードマップ 19（構想ノート 36）。
 
-- HTML と CSS だけ（ビルドなし）。外部のフォントや解析は読み込まない（プライバシーポリシーを簡単に保つため）
+- HTML・CSS と、小さな JavaScript（ビルドなし）。外部のフォントや解析は読み込まない（プライバシーポリシーを簡単に保つため）
 - 色は Ulexite Store の「素材と色」とロゴ（`docs/design/logo-v2/`）に合わせている。共通の見た目は `assets/css/site.css`（下層ページ用の `.prose`・`.release` などもここ）
 - 画面の見本は HTML と CSS で描いた「イメージ」。ワールドで撮った本物の画面ができたら差し替える（デザインキャンバスの PNG は `[...]` の仮の文字が入っているので使わない）
 - 英語は後から `en/` に足す
+- ヘッダーのメガメニューは `assets/js/nav.js`。`?menu=tv` を付けると、開いた状態で見られる
 - ページを作り直したら `python tools/check.py` で、リンク切れ・`id` の重複・タグの対応を確かめる
 - **リンクはフォルダではなく `index.html` まで書く**（`developers/index.html`）。`developers/` だと、GitHub Pages では動くが、手元の HTML をブラウザで開いたときにフォルダの一覧になってしまう
 
