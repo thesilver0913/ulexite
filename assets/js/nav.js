@@ -150,8 +150,10 @@
   var triggers = [];
   var timer = null;
   var current = null;
+  var suppressOpen = false;
 
   function open(key) {
+    if (suppressOpen) return;
     var menu = MENUS[key];
     if (!menu) return;
     render(menu);
@@ -204,9 +206,11 @@
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape' || !current) return;
     var key = current;
+    suppressOpen = true;
     close();
     var trigger = triggers.filter(function (a) { return a.getAttribute('data-menu') === key; })[0];
     if (trigger) trigger.focus();
+    suppressOpen = false;
   });
   window.addEventListener('scroll', close, { passive: true });
 
