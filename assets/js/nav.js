@@ -11,8 +11,8 @@
   var prefix = brandHref.replace(/index\.html$/, '');
 
   var MENUS = {
-    tv: {
-      eyebrow: 'Ulexite TV',
+    products: {
+      eyebrow: 'Products',
       title: 'ワールドに、テレビを。',
       lead: 'VRChat のワールドに置く、アプリで広がるテレビ。リモコンひとつで、みんなで同じ画面を見られます。',
       groups: [
@@ -21,61 +21,10 @@
           { label: 'できること', note: 'アプリ・操作・置き場所', href: 'index.html#features' },
           { label: 'Ulexite Store', note: '触って試せるデモワールド', href: 'index.html#store' }
         ] },
-        { title: 'つかう', links: [
-          { label: '入手方法', note: 'テスト版の配布', href: 'index.html#get' },
-          { label: '導入ガイド', note: 'ワールドへの入れ方', href: 'guide/index.html' },
-          { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
-        ] }
-      ]
-    },
-    apps: {
-      eyebrow: 'Apps',
-      title: 'アプリで、広がる。',
-      lead: '動画も、天気も、音楽も。ホームに並ぶアプリから選ぶだけ。ワールドの制作者が、置くアプリを選べます。',
-      groups: [
-        { title: 'はじめから入っている', links: [
-          { label: '動画', note: 'おすすめから選んで再生', href: 'index.html#apps' },
-          { label: 'URL プレイヤー', note: '貼った URL をそのまま', href: 'index.html#apps' },
-          { label: 'VRC 放送局', note: '番組表から選ぶ', href: 'index.html#apps' },
-          { label: 'ライブラリ', note: '制作者の動画をいつでも', href: 'index.html#apps' }
-        ] },
         { title: 'これから', links: [
-          { label: '時計', note: '世界時計・アラーム・タイマー', href: 'index.html#apps' },
-          { label: '天気', note: '予報と警報・注意報', href: 'index.html#apps' },
-          { label: '音楽・ラジオ', note: '流しっぱなしにしたい音', href: 'index.html#apps' }
-        ] }
-      ]
-    },
-    dev: {
-      eyebrow: 'Developers',
-      title: 'アプリを、つくる。',
-      lead: '画面のデータを書くだけのアプリから、U# で書く本格的なアプリまで。開発者ガイドにまとめています。',
-      groups: [
-        { title: '読む', links: [
-          { label: '開発者ガイド', note: '全体像と章の一覧', href: 'developers/index.html' },
-          { label: '3章 ワールドのアプリ（U#）', note: 'U# で作る', href: 'developers/world-native.html' },
-          { label: '4章 データで書くアプリ', note: 'JSON で作る', href: 'developers/declarative.html' },
-          { label: '9章 リファレンス', note: 'コードから書き出した一覧', href: 'developers/reference.html' }
-        ] },
-        { title: 'しらべる', links: [
-          { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' },
-          { label: 'Ulexite Store', note: 'デモワールド', href: 'index.html#store' },
-          { label: 'Ulexite TV とは', note: 'テレビの全体像', href: 'index.html#tv' }
-        ] }
-      ]
-    },
-    roadmap: {
-      eyebrow: 'Roadmap',
-      title: 'Ulexite のこれから。',
-      lead: 'テレビから、アバターの手元へ。順番は変わることがあります。',
-      groups: [
-        { title: 'これから', links: [
-          { label: 'Ulexite のこれから', note: 'ロードマップ', href: 'index.html#roadmap' },
+          { label: 'アプリ', note: '入っているアプリと、これから', href: 'index.html#apps' },
+          { label: 'ロードマップ', note: 'Ulexite のこれから', href: 'index.html#roadmap' },
           { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
-        ] },
-        { title: 'いま', links: [
-          { label: 'Ulexite Store', note: 'Community Labs で公開中', href: 'index.html#store' },
-          { label: 'Ulexite TV とは', note: 'テレビの全体像', href: 'index.html#tv' }
         ] }
       ]
     },
@@ -93,6 +42,41 @@
           { label: 'BOOTH（準備中）', note: '商品ページは公開前', href: 'index.html#get' },
           { label: 'VCC に追加（準備中）', note: '公開後にここから', href: 'index.html#get' },
           { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
+        ] }
+      ]
+    },
+    apps: {
+      eyebrow: 'App Store',
+      title: 'アプリで、広がる。',
+      lead: '動画も、天気も、音楽も。ホームに並ぶアプリから選ぶだけ。アプリストアは公開の準備をしています。',
+      groups: [
+        { title: 'アプリ', links: [
+          { label: 'アプリ一覧', note: '入っているアプリと、これから', href: 'index.html#apps' },
+          { label: '動画', note: 'おすすめから選んで再生', href: 'index.html#apps' },
+          { label: '時計・天気', note: 'くらしのアプリ', href: 'index.html#apps' },
+          { label: '音楽・ラジオ', note: '流しっぱなしにしたい音', href: 'index.html#apps' }
+        ] },
+        { title: 'つくる', links: [
+          { label: '開発者ガイド', note: '全体像と章の一覧', href: 'developers/index.html' },
+          { label: '3章 ワールドのアプリ（U#）', note: 'U# で作る', href: 'developers/world-native.html' },
+          { label: '4章 データで書くアプリ', note: 'JSON で作る', href: 'developers/declarative.html' },
+          { label: '9章 リファレンス', note: 'コードから書き出した一覧', href: 'developers/reference.html' }
+        ] }
+      ]
+    },
+    support: {
+      eyebrow: 'Support',
+      title: '使い方とサポート。',
+      lead: '導入ガイド、開発者ガイド、リリースノート。困ったときは、まずガイドを確かめてください。',
+      groups: [
+        { title: '使い方', links: [
+          { label: '導入ガイド', note: 'ワールドへの入れ方', href: 'guide/index.html' },
+          { label: '開発者ガイド', note: 'アプリの作り方', href: 'developers/index.html' },
+          { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
+        ] },
+        { title: '困ったとき', links: [
+          { label: 'Ulexite Store', note: '触って確かめる', href: 'index.html#store' },
+          { label: 'X @UlexiteOfficial', note: '最新のお知らせ', href: 'https://x.com/UlexiteOfficial', external: true }
         ] }
       ]
     }
@@ -130,7 +114,9 @@
   var groupsEl = panel.querySelector('.nav__panel__groups');
 
   function linkHtml(link) {
-    return '<li><a href="' + prefix + link.href + '">' +
+    var href = link.external ? link.href : prefix + link.href;
+    var attrs = link.external ? ' target="_blank" rel="noopener"' : '';
+    return '<li><a href="' + href + '"' + attrs + '>' +
       '<span class="nav__panel__label">' + link.label + '</span>' +
       '<span class="nav__panel__note">' + link.note + '</span>' +
     '</a></li>';
@@ -146,7 +132,7 @@
     }).join('');
   }
 
-  var map = { 'Ulexite TV': 'tv', 'アプリ': 'apps', '開発者': 'dev', 'ロードマップ': 'roadmap', '入手': 'get' };
+  var map = { '製品': 'products', '入手': 'get', 'アプリストア': 'apps', 'サポート': 'support' };
   var triggers = [];
   var timer = null;
   var current = null;
@@ -214,7 +200,7 @@
   });
   window.addEventListener('scroll', close, { passive: true });
 
-  // 動作確認用（?menu=tv などで開いた状態を出せる）
+  // 動作確認用（?menu=products などで開いた状態を出せる）
   var initial = new URLSearchParams(window.location.search).get('menu');
   if (initial && MENUS[initial]) open(initial);
 })();
