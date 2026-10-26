@@ -11,8 +11,8 @@
   <meta property="og:description" content="Ulexite のアプリを作る人のためのガイド。アプリの種類、層の分け方、マニフェスト。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261023a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261023a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/">
@@ -70,7 +70,7 @@
           <tr><td>2. 最初のアプリを作る</td><td>データで書くアプリを1つ作り、エミュレーターで確かめるまで</td><td>準備中</td></tr>
           <tr><td><a href="world-native.html">3. ワールドのアプリ（U#）</a></td><td>パッケージの形、Builder、App Services、フォーカス、ダイアログ、はまりどころ</td><td>読めます</td></tr>
           <tr><td><a href="declarative.html">4. データで書くアプリ</a></td><td>画面の型、部品、値のはめ込み、feed の形</td><td>読めます</td></tr>
-          <tr><td>5. Companion のアプリ</td><td>タブレット・スマホ・ウォッチのアプリ</td><td>準備中</td></tr>
+          <tr><td>5. Companion のアプリ（今後）</td><td>—</td><td>今後</td></tr>
           <tr><td><a href="design.html">6. デザイン言語</a></td><td>色、文字、形、端末ごとの決まり</td><td>読めます</td></tr>
           <tr><td><a href="rules.html">7. 守ること</a></td><td>重くしない決まり、保存の予算、外部サービスの決まり、権限</td><td>読めます</td></tr>
           <tr><td>8. 公開する</td><td>マニフェスト、ストアへの申請と審査、提携アプリ、有料アプリ</td><td>準備中</td></tr>
@@ -81,24 +81,10 @@
 
     <h2 id="what">Ulexite とは</h2>
     <p>Ulexite は、VRChat の中で使う家電と端末のシリーズです。最初の製品は Android TV 風のテレビ（セットトップボックス）<strong>Ulexite TV</strong> で、ワールドに置いて、リモコンで操作します。動画の再生と同期は VizVid が受け持ち、Ulexite は「テレビを見る体験」（ホーム画面、リモコン、アプリ）を受け持ちます。</p>
-    <p>これらの製品で動く共通の仕組みを <strong>Ulexite OS</strong> と呼びます。アプリは Ulexite OS の上で動くので、1つのアプリが複数の製品・端末で動くことを目指しています。</p>
+    <p>これらの製品で動く共通の仕組みを <strong>Ulexite OS</strong> と呼びます。アプリは Ulexite OS の上で動きます。</p>
 
-    <h2 id="environments">2つの実行環境</h2>
-    <p>Ulexite OS は、性質のまったく違う2つの場所で動きます。</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th></th><th>ワールド環境</th><th>コンパニオン環境</th></tr></thead>
-        <tbody>
-          <tr><td>どこで動くか</td><td>VRChat のワールドの中（Udon）</td><td>利用者の PC（外部プログラム「Ulexite Companion」）</td></tr>
-          <tr><td>端末</td><td>Ulexite TV、Ulexite Player（レコーダー）など</td><td>アバター用のタブレット・スマホ・ウォッチ</td></tr>
-          <tr><td>誰の画面か</td><td>ワールドの全員が同じ画面を見る</td><td>端末を持っている本人だけが見る</td></tr>
-          <tr><td>インターネット</td><td>決まったサイトのファイルを読むだけ（5秒に1回）</td><td>自由に通信できる（許可した相手だけ）</td></tr>
-          <tr><td>書く言語</td><td>UdonSharp（U#）</td><td>C#（.NET）</td></tr>
-          <tr><td>状態</td><td>動いています</td><td>設計中</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p><strong>2つの環境は直接つながりません。</strong>Udon は外の世界と通信できず、外部プログラムはワールドに触れられないためです。たとえば「タブレットで選んだ動画をワールドのテレビで流す」ことはできません。両方に同じ情報を出したいときは、共通のサーバーにデータを置いて、それぞれが読みます（ワールド側は10分ほど遅れます）。</p>
+    <h2 id="environments">動く場所</h2>
+    <p>Ulexite TV のアプリは、VRChat のワールドの中で Udon（UdonSharp）として動きます。ワールドの全員が同じ画面を見ます。</p>
 
     <h2 id="kinds">アプリの種類</h2>
     <p>アプリの作り方は2つあります。両方を組み合わせることもできます。</p>
@@ -107,7 +93,7 @@
     <p>画面を「決まった型と部品の組み合わせ」で JSON に書き、表示する値は feed（データの JSON ファイル）から読みます。<strong>プログラムは書きません。</strong></p>
     <ul>
       <li>向いているもの：天気、航空気象（METAR）、運行情報、ニュース、ランキングなど「データを見る」アプリ</li>
-      <li>良いところ：同じ定義が、テレビでもタブレットでも動く（予定）。安全で、審査も通りやすい。重くなりにくい</li>
+      <li>良いところ：安全で、審査も通りやすい。重くなりにくい</li>
       <li>できないこと：ゲーム、凝った動き、自由な配置、端末の上での計算（計算はサーバーで済ませておく）</li>
     </ul>
     <p><a href="declarative.html">4章 データで書くアプリ</a></p>
@@ -116,8 +102,7 @@
     <p>画面とふるまいを、環境ごとにプログラムで書きます。</p>
     <ul>
       <li>ワールド環境：UdonSharp（U#）で書きます。画面はエディタ上で作って焼き込みます</li>
-      <li>コンパニオン環境：C# で書きます。最初は公式アプリだけです（ほかの作者には段階を追って開きます）</li>
-      <li>向いているもの：ゲーム、メディア再生、時計・タイマーのような手元で動くもの</li>
+      <li>向いているもの：ゲーム、メディア再生、時計・タイマーのような動きのあるもの</li>
       <li>例：時計アプリ</li>
     </ul>
     <p><a href="world-native.html">3章 ワールドのアプリ（U#）</a></p>
@@ -166,7 +151,6 @@
     <h2 id="distribute">配り方</h2>
     <ul>
       <li><strong>ワールド環境</strong>：アプリは VPM パッケージ（<code>vrc.ulexite.app.&lt;アプリID&gt;</code>）です。ワールドの制作者が Unity のアプリストア（エディタ拡張）から入れて、ワールドを上げ直すと訪問者に届きます。公開後のワールドの中で、アプリを入れ替えることはできません</li>
-      <li><strong>コンパニオン環境</strong>：アプリは <code>.ulxapp</code> というファイルです。利用者が PC の管理画面のストアから入れます。更新はその場で届きます</li>
       <li>最初は公式アプリと、Ulexite が審査した<strong>提携アプリ</strong>だけを受け付けます（8章。準備中）</li>
     </ul>
 
@@ -185,7 +169,7 @@
       <table>
         <thead><tr><th>用語</th><th>意味</th></tr></thead>
         <tbody>
-          <tr><td>端末</td><td>Ulexite OS が動く1台。テレビ、レコーダー、アバターのタブレットなど</td></tr>
+          <tr><td>端末</td><td>Ulexite OS が動く1台。テレビなど</td></tr>
           <tr><td>シェル</td><td>端末ごとのホーム画面と画面の枠</td></tr>
           <tr><td>feed</td><td>アプリが読むデータの JSON。共通サーバーに置く</td></tr>
           <tr><td>共通の feed</td><td>どのアプリからも読める feed（地震・津波・警報など）。OS が1分おきに読んでいる</td></tr>
@@ -273,6 +257,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261023a" defer></script>
+  <script src="../assets/js/nav.js?v=20261026a" defer></script>
 </body>
 </html>

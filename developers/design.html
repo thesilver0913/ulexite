@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>デザイン言語 — Ulexite 開発者ガイド</title>
-  <meta name="description" content="Ulexite の画面の決まり。色、文字、形、フォーカス、文言の書き方、アバターの端末での決まり。">
+  <meta name="description" content="Ulexite の画面の決まり。色、文字、形、フォーカス、文言の書き方。">
   <meta name="theme-color" content="#f5f3ef">
   <link rel="icon" href="../assets/img/logo/ulexite-icon-light.svg" type="image/svg+xml">
   <meta property="og:title" content="デザイン言語 — Ulexite 開発者ガイド">
   <meta property="og:description" content="Ulexite の画面の決まり。色、文字、形、フォーカス、文言。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261023a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261023a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/design.html">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/design.html">
@@ -123,30 +123,8 @@
       <li>外部のデータを使う画面には出典を出します（<a href="rules.html">7章</a>）</li>
     </ul>
 
-    <h2>アバターの端末（コンパニオン環境）</h2>
-    <p>タブレット・スマホ・ウォッチも、色・文字・形はテレビと同じです。違うのは「指で触る」ことと「画像を出せない」ことです。</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th></th><th>タブレット</th><th>スマホ</th><th>ウォッチ</th></tr></thead>
-        <tbody>
-          <tr><td>画面の大きさ（論理）</td><td>1280×800</td><td>720×1280</td><td>400×480</td></tr>
-          <tr><td>格子</td><td>8 px</td><td>8 px</td><td>8 px</td></tr>
-          <tr><td>いちばん小さい文字</td><td>24 px</td><td>28 px</td><td>32 px</td></tr>
-          <tr><td>押せる大きさ</td><td>96 px 以上</td><td>112 px 以上</td><td>画面の 1/3</td></tr>
-          <tr><td>1画面の文字数の目安</td><td>約 240 字</td><td>約 200 字</td><td>約 40 字</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <ul>
-      <li><strong>フォーカスの白い枠は使いません</strong>（指で触るため）。押している間だけ、強調の色にします</li>
-      <li>画面は Ulexite UI シェーダーが描きます。描けるのは、角丸の四角・丸・線、焼き込みの字、焼き込みの記号（64種）、簡単な動き（押したときの色、フェード）です</li>
-      <li><strong>写真・サムネイル・動画は出せません</strong>。アイコンも焼き込みの記号から選びます</li>
-      <li>色は 16 色まで（テレビと同じ 8 色＋文字の濃淡）</li>
-      <li>ウォッチは「1画面に1つのこと」。長い文は出さず、全文はタブレットか PC の管理画面で読んでもらいます</li>
-    </ul>
-    <div class="note">
-      <p>この表の数字は仮で、Companion の実装に合わせて決めます。</p>
-    </div>
+    <h2>今後</h2>
+    <p>Companion とアバター端末の画面は、公開時にまとめます。</p>
 
     <h2>音</h2>
     <p>既定の操作音は Ulexite が持っています（カーソル移動・決定・お知らせ・エラー・タイマー終了・アラーム）。アプリは App Services の操作音の窓口から鳴らし、自分で別の音を持ち込まないでください。</p>
@@ -217,6 +195,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261023a" defer></script>
+  <script src="../assets/js/nav.js?v=20261026a" defer></script>
 </body>
 </html>

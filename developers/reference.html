@@ -11,8 +11,8 @@
   <meta property="og:description" content="Ulexite のアプリを作るための一覧。マニフェスト、App Services、データで書くアプリ、色、アイコン。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261023a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261023a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/reference.html">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/reference.html">
@@ -95,12 +95,11 @@
     <tr><td><code>publisher</code></td><td>object</td><td><strong>必須</strong></td><td>—</td><td><code>{ "name": "...", "url": "..." }</code>。<code>name</code> は <code>package.json</code> の <code>author.name</code>（または <code>Ulexite Technologies</code>）と同じ</td></tr>
     <tr><td><code>kind</code></td><td>string</td><td><strong>必須</strong></td><td>—</td><td><code>native</code>（U# で書く）か <code>declarative</code>（データで書く）</td></tr>
     <tr><td><code>runtimes.world</code></td><td>object</td><td><strong>必須</strong></td><td>—</td><td>下の表。無いとワールドでは使えません</td></tr>
-    <tr><td><code>profiles</code></td><td>string[]</td><td><strong>必須</strong></td><td>—</td><td>出す端末。<code>tv</code>・<code>player</code>・<code>world-tablet</code>・<code>avatar-tablet</code>・<code>phone</code>・<code>watch</code>。<strong><code>tv</code> が無いとテレビに出ません</strong></td></tr>
+    <tr><td><code>profiles</code></td><td>string[]</td><td><strong>必須</strong></td><td>—</td><td>出す端末。今は <code>tv</code> だけです。<strong><code>tv</code> が無いとテレビに出ません</strong></td></tr>
     <tr><td><code>permissions</code></td><td>string[]</td><td>任意</td><td><code>[]</code></td><td><strong>ワールドでは空</strong>にします（入れるとエラー）</td></tr>
     <tr><td><code>preinstalled</code></td><td>bool</td><td>任意</td><td><code>false</code></td><td>同梱（プリインストール）のアプリか。アプリ情報のラベルが「プリインストール」になります</td></tr>
     <tr><td><code>icon</code></td><td>string</td><td>任意</td><td><code>""</code></td><td>パッケージからの相対パス（例：<code>Textures/icon.png</code>）</td></tr>
     <tr><td><code>category</code></td><td>string</td><td>任意</td><td><code>""</code></td><td>アプリストアの分類（例：<code>media</code>・<code>info</code>・<code>tools</code>）</td></tr>
-    <tr><td><code>background</code></td><td>bool</td><td>任意</td><td><code>false</code></td><td>Companion で常駐を許すか（<strong>ワールドでは使いません</strong>）</td></tr>
     </tbody></table></div>
     <h3><code>runtimes.world</code></h3>
     <div class="table-wrap">
@@ -158,8 +157,6 @@
     <tbody>
     <tr><td><code>pricing</code></td><td>object</td><td>有料アプリ。<code>type</code> は <code>free</code>・<code>paid</code>・<code>freemium</code>。有料なら <code>seller</code>（販売元）と <code>url</code>（購入ページ）が必須。Ulexite はお金を扱いません</td></tr>
     <tr><td><code>license</code></td><td>object</td><td>有料アプリの確かめ方。<code>type</code> は <code>key</code>（ライセンスキー）・<code>account</code>（販売元のアカウント）、<code>verify</code> は確かめる先</td></tr>
-    <tr><td><code>symbol</code></td><td>object</td><td>Companion のアイコン。<code>index</code>（記号の番号。既定 <code>-1</code>）・<code>color</code>（テーマの色の番号）</td></tr>
-    <tr><td><code>crossMenu</code></td><td>object</td><td>Ulexite Player の Cross Menu。<code>categories</code>（string[]）・<code>items</code></td></tr>
     </tbody></table></div>
     <hr>
     <h2>9.2 App Services（<code>services</code>）</h2>
@@ -584,6 +581,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261023a" defer></script>
+  <script src="../assets/js/nav.js?v=20261026a" defer></script>
 </body>
 </html>
