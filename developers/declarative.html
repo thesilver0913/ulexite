@@ -11,8 +11,8 @@
   <meta property="og:description" content="画面の型、部品、値のはめ込み、feed の形、確かめ方。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261101a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261101a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/declarative.html">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/declarative.html">
@@ -229,7 +229,7 @@
     </ul>
 
     <h2>feed の形</h2>
-    <p>feed はサーバーが作る JSON です。決まりは3つです。</p>
+    <p>feed はサーバーが作る JSON です。ほかの作者のアプリの feed は、アプリの開発者が信頼済みドメイン（自分の GitHub Pages など）に置き、URL を定義に書きます。共通の feed は Ulexite 公式が用意するものだけです。決まりは3つです。</p>
     <ol>
       <li><code>version</code> を入れる。項目は<strong>足すだけ</strong>にして、意味を変えない</li>
       <li>計算済みの値を入れる（端末は計算しない）</li>
@@ -254,7 +254,7 @@
       <li>定義と同じフォルダに feed の見本を置きます：<code>feed.sample.json</code>（全部の data）、<code>feed.&lt;data の id&gt;.sample.json</code>（その data だけ）、<code>common.sample.json</code>（共通の feed）</li>
       <li><strong>Tools → Ulexite → データで書くアプリのプレビュー</strong> で、Play せずに見本の値をはめた画面が見られます。タブや選んでいる行も切り替えられます</li>
       <li>同じ窓に検査の結果が出ます：道筋が見本に実在するか、URL のドメイン、文字のはみ出し</li>
-      <li><strong>Tools → Ulexite → テレビを作り直す</strong> でテレビに組み込み、ClientSim や Build &amp; Test で確かめます</li>
+      <li><strong>Tools → Ulexite → テレビを作り直す（再設置と再紐づけ）</strong> でテレビに組み込み、ClientSim や Build &amp; Test で確かめます</li>
     </ol>
 
     <h2>地図（<code>map</code> 型）</h2>
@@ -338,6 +338,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261026a" defer></script>
+  <script src="../assets/js/nav.js?v=20261101a" defer></script>
 </body>
 </html>

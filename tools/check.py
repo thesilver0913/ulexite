@@ -81,7 +81,7 @@ def main():
                 c.errors.append("id が重複: %s" % i)
 
         for link in c.links:
-            if re.match(r"^(https?:|mailto:|data:|//)", link):
+            if re.match(r"^(https?:|mailto:|data:|vcc:|//)", link):
                 continue
             if link.endswith("/"):
                 c.errors.append("末尾が / のリンク（手元のファイルで開くと一覧になる）: %s" % link)

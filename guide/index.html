@@ -11,8 +11,8 @@
   <meta property="og:description" content="Ulexite TV をワールドに置くまでの手順。必要なもの、入れ方、画面の映し方、リモコンの使い方。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261101a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261101a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/guide/">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/guide/">
@@ -51,7 +51,7 @@
       </nav>
       <h1 class="page-title">導入ガイド</h1>
       <p class="page-lead">Ulexite TV は、VRChat のワールドに置くテレビです。ワールドにある動画プレイヤーの画面に、本体の電源を入れているあいだだけ Ulexite の画面を映します。</p>
-      <p class="page-meta"><span class="badge">テスト版 0.3.0</span><span>最終更新：2026年10月23日</span></p>
+      <p class="page-meta"><span class="badge">ベータ版 0.4.0</span><span>最終更新：2026年11月1日</span></p>
     </div>
   </div>
 
@@ -62,8 +62,8 @@
       <ol>
         <li><a href="#before">はじめに</a></li>
         <li><a href="#needs">必要なもの</a></li>
-        <li><a href="#install">入れ方（テスト版）</a></li>
-        <li><a href="#public">公開後の入れ方（準備中）</a></li>
+        <li><a href="#install">入れ方（VCC）</a></li>
+        <li><a href="#booth">BOOTH（準備中）</a></li>
         <li><a href="#screen">画面の映し方</a></li>
         <li><a href="#howto">使い方</a></li>
         <li><a href="#video">動画アプリを使うとき</a></li>
@@ -75,7 +75,7 @@
 
     <h2 id="before">はじめに</h2>
     <p>Ulexite TV は、VRChat のワールドに置く、Android TV 風のテレビ（セットトップボックス）です。ホームにアプリが並び、リモコンの十字キーと決定だけで操作できます。動画の再生と同期は <a href="https://xtlcdn.github.io/VizVid/" rel="noopener">VizVid</a>（MIT ライセンス）が受け持ち、Ulexite は「テレビを見る体験」を受け持ちます。</p>
-    <p>いまは<strong>テスト版</strong>を、試してくださる方に個別にお渡ししている段階です。VCC と BOOTH からの配布は、公開の準備ができてから始めます。<a href="https://vrchat.com/home/world/wrld_aeeca037-b839-4343-af76-f7ad958c8e34/info" target="_blank" rel="noopener"><strong>Ulexite Store</strong></a>（デモワールド）は、VRChat の Community Labs で公開しています。</p>
+    <p>Ulexite TV 0.4.0（ベータ版）を、VCC で公開中です。BOOTH は準備中です。<a href="https://vrchat.com/home/world/wrld_aeeca037-b839-4343-af76-f7ad958c8e34/info" target="_blank" rel="noopener"><strong>Ulexite Store</strong></a>（デモワールド）は、VRChat の Community Labs で公開しています。</p>
 
     <div class="note">
       <p>Ulexite は<strong>架空のブランド</strong>です。実在の企業とは関係ありません。制作は葛城ひなた（<a href="https://x.com/k_hinata_vrc" rel="noopener">@k_hinata_vrc</a>）です。</p>
@@ -92,31 +92,37 @@
           <tr><td>VRChat Worlds SDK</td><td>3.10.5 以上（UdonSharp は SDK に含まれます）</td></tr>
           <tr><td>VizVid（<code>idv.jlchntoz.vvmw</code>）</td><td>1.8.2 以上 1.9 未満。<a href="https://xtlcdn.github.io/VizVid/docs/" rel="noopener">公式の説明</a>に沿って VCC から追加します</td></tr>
           <tr><td>VCC（VRChat Creator Companion）</td><td>ワールドのプロジェクトを作るのに使います</td></tr>
+          <tr><td>YouTube のロゴ</td><td>動画アプリを使う場合に入れます。公式のブランドページから別途ダウンロードします（手順は<a href="#video">動画アプリを使うとき</a>）</td></tr>
         </tbody>
       </table>
     </div>
 
-    <h2 id="install">入れ方（テスト版）</h2>
+    <h2 id="install">入れ方（VCC）</h2>
+    <p>VCC に <a href="vcc://vpm/addRepo?url=https%3A%2F%2Fthesilver0913.github.io%2Fulexite-store%2Findex.json">Ulexite の VPM リポジトリ</a>と、<a href="vcc://vpm/addRepo?url=https%3A%2F%2Fxtlcdn.github.io%2Fvpm%2Findex.json">VizVid の VPM リポジトリ</a>を追加してから入れます。</p>
     <ol class="steps steps--wide">
       <li>
-        <h3>VCC でプロジェクトを用意する</h3>
-        <p>VCC でワールドのプロジェクトを作り、「Manage Project」から VizVid を追加します（必要なパッケージも一緒に入ります）。</p>
+        <h3>Ulexite のリポジトリを追加する</h3>
+        <p>上の「Ulexite の VPM リポジトリ」を開き、VCC に追加します。</p>
+      </li>
+      <li>
+        <h3>VizVid のリポジトリも追加する</h3>
+        <p>上の「VizVid の VPM リポジトリ」を開いて追加します。未追加だと、Ulexite TV の依存が解決できません。</p>
+      </li>
+      <li>
+        <h3>ワールドのプロジェクトに Ulexite TV を入れる</h3>
+        <p>VCC のプロジェクトで「Ulexite TV」を追加します。動画・URL プレイヤー・VRC 放送局・ライブラリ・時計・天気の6アプリは、依存で一緒に入ります。</p>
       </li>
       <li>
         <h3>Unity でプロジェクトを開く</h3>
         <p>Unity 2022.3.22f1 でプロジェクトを開きます。</p>
       </li>
       <li>
-        <h3>.unitypackage を入れる</h3>
-        <p><code>UlexiteTV-0.3.0.unitypackage</code> を Project ウィンドウにドラッグし、「Import」を押します。<code>Packages/Ulexite TV</code> に入ります。</p>
-      </li>
-      <li>
         <h3>VizVid のプレイヤーを置く</h3>
         <p>VizVid の説明に沿って、プレイヤーをシーンに1つ置きます。VizVid の画面や操作パネルは使わないので、見えないところに置いても大丈夫です。<strong>音は VizVid のスピーカーから出るので、スピーカーは映す画面の近くに置いてください。</strong></p>
       </li>
       <li>
-        <h3>本体を作る</h3>
-        <p>上のメニューの「Tools → Ulexite → セットトップボックスを作成」を押し、できた白い本体をテーブルなど置きたい場所へ動かします。</p>
+        <h3>テレビを置く</h3>
+        <p>メニューの「Tools → Ulexite → テレビを作り直す（再設置と再紐づけ）」を押します。テレビ本体・画面・リモコンができます。位置と向きは、親のオブジェクトごと動かして合わせます。</p>
       </li>
       <li>
         <h3>映す画面を選ぶ</h3>
@@ -124,7 +130,7 @@
       </li>
       <li>
         <h3>テレビに反映する</h3>
-        <p>「テレビに反映（作り直す）」を押します。リモコンがなければ本体の右隣に自動で作られます。</p>
+        <p>「テレビに反映（作り直す）」を押します（上のメニューの「Tools → Ulexite → テレビを作り直す（再設置と再紐づけ）」と同じ働きです）。リモコンがなければ本体の右隣に自動で作られます。</p>
         <p>「U# をコンパイルし直しています」と出たら、Console に「Compile of … scripts finished」が出てから、もう一度押してください。</p>
       </li>
       <li>
@@ -134,9 +140,9 @@
     </ol>
     <p>左右・上下が逆に映るときは、<code>Assets/Ulexite/Generated/SetTopBox/UlexiteScreen.mat</code> の Tiling を -1 にしてください。</p>
 
-    <h2 id="public">公開後の入れ方（準備中）</h2>
+    <h2 id="booth">BOOTH（準備中）</h2>
     <div class="note note--soon">
-      <p>公開後は、VCC の「Add to VCC」ボタンと BOOTH のページから入れられるようにする予定です。URL と手順は、公開の準備ができてからここに載せます。</p>
+      <p>BOOTH の商品ページは準備中です。VCC からは、いま入れられます。</p>
     </div>
 
     <h2 id="screen">画面の映し方</h2>
@@ -185,12 +191,12 @@
       <li>映した先の画面では、レーザーで押す操作はできません（操作はリモコンで行います）</li>
       <li>Ulexite の電源を入れても、元のプレイヤーの音は止まりません。両方を流すと音が重なります</li>
       <li>映す画面が曲面だったり、プレイヤーがマテリアルそのものを入れ替える作りだったりすると、うまく映らないことがあります</li>
-      <li>Quest での動作は、これから確認します</li>
+      <li>対応は PC（VR・デスクトップ）です。Quest 単体での動作は確認中です</li>
     </ul>
 
     <h2 id="trouble">うまくいかないとき</h2>
     <ul>
-      <li>まず「Tools → Ulexite → テレビを作り直す」を押し、シーンを保存してから Build &amp; Test で確かめてください</li>
+      <li>まず「Tools → Ulexite → テレビを作り直す（再設置と再紐づけ）」を押し、シーンを保存してから Build &amp; Test で確かめてください</li>
       <li>画面が上下・左右に逆に映るときは、<code>UlexiteScreen.mat</code> の Tiling を -1 にします</li>
       <li>U# をコンパイルし直している間は、Console の「Compile of … scripts finished」を待ってからもう一度押します</li>
     </ul>
@@ -284,6 +290,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261026a" defer></script>
+  <script src="../assets/js/nav.js?v=20261101a" defer></script>
 </body>
 </html>

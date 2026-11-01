@@ -11,8 +11,8 @@
   <meta property="og:description" content="Ulexite のアプリを作るための一覧。マニフェスト、App Services、データで書くアプリ、色、アイコン。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261101a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261101a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/reference.html">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/reference.html">
@@ -256,7 +256,7 @@
     <tr><td><code>_FeedLoadedAt(string appId)</code></td><td>int</td><td>読めた時刻（サーバー時刻のミリ秒）</td></tr>
     <tr><td><code>_CommonFeed()</code></td><td>DataDictionary</td><td>共通の feed（地震・津波・警報・注意報・お知らせ・最新バージョン）</td></tr>
     </tbody></table></div>
-    <p><strong>URL を直接指定するデータ</strong>（マニフェストの <code>data.url</code>。時差の表など。名前は「アプリID-データの id」）</p>
+    <p><strong>URL を直接指定するデータ</strong>（マニフェストの <code>data.url</code>。時差の表など。名前は「アプリID-データの id」。<strong>App Services 3 以降</strong>＝Ulexite TV 0.4.0 から）</p>
     <div class="table-wrap">
     <table>
     <thead><tr><th>窓口</th><th>戻り値</th></tr></thead>
@@ -581,6 +581,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261026a" defer></script>
+  <script src="../assets/js/nav.js?v=20261101a" defer></script>
 </body>
 </html>

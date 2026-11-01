@@ -11,8 +11,8 @@
   <meta property="og:description" content="U# で書くワールドのアプリの作り方。パッケージの形、Builder、App Services、フォーカス、ダイアログ。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261101a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261101a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/world-native.html">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/world-native.html">
@@ -75,7 +75,7 @@
   Localization/&lt;アプリ&gt;-lang.json  アプリの翻訳表（任意）</code></pre>
     <ul>
       <li>パッケージは <code>Packages/</code> に置きます。アプリ ID は英小文字（例 <code>clock</code>）</li>
-      <li>画面は<strong>エディタで作り、実行時には組み立てません</strong>。ビルダーは「Tools → Ulexite → テレビを作り直す」から呼ばれます</li>
+      <li>画面は<strong>エディタで作り、実行時には組み立てません</strong>。ビルダーは「Tools → Ulexite → テレビを作り直す（再設置と再紐づけ）」から呼ばれます</li>
     </ul>
 
     <h2>画面は Builder で作る</h2>
@@ -84,8 +84,8 @@
       <li>部品は <code>UlexiteBuildKit</code>（<code>using K = Ulexite.EditorTools.UlexiteBuildKit;</code>）から：<code>K.Rect</code>・<code>K.Fill</code>・<code>K.Img</code>・<code>K.Tmp</code>・<code>K.Button</code>・<code>K.Icon</code>・<code>K.Rounded</code> など。寸法はデザインキャンバス（1600×900）の数値で書き、<code>K.Scale</code>（1.2 倍）で 1920×1080 にします</li>
       <li><strong><code>K.Set(app, "フィールド名", 値)</code>・<code>K.SetArray(app, "フィールド名", 配列)</code> のフィールド名は文字列です。C# の型チェックでは分かりません。</strong>
         <ul>
-          <li>名前を間違えると <code>SerializedObject.FindProperty</code> が null になり、<strong>「テレビを作り直す」の途中で例外</strong>になって止まります（Console に NullReferenceException）</li>
-          <li><strong><code>K.Set</code> を書き足したら、一度「テレビを作り直す」を実行して Console を見てください</strong>（アプリを開く前でかまいません）。エラーが出なければそのまま進めます</li>
+          <li>名前を間違えると <code>SerializedObject.FindProperty</code> が null になり、<strong>「テレビを作り直す（再設置と再紐づけ）」の途中で例外</strong>になって止まります（Console に NullReferenceException）</li>
+          <li><strong><code>K.Set</code> を書き足したら、一度「テレビを作り直す（再設置と再紐づけ）」を実行して Console を見てください</strong>（アプリを開く前でかまいません）。エラーが出なければそのまま進めます</li>
           <li>フィールドを足したときは、<strong>U# をコンパイルしてプログラムアセットを作り直してから</strong>、テレビを作り直します</li>
         </ul>
       </li>
@@ -185,7 +185,7 @@ public override bool _OnBack()
       <li><code>mode</code> は 0 常に／1 裏でも／2 開いているときだけ。<code>every</code> は目安で、実際の登録はアプリが <code>_RegisterFeed</code> で行います</li>
       <li><strong><code>_FeedJson</code>・<code>_FeedText</code> はアプリ ID の feed（<code>v1/feed/&lt;アプリID&gt;.json</code>）だけ</strong>です。<strong>アプリ ID 以外の feed は読めません</strong>（ここで詰まりやすいところです）
         <ul>
-          <li>ほかの URL（例：時差の表 <code>v1/timezones.json</code>）は、マニフェストの <code>data</code> に <code>id</code>（データの名前）と <code>url</code> を書いて、<code>_RegisterDataFeed(appId, id, mode, interval)</code>・<code>_DataFeedJson(appId, id)</code>・<code>_DataFeedText</code>・<code>_DataFeedStatus</code>・<code>_DataFeedLoadedAt</code>・<code>_ReloadDataFeed</code> で読みます（Ulexite TV の次の版に入るまでは、アプリ ID の feed だけです）。焼き込む名前は <code>&lt;アプリID&gt;-&lt;id&gt;</code> です</li>
+          <li>ほかの URL（例：時差の表 <code>v1/timezones.json</code>）は、マニフェストの <code>data</code> に <code>id</code>（データの名前）と <code>url</code> を書いて、<code>_RegisterDataFeed(appId, id, mode, interval)</code>・<code>_DataFeedJson(appId, id)</code>・<code>_DataFeedText</code>・<code>_DataFeedStatus</code>・<code>_DataFeedLoadedAt</code>・<code>_ReloadDataFeed</code> で読みます（<strong>App Services 3 以降</strong>。Ulexite TV 0.4.0 から使えます。それより前の版では、アプリ ID の feed だけです）。焼き込む名前は <code>&lt;アプリID&gt;-&lt;id&gt;</code> です</li>
         </ul>
       </li>
       <li>読み込みの表示は <code>_LoadingBegin(this, hasData)</code>／<code>_LoadingEnd(this)</code>。15秒で「読み込めませんでした」になり、決定か「再試行」で <code>_OnServicesLoadRetry</code> が届きます</li>
@@ -198,7 +198,7 @@ public override bool _OnBack()
     <h3>保存・設定・音・通知</h3>
     <ul>
       <li><strong>保存</strong>：<code>_SaveInt</code>／<code>_LoadInt</code>／<code>_SaveString</code>／<code>_LoadString</code>。<code>_OnServicesStorageReady</code> を待ってから読み書きします。予算は7章</li>
-      <li><strong>設定</strong>：マニフェストに <code>settings</code> を書くと、OS の共通パネルで編集できます（<code>_OpenSettings(this)</code>）。読みは <code>_SettingInt</code>／<code>_SettingString</code>／<code>_SettingBool</code>、書きは <code>_SetSettingString</code>。<strong><code>order</code> の値はカンマ区切り</strong>（先頭が左側）で、選択ダイアログでは<strong>入っていない項目は末尾に足され、✓ の項目は決定で外れます</strong>（最後の1つは消せない。並べ替えはアプリ側で <code>_SetSettingString</code>）。変えたら <code>_OnServicesSettingsChanged</code> が届きます。設定の種類は <code>choice</code>・<code>toggle</code>・<code>order</code>・<code>time</code>（時刻）です</li>
+      <li><strong>設定</strong>：マニフェストに <code>settings</code> を書くと、OS の共通パネルで編集できます（<code>_OpenSettings(this)</code>）。読みは <code>_SettingInt</code>／<code>_SettingString</code>／<code>_SettingBool</code>、書きは <code>_SetSettingString</code>。<strong><code>order</code> の値はカンマ区切り</strong>（先頭が左側）で、選択ダイアログでは<strong>入っていない項目は末尾に足され、✓ の項目は決定で外れます</strong>（最後の1つは消せない。並べ替えはアプリ側で <code>_SetSettingString</code>）。変えたら <code>_OnServicesSettingsChanged</code> が届きます。設定の種類は <code>choice</code>・<code>toggle</code>・<code>order</code>・<code>time</code>（時刻）です。<strong>マニフェストの <code>label</code>・<code>note</code> には翻訳キーをそのまま書きます（<code>t:</code> を付けません）。</strong>データで書くアプリの定義では <code>t:</code> を付けます（<a href="reference.html">9章</a>の <code>settings</code> の表の下）</li>
       <li><strong>音</strong>：<code>_PlayCursor</code>／<code>_PlayDecide</code>／<code>_PlayNotify</code>／<code>_PlayError</code>、<code>_PlaySound(clip)</code>。<strong>鳴り続ける音</strong>は、アラームのように<strong>その人にだけ</strong>鳴らすなら <code>_PlayLoopLocal(clip, seconds)</code>／<code>_StopLoopLocal()</code>（テレビの位置・その人の操作音の音量。<code>seconds</code> は自動停止で 0 は止めるまで）、全員に鳴らすなら <code>_PlayLoop(clip)</code>／<code>_StopLoop()</code>（操作する人だけ）。アプリ自身の AudioSource で鳴らすと、操作音の音量・音量補正に従いません</li>
       <li><strong>通知・トースト</strong>：<code>_Notify(...)</code>／<code>_Toast(...)</code>。アイコンは <code>UlexiteAlerts.Icon*</code>（<code>IconAlarm</code>・<code>IconCity</code> など）</li>
       <li><strong>確認ダイアログ・文字入力</strong>：<code>_Confirm(...)</code>／<code>_RequestText(...)</code>。答えは渡したイベント名で届き、<code>DialogAccepted</code>／<code>TextResult</code> を読みます</li>
@@ -287,6 +287,6 @@ public override bool _OnBack()
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261026a" defer></script>
+  <script src="../assets/js/nav.js?v=20261101a" defer></script>
 </body>
 </html>

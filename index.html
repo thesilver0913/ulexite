@@ -11,8 +11,8 @@
   <meta property="og:description" content="出来ること、続々。広がる、ワクワク。VRChat のワールドに置ける、アプリで広がるテレビ。">
   <meta property="og:type" content="website">
   <link rel="preload" href="assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/fonts.css?v=20261026a">
-  <link rel="stylesheet" href="assets/css/site.css?v=20261026a">
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261101a">
+  <link rel="stylesheet" href="assets/css/site.css?v=20261101a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/">
@@ -88,7 +88,7 @@
       <div class="section__head reveal" style="margin-bottom:0">
         <p class="eyebrow">Ulexite Store</p>
         <h2 class="headline">ワールドで、さわってみる。</h2>
-        <p class="lead">Ulexite TV を実際に触って試せるデモワールド「Ulexite Store」を、VRChat の Community Labs で公開しています。リビングのテレビ、アプリのカウンター、案内カウンターがあります。</p>
+        <p class="lead">Ulexite TV を実際に触って試せるデモワールド「Ulexite Store」を、VRChat の Community Labs で公開しています。リビングのテレビ、アプリのカウンター、案内カウンターがあります。アプリのカウンターは展示と体験のための場所で、ワールドにアプリを入れる場所ではありません。</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="https://vrchat.com/home/world/wrld_aeeca037-b839-4343-af76-f7ad958c8e34/info" target="_blank" rel="noopener">VRChat で開く</a>
           <a class="btn btn--ghost" href="guide/index.html">導入ガイド</a>
@@ -180,6 +180,7 @@
           <div class="feature__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><path d="M16.75 14v5.5M14 16.75h5.5" stroke-linecap="round"/></svg></div>
           <h3>アプリで広がる</h3>
           <p>動画・ライブ配信・VRC 放送局・ライブラリが最初から入っています。時計や天気などのアプリも、これから増えていきます。</p>
+          <p>アプリの追加は、ワールドの制作者が Unity 上で行います。テレビの中からその場で入れる方式ではありません。</p>
         </article>
         <article class="feature reveal">
           <div class="feature__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="9" r="3"/><circle cx="16.5" cy="9" r="3"/><path d="M3 19c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5M12 19c.6-3 2.6-4.5 4.5-4.5S20.4 16 21 19"/></svg></div>
@@ -310,6 +311,7 @@
           <p class="eyebrow">Ulexite OS</p>
           <h2 class="headline">アプリは、<br>だれでも作れる。</h2>
           <p class="lead">Ulexite TV は Ulexite OS の上で動いています。画面のデータを書くだけのアプリから、UdonSharp で書く本格的なアプリまで。</p>
+          <p style="font-size:14px;opacity:.8">公開の初期は、審査を通った提携アプリから受け付けます。</p>
           <ul class="checks">
             <li>開発キットで、新しいアプリのひな形をすぐに作成</li>
             <li>エディタの上で、ワールドに置く前に画面を確認</li>
@@ -347,17 +349,28 @@
         <p class="get__price">無料</p>
         <p class="get__note">ワールドでの利用は、商用・有料イベントでも大丈夫です。</p>
         <div class="get__actions">
-          <a class="btn btn--primary" href="#get" aria-disabled="true">VCC に追加（準備中）</a>
+          <a class="btn btn--primary" href="vcc://vpm/addRepo?url=https%3A%2F%2Fthesilver0913.github.io%2Fulexite-store%2Findex.json">VCC に追加</a>
+          <a class="btn btn--ghost" href="vcc://vpm/addRepo?url=https%3A%2F%2Fxtlcdn.github.io%2Fvpm%2Findex.json">VizVid を追加</a>
           <!-- 公開したら aria-disabled を外して「BOOTH」に。商品ページの URL -->
           <a class="btn btn--ghost" href="https://ulexite.booth.pm/items/9027626" aria-disabled="true">BOOTH（準備中）</a>
         </div>
-        <p class="muted" style="margin-top:18px;font-size:14px;line-height:1.8">いまはテスト版を、試してくださる方にお渡ししている段階です。VCC と BOOTH からの配布は、公開の準備ができてから始めます。</p>
+        <p class="muted" style="margin-top:18px;font-size:14px;line-height:1.8">Ulexite TV 0.4.0（ベータ版）を、VCC で公開中です。BOOTH は準備中です。VCC では、Ulexite と VizVid の両方のリポジトリを追加してから入れてください。</p>
         <div class="get__cols">
-          <div class="get__col"><h3>必要なもの</h3><p>Unity 2022.3、VRChat Worlds SDK、VizVid。VizVid は VCC から一緒に入ります。</p></div>
+          <div class="get__col"><h3>必要なもの</h3><p>Unity 2022.3、VRChat Worlds SDK、VizVid。VizVid の VPM リポジトリも VCC に追加します。</p><p>対応：PC（VR・デスクトップ）。Quest 単体での動作は確認中です。</p></div>
           <div class="get__col"><h3>ライセンス</h3><p>VN3 ライセンス。改変と無償の再配布ができます。販売はできません。</p></div>
           <div class="get__col"><h3>応援する</h3><p>気に入ったら、BOOTH のお布施で開発を支えていただけるとうれしいです（準備中）。</p></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Ulexite について -->
+  <section class="section section--tight" id="about">
+    <div class="wrap" style="max-width:860px;margin:0 auto;text-align:center">
+      <p class="eyebrow">Ulexite について</p>
+      <blockquote class="quote">制約は工夫の母であり、<br>工夫は技術の母である。</blockquote>
+      <p class="quote__by">— 葛城ひなた</p>
+      <p class="quote__en" lang="en">Constraint is the mother of ingenuity;<br>ingenuity, the mother of technology.</p>
     </div>
   </section>
 
@@ -432,6 +445,6 @@
     els.forEach(function (e) { io.observe(e); });
   })();
 </script>
-  <script src="assets/js/nav.js?v=20261026a" defer></script>
+  <script src="assets/js/nav.js?v=20261101a" defer></script>
 </body>
 </html>

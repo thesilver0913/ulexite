@@ -11,8 +11,8 @@
   <meta property="og:description" content="Ulexite TV と関連パッケージの更新の記録。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261101a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261101a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/releases/">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/releases/">
@@ -51,11 +51,60 @@
       </nav>
       <h1 class="page-title">リリースノート</h1>
       <p class="page-lead">Ulexite TV と、関連するパッケージの更新の記録です。番号は VPM パッケージのバージョンです。</p>
-      <p class="page-meta"><span class="badge">テスト版の段階です</span><span>最終更新：2026年10月23日</span></p>
+      <p class="page-meta"><span class="badge">ベータ版 0.4.0</span><span>最終更新：2026年11月1日</span></p>
     </div>
   </div>
 
   <article>
+
+    <section class="release">
+      <p class="release__meta"><span class="release__version">Ulexite TV 0.4.0</span><span>2026年11月1日</span><span class="badge">ベータ版</span></p>
+      <h2>来た人を迎えて、もしもを知らせる。</h2>
+      <p>はじめての公開版です。初期設定と防災情報、時計と天気が最初から入り、設定も分かりやすくなりました。</p>
+
+      <h3>変わったこと</h3>
+      <ul class="checks">
+        <li>はじめの設定（言語・地域・音・防災情報）</li>
+        <li>防災情報（地震・津波のバナー、警報の通知）</li>
+        <li>警報の色を気象庁のレベルの色に</li>
+        <li>時計と天気を最初から入れた（プリインストールは6つ：動画・URLプレイヤー・VRC放送局・ライブラリ・時計・天気）</li>
+        <li>ホームの既定の並び（URLプレイヤー・VRC放送局・動画・時計・天気）</li>
+        <li>動画の「情報」の画面（長押しメニューから）</li>
+        <li>天気に地図のタブ（雨雲・気温・警報・震度・津波）</li>
+        <li>設定を大項目と小項目の2段階に</li>
+        <li>設定に「通知」と「地域」</li>
+        <li>アプリ情報に通知のオン／オフ</li>
+        <li>動画のお気に入り（カードの長押し）</li>
+        <li>動画・URL プレイヤー・VRC 放送局・ライブラリを別パッケージに（最初から入る）</li>
+        <li>テレビの音を 3D に（近いほど大きく）</li>
+        <li>入力パッドをテレビの画面の真下に</li>
+        <li>起動音はホームが出たときに</li>
+        <li>設定ウィンドウに「アプリ」「端末」「ビルド」「情報」</li>
+        <li>変わった所だけ作り直す（差分）</li>
+        <li>説明書の PDF を同梱（3冊）</li>
+      </ul>
+
+      <h3>直したこと</h3>
+      <ul class="checks">
+        <li>テレビが複数あると動画の一覧が出ない</li>
+        <li>アプリ情報の通知の切り替えが効かない</li>
+        <li>画像の読み込みで止まることがある</li>
+        <li>天気の英語の表示</li>
+        <li>パッケージを軽く（約13MB）</li>
+      </ul>
+
+      <h3>知らせること</h3>
+      <ul class="checks">
+        <li>テスト版の設定と同意は一度だけ初期化</li>
+        <li>入れ替えたら「テレビを作り直す」を押す</li>
+        <li>VizVid 1.8.2 以上・1.9.0 未満が必要</li>
+        <li>ベータ版のため、動きや画面は変わることあり</li>
+        <li>バージョンの表示は「0.4.0（ベータ版）」</li>
+      </ul>
+
+      <h3>入れ替えるとき</h3>
+      <p>0.3.0 以前から入れ替えたときは、Unity で <strong><code>Tools → Ulexite → 設定</code> → ビルド →「テレビを作り直す」</strong>を押してください。保存の形を整理したため、<strong>テスト版で決めた各自の設定と動画アプリの同意は、一度だけ最初に戻ります</strong>（はじめの設定がもう一度出ます）。</p>
+    </section>
 
     <section class="release">
       <p class="release__meta"><span class="release__version">Ulexite TV 0.3.0</span><span>2026年10月20日</span><span class="badge">テスト版</span></p>
@@ -184,6 +233,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261026a" defer></script>
+  <script src="../assets/js/nav.js?v=20261101a" defer></script>
 </body>
 </html>

@@ -11,8 +11,8 @@
   <meta property="og:description" content="Ulexite のアプリを作る人のためのガイド。アプリの種類、層の分け方、マニフェスト。">
   <meta property="og:type" content="article">
   <link rel="preload" href="../assets/fonts/noto-sans-jp-400-base.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261026a">
-  <link rel="stylesheet" href="../assets/css/site.css?v=20261026a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261101a">
+  <link rel="stylesheet" href="../assets/css/site.css?v=20261101a">
   <link rel="canonical" href="https://thesilver0913.github.io/ulexite/developers/">
   <meta property="og:site_name" content="Ulexite">
   <meta property="og:url" content="https://thesilver0913.github.io/ulexite/developers/">
@@ -57,8 +57,16 @@
 
   <article class="prose">
 
+    <blockquote class="quote quote--small">
+      制約は工夫の母であり、<br>工夫は技術の母である。
+      <footer class="quote__by">— 葛城ひなた</footer>
+    </blockquote>
+    <p class="quote__en" lang="en">Constraint is the mother of ingenuity;<br>ingenuity, the mother of technology.</p>
+
     <div class="note">
       <p><strong>このガイドは書き途中です。</strong>準備中の章は「準備中」と書いています。ワールドに Ulexite TV を置くだけの人は<a href="../guide/index.html">導入ガイド</a>を読んでください。</p>
+      <p>ガイドは日本語だけですが、アプリ名などの英語表記は必要です。アプリストアの表示に使うため、マニフェストの <code>name</code> は <code>ja</code> と <code>en</code> の両方が必須です（<a href="reference.html">9章</a>）。</p>
+      <p><strong>いまの状況：</strong>Ulexite TV は、テスト版を試してくださる方に個別にお渡ししている段階です。VCC と BOOTH からの配布は、公開の準備ができてから始めます。アプリを作るための開発キット（<code>vrc.ulexite.devkit</code>）も、公開に合わせて配る予定です。<strong>そのため、いまはまだ外部の方がアプリを作り始めることはできません。</strong></p>
     </div>
 
     <h2>章の一覧</h2>
@@ -79,6 +87,8 @@
       </table>
     </div>
 
+    <p>用語の意味は、この章の最後の<a href="#terms">用語</a>にまとめています。</p>
+
     <h2 id="what">Ulexite とは</h2>
     <p>Ulexite は、VRChat の中で使う家電と端末のシリーズです。最初の製品は Android TV 風のテレビ（セットトップボックス）<strong>Ulexite TV</strong> で、ワールドに置いて、リモコンで操作します。動画の再生と同期は VizVid が受け持ち、Ulexite は「テレビを見る体験」（ホーム画面、リモコン、アプリ）を受け持ちます。</p>
     <p>これらの製品で動く共通の仕組みを <strong>Ulexite OS</strong> と呼びます。アプリは Ulexite OS の上で動きます。</p>
@@ -96,6 +106,7 @@
       <li>良いところ：安全で、審査も通りやすい。重くなりにくい</li>
       <li>できないこと：ゲーム、凝った動き、自由な配置、端末の上での計算（計算はサーバーで済ませておく）</li>
     </ul>
+    <p>部品の <code>image</code>・<code>chart</code>・<code>button</code>・<code>custom</code> と、画面の型の <code>grid</code> は準備中です（4章の部品の表）。</p>
     <p><a href="declarative.html">4章 データで書くアプリ</a></p>
 
     <h3>プログラムを書くアプリ（native）</h3>
@@ -116,6 +127,9 @@
    ↓
 プログラムを書くアプリ（native）</code></pre>
     <p>迷ったら、まずデータで書くアプリで作れないか考えてください。Ulexite が一番勧める形です。</p>
+    <div class="note">
+      <p>2章（最初のアプリを作る）と8章（公開する）は準備中です。当面は、<a href="declarative.html">4章</a>の「確かめ方」と、見本のアプリ（時計・天気）を手がかりにしてください。</p>
+    </div>
 
     <h2 id="layers">層の分け方</h2>
     <pre class="code"><code>┌───────────────────────────────┐
@@ -141,10 +155,10 @@
   "version": "0.1.0",
   "publisher": { "name": "Ulexite Technologies" },
   "kind": "declarative",
-  "runtimes": { "world": { "os": 1, "appServices": 2, "screens": "app.screens.json" } },
+  "runtimes": { "world": { "os": 1, "appServices": 4, "screens": "app.screens.json" } },
   "profiles": ["tv"],
   "data": [ { "id": "weather", "every": "10m" } ],
-  "budget": { "saveKB": 1, "imagesPerOpen": 1, "syncBytes": 4 }
+  "budget": { "saveKB": 4, "imagesPerOpen": 1, "syncBytes": 256 }
 }</code></pre>
     <p>全項目は<a href="reference.html">リファレンス（9章）</a>にまとめています。</p>
 
@@ -171,8 +185,8 @@
         <tbody>
           <tr><td>端末</td><td>Ulexite OS が動く1台。テレビなど</td></tr>
           <tr><td>シェル</td><td>端末ごとのホーム画面と画面の枠</td></tr>
-          <tr><td>feed</td><td>アプリが読むデータの JSON。共通サーバーに置く</td></tr>
-          <tr><td>共通の feed</td><td>どのアプリからも読める feed（地震・津波・警報など）。OS が1分おきに読んでいる</td></tr>
+          <tr><td>feed</td><td>アプリが読むデータの JSON。公式のアプリは共通サーバーに、ほかの作者のアプリは自分で用意した信頼済みドメイン（自分の GitHub Pages など）に置く</td></tr>
+          <tr><td>共通の feed</td><td>どのアプリからも読める feed（地震・津波・警報など）。OS が1分おきに読んでいる。用意するのは Ulexite 公式だけ</td></tr>
           <tr><td>操作する人</td><td>その端末のリモコンを持っている人。画面の状態のオーナー</td></tr>
           <tr><td>焼き込み</td><td>エディタで作ったもの（画面・URL）をワールドに固定して入れること。Udon は実行中に URL を作れないため、URL はすべて焼き込む</td></tr>
         </tbody>
@@ -257,6 +271,6 @@
     });
   })();
 </script>
-  <script src="../assets/js/nav.js?v=20261026a" defer></script>
+  <script src="../assets/js/nav.js?v=20261101a" defer></script>
 </body>
 </html>
