@@ -23,61 +23,38 @@
         ] },
         { title: 'これから', links: [
           { label: 'アプリ', note: '入っているアプリと、これから', href: 'index.html#apps' },
-          { label: 'ロードマップ', note: 'Ulexite のこれから', href: 'index.html#roadmap' },
-          { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
+          { label: 'ロードマップ', note: 'Ulexite のこれから', href: 'index.html#roadmap' }
         ] }
       ]
     },
     get: {
       eyebrow: 'Get Ulexite',
       title: '入手する。',
-      lead: 'いまはテスト版を、試してくださる方にお渡ししています。VCC と BOOTH からの配布は、公開の準備ができてから。',
+      lead: 'Ulexite TV 0.4.0（ベータ版）を VCC で公開中。BOOTH は準備中です。',
       groups: [
         { title: 'いま', links: [
-          { label: '入手方法', note: 'テスト版の配布', href: 'index.html#get' },
-          { label: '導入ガイド', note: 'ワールドへの入れ方', href: 'guide/index.html' },
-          { label: 'Ulexite Store', note: '触って試す', href: 'index.html#store' }
+          { label: '入手方法', note: 'VCC と BOOTH', href: 'index.html#get' },
+          { label: 'VCC に追加', note: 'Ulexite のリポジトリ', href: 'vcc://vpm/addRepo?url=https%3A%2F%2Fthesilver0913.github.io%2Fulexite-store%2Findex.json', external: true },
+          { label: 'VizVid を追加', note: '動画の依存', href: 'vcc://vpm/addRepo?url=https%3A%2F%2Fxtlcdn.github.io%2Fvpm%2Findex.json', external: true },
+          { label: '導入ガイド', note: 'ワールドへの入れ方', href: 'guide/index.html' }
         ] },
-        { title: '公開後', links: [
-          { label: 'BOOTH（準備中）', note: '商品ページは公開前', href: 'index.html#get' },
-          { label: 'VCC に追加（準備中）', note: '公開後にここから', href: 'index.html#get' },
-          { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
-        ] }
-      ]
-    },
-    apps: {
-      eyebrow: 'App Store',
-      title: 'アプリで、広がる。',
-      lead: '動画も、天気も、音楽も。ホームに並ぶアプリから選ぶだけ。アプリストアは公開の準備をしています。',
-      groups: [
-        { title: 'アプリ', links: [
-          { label: 'アプリ一覧', note: '入っているアプリと、これから', href: 'index.html#apps' },
-          { label: '動画', note: 'おすすめから選んで再生', href: 'index.html#apps' },
-          { label: '時計・天気', note: 'くらしのアプリ', href: 'index.html#apps' },
-          { label: '音楽・ラジオ', note: '流しっぱなしにしたい音', href: 'index.html#apps' }
-        ] },
-        { title: 'つくる', links: [
-          { label: '開発者ガイド', note: '全体像と章の一覧', href: 'developers/index.html' },
-          { label: '3章 ワールドのアプリ（U#）', note: 'U# で作る', href: 'developers/world-native.html' },
-          { label: '4章 データで書くアプリ', note: 'JSON で作る', href: 'developers/declarative.html' },
-          { label: '9章 リファレンス', note: 'コードから書き出した一覧', href: 'developers/reference.html' }
+        { title: 'これから', links: [
+          { label: 'BOOTH（準備中）', note: '商品ページは公開前', href: 'index.html#get' }
         ] }
       ]
     },
     support: {
       eyebrow: 'Support',
-      title: '使い方とサポート。',
-      lead: '導入ガイド、開発者ガイド、リリースノート。困ったときは、まずガイドを確かめてください。',
+      title: 'サポート。',
+      lead: '不具合の報告、変更の記録、アプリの作り方。',
       groups: [
-        { title: '使い方', links: [
-          { label: '導入ガイド', note: 'ワールドへの入れ方', href: 'guide/index.html' },
-          { label: '開発者ガイド', note: 'アプリの作り方', href: 'developers/index.html' },
-          { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' }
-        ] },
         { title: '困ったとき', links: [
           { label: 'お問い合わせフォーム', note: '不具合の報告のみ', href: 'contact/index.html' },
-          { label: 'Ulexite Store', note: '触って確かめる', href: 'index.html#store' },
           { label: 'X @UlexiteOfficial', note: '最新のお知らせ', href: 'https://x.com/UlexiteOfficial', external: true }
+        ] },
+        { title: '知る', links: [
+          { label: 'リリースノート', note: '変更の記録', href: 'releases/index.html' },
+          { label: '開発者ガイド', note: 'アプリの作り方', href: 'developers/index.html' }
         ] }
       ]
     }
