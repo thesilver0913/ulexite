@@ -30,7 +30,7 @@
     get: {
       eyebrow: 'Get Ulexite',
       title: '入手する。',
-      lead: 'Ulexite TV 0.4.0（ベータ版）を VCC で公開中。BOOTH は準備中です。',
+      lead: 'Ulexite TV 0.4.0（ベータ版）を、VCC と BOOTH で公開中です。',
       groups: [
         { title: 'いま', links: [
           { label: '入手方法', note: 'VCC と BOOTH', href: 'index.html#get' },
@@ -38,8 +38,8 @@
           { label: 'VizVid を追加', note: '動画の依存', href: 'vcc://vpm/addRepo?url=https%3A%2F%2Fxtlcdn.github.io%2Fvpm%2Findex.json', external: true },
           { label: '導入ガイド', note: 'ワールドへの入れ方', href: 'guide/index.html' }
         ] },
-        { title: 'これから', links: [
-          { label: 'BOOTH（準備中）', note: '商品ページは公開前', href: 'index.html#get' }
+        { title: 'ショップ', links: [
+          { label: 'BOOTH で見る', note: '商品ページ', href: 'https://ulexite.booth.pm/items/9027626', external: true }
         ] }
       ]
     },
